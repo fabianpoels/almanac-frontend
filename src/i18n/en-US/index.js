@@ -5,4 +5,11 @@ export default {
   header: {
     almanac: 'Almanac',
   },
+  map: {
+    styles: {
+      standard: 'Standard',
+      satellite: 'Satellite',
+      traffic: 'Traffic',
+    },
+  },
 }

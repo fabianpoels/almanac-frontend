@@ -285,6 +285,18 @@
   dependencies:
     call-bind "^1.0.7"
 
+"@mapbox-controls/helpers@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@mapbox-controls/helpers/-/helpers-1.1.0.tgz#12c23a89f8ff116f9e5cb0159238a863c5887a5b"
+  integrity sha512-Pos60fsO82YEuW2NzELOi8gTRIPYObHRpzAM+pObbl2/eVn4NmPNID1PyIjL6ANwOBfUPe8niDDl/Dd0/OTTIg==
+
+"@mapbox-controls/styles@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@mapbox-controls/styles/-/styles-1.1.0.tgz#b4c4622dda1a0404d1a8f41574e876d5fc03915b"
+  integrity sha512-oiRsKM0Xs/2rcPG16jJ4jabwy3yvwXJ3jeSN35Uc0gu8mQBZcn4a8mSjTM/y4yn7TVpjCVVbA/6lLDzoJG3JNQ==
+  dependencies:
+    "@mapbox-controls/helpers" "1.1.0"
+
 "@mapbox/geojson-rewind@^0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@mapbox/geojson-rewind/-/geojson-rewind-0.5.2.tgz#591a5d71a9cd1da1a0bf3420b3bea31b0fc7946a"
