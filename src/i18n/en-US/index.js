@@ -2,6 +2,17 @@
 // so you can safely delete all default props below
 
 export default {
+  admin: {
+    addReport: {
+      category: 'Category',
+      description: 'Description',
+      publish: 'Publish',
+      title: 'Title',
+    },
+    menu: {
+      addReport: 'Add report',
+    },
+  },
   header: {
     almanac: 'Almanac',
   },
@@ -12,5 +23,8 @@ export default {
       terrain: 'Terrain',
       traffic: 'Traffic',
     },
+  },
+  shared: {
+    cancel: 'Cancel',
   },
 }

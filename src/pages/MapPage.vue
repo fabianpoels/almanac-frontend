@@ -6,7 +6,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useMapStore } from '@/stores/map-store'
+import { useMapStore } from '@/stores/mapStore'
+import { useReportStore } from '@/stores/reportStore'
 import { mapUtils } from '@/utils/map'
 
 import { useI18n } from 'vue-i18n'
@@ -21,6 +22,7 @@ import '@/../node_modules/mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox-controls/styles/src/index.css'
 
 const mapStore = useMapStore()
+const reportStore = useReportStore()
 const mapContainer = ref(null)
 
 mapboxgl.accessToken = mapStore.mapboxApiKey
@@ -43,13 +45,13 @@ onMounted(() => {
 
   map.on('load', async () => {
     mapStore.map = map
-    await mapStore.fetchReports()
-    await mapStore.fetchCategories()
-    mapStore.reports.forEach((report) => mapUtils.drawReport({ map, report }))
+    await reportStore.fetchReports()
+    await reportStore.fetchCategories()
+    reportStore.reports.forEach((report) => mapUtils.drawReport({ map, report }))
   })
 
   map.on('style.load', () => {
-    mapStore.reports.forEach((report) => mapUtils.drawReport({ map, report }))
+    reportStore.reports.forEach((report) => mapUtils.drawReport({ map, report }))
   })
 
   map.addControl(

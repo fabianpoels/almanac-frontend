@@ -1,12 +1,14 @@
 import mapboxgl from 'mapbox-gl'
 import center from '@turf/center'
-import { useMapStore } from '@/stores/map-store'
+import { useMapStore } from '@/stores/mapStore'
+import { useReportStore } from '@/stores/reportStore'
 const mapStore = useMapStore()
+const reportStore = useReportStore()
 
 const mapUtils = {
   drawReport: function ({ map, report }) {
     // set color
-    const color = mapStore.categories[report.category]?.color
+    const color = reportStore.categories[report.category]?.color
     if (!color) return
     report.geoData.features.forEach((gd, index) => {
       // unique id
@@ -24,33 +26,37 @@ const mapUtils = {
 
       // polygon
       if (gd.geometry.type === 'Polygon') {
-        map.addSource(id, { type: 'geojson', data: gd })
-        map.addLayer({
-          id: `${report.id}-fill`,
-          type: 'fill',
-          source: id,
-          layout: {},
-          paint: {
-            'fill-color': color,
-            'fill-opacity': 0.5,
-          },
-        })
+        if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: gd })
+        if (!map.getLayer(`${report.id}-fill`)) {
+          map.addLayer({
+            id: `${report.id}-fill`,
+            type: 'fill',
+            source: id,
+            layout: {},
+            paint: {
+              'fill-color': color,
+              'fill-opacity': 0.5,
+            },
+          })
+        }
+        if (!map.getLayer(`${report.id}-line`)) {
+          map.addLayer({
+            id: `${report.id}-line`,
+            type: 'line',
+            source: id,
+            layout: {},
+            paint: {
+              'line-color': color,
+              'line-width': 1,
+            },
+          })
+        }
         const marker = new mapboxgl.Marker({
           color: color,
           className: id,
         })
         marker.setLngLat(center(gd).geometry.coordinates)
         marker.addTo(map)
-        map.addLayer({
-          id: `${report.id}-line`,
-          type: 'line',
-          source: id,
-          layout: {},
-          paint: {
-            'line-color': color,
-            'line-width': 1,
-          },
-        })
       }
     })
   },

@@ -1,21 +1,38 @@
 <template>
-  <q-layout view="hHr lpr fFf">
-    <q-header elevated>
+  <q-layout view="hHh lpr fFf">
+    <q-header v-model="mapStore.showHeader">
       <q-toolbar>
         <q-btn flat round dense icon="list" @click="toggleLeftDrawer">
-          <q-badge v-if="mapStore.reports.length > 0" color="red" floating>
-            {{ mapStore.reports.length }}
+          <q-badge v-if="reportStore.reports.length > 0" color="red" floating>
+            {{ reportStore.reports.length }}
           </q-badge>
         </q-btn>
         <q-toolbar-title>
           {{ $t('header.almanac') }}
         </q-toolbar-title>
+        <admin-controls />
+        <q-toggle
+          v-model="darkMode"
+          checked-icon="dark_mode"
+          unchecked-icon="light_mode"
+          color="grey-4"
+        />
         <q-btn flat round dense icon="account_circle" />
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" bordered>
+    <q-drawer side="left" v-model="mapStore.leftDrawerOpen" bordered>
       <report-list />
+    </q-drawer>
+
+    <q-drawer
+      side="right"
+      :model-value="mapStore.rightDrawerOpen === 'addReport'"
+      bordered
+      class="q-pa-md"
+      :width="322"
+    >
+      <add-report />
     </q-drawer>
 
     <q-page-container>
@@ -25,19 +42,32 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useMapStore } from '@/stores/map-store'
+import { useQuasar } from 'quasar'
+import { computed } from 'vue'
+import { useMapStore } from '@/stores/mapStore'
+import { useReportStore } from '@/stores/reportStore'
 const mapStore = useMapStore()
+const reportStore = useReportStore()
+const $q = useQuasar()
 
 import ReportList from '@/components/ReportList.vue'
+import AdminControls from '@/components/admin/AdminControls.vue'
+import AddReport from '@/components/admin/AddReport.vue'
 
 defineOptions({
   name: 'MainLayout',
 })
 
-const leftDrawerOpen = ref(false)
-
 function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+  mapStore.leftDrawerOpen = !mapStore.leftDrawerOpen
 }
+
+const darkMode = computed({
+  get() {
+    return $q.dark.isActive
+  },
+  set(val) {
+    $q.dark.set(val)
+  },
+})
 </script>

@@ -1,6 +1,6 @@
 <template>
   <q-list separator>
-    <q-item v-for="report in mapStore.reports" :key="report.id">
+    <q-item v-for="report in reportStore.reports" :key="report.id">
       <q-item-section>
         <q-item-label>{{ report.title }}</q-item-label>
         <q-item-label caption>{{ report.description }}</q-item-label>
@@ -15,9 +15,10 @@
 <script setup>
 import { dt } from '@/utils'
 import { mapUtils } from '@/utils/map'
-import { useMapStore } from '@/stores/map-store'
+import { useMapStore } from '@/stores/mapStore'
+import { useReportStore } from '@/stores/reportStore'
 const mapStore = useMapStore()
-
+const reportStore = useReportStore()
 function moveToLocation(report) {
   mapUtils.moveMapToReport({ report, map: mapStore.map })
 }
