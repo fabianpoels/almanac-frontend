@@ -1,33 +1,27 @@
 <template>
   <q-page>
     <div ref="mapContainer" class="map-container"></div>
-    <map-style-switcher
-      v-model="showStyleSwitcher"
-      :selectedStyle="selectedStyle"
-      @switchStyle="(val) => switchStyle(val)"
-    />
   </q-page>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useMapStore } from '@/stores/map-store'
+import { mapUtils } from '@/utils/map'
+
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 // mapbox + plugins
 import mapboxgl from 'mapbox-gl'
-// import StylesControl from '@mapbox-controls/styles'
+import StylesControl from '@mapbox-controls/styles'
 
 // mapbox + plugins css
 import '@/../node_modules/mapbox-gl/dist/mapbox-gl.css'
-// import '@mapbox-controls/styles/src/index.css'
-
-import MapStyleSwitcher from './../components/MapStyleSwitcher.vue'
+import '@mapbox-controls/styles/src/index.css'
 
 const mapStore = useMapStore()
 const mapContainer = ref(null)
-
-const showStyleSwitcher = ref(false)
-const selectedStyle = ref('mapbox://styles/mapbox/standard')
 
 mapboxgl.accessToken = mapStore.mapboxApiKey
 
@@ -41,51 +35,50 @@ onMounted(() => {
   // CREATE THE MAP
   map = new mapboxgl.Map({
     container: mapContainer.value,
-
+    style: 'mapbox://styles/mapbox/light-v11',
     center: [35.4903, 33.8964],
     zoom: 13,
     pitchWithRotate: false,
   })
 
-  map.on('style.load', () => {})
+  map.on('load', async () => {
+    mapStore.map = map
+    await mapStore.fetchReports()
+    await mapStore.fetchCategories()
+    mapStore.reports.forEach((report) => mapUtils.drawReport({ map, report }))
+  })
 
-  // CONTROL STYLES
-  // const mapStyles = new StylesControl({
-  //   compact: true,
-  //   styles: [
-  //     {
-  //       label: t('map.styles.standard'),
-  //       styleName: 'Mapbox Standard',
-  //       styleUrl: 'mapbox://styles/mapbox/standard',
-  //     },
-  //     {
-  //       label: t('map.styles.satellite'),
-  //       styleName: 'Mapbox Satellite Streets',
-  //       styleUrl: 'mapbox://sprites/mapbox/satellite-streets-v12',
-  //     },
-  //     {
-  //       label: t('map.styles.traffic'),
-  //       styleName: 'Mapbox Navigation',
-  //       styleUrl: 'mapbox://styles/mapbox/navigation-day-v1',
-  //     },
-  //   ],
-  // })
-  // map.addControl(mapStyles, 'bottom-right')
+  map.on('style.load', () => {
+    mapStore.reports.forEach((report) => mapUtils.drawReport({ map, report }))
+  })
 
-  // CUSTOM STYLE SWITCHER
-  class LayerButton {
-    onAdd(map) {
-      const div = document.createElement('div')
-      div.className = 'mapboxgl-ctrl mapboxgl-ctrl-group'
-      div.innerHTML = `<button><svg viewBox="0 0 48 48" style="font-size: 20px;" fill="currentColor"><path d="m24 41.5-18-14 2.5-1.85L24 37.7l15.5-12.05L42 27.5Zm0-7.6-18-14 18-14 18 14Zm0-15.05Zm0 11.25 13.1-10.2L24 9.7 10.9 19.9Z"/></svg></button>`
-      div.addEventListener('contextmenu', (e) => e.preventDefault())
-      div.addEventListener('click', () => (showStyleSwitcher.value = true))
-
-      return div
-    }
-  }
-  const layerButton = new LayerButton()
-  map.addControl(layerButton, 'bottom-right')
+  map.addControl(
+    new StylesControl({
+      styles: [
+        {
+          label: t('map.styles.standard'),
+          styleName: 'Mapbox Light',
+          styleUrl: 'mapbox://styles/mapbox/light-v11',
+        },
+        {
+          label: t('map.styles.terrain'),
+          styleName: 'Mapbox Outdoors',
+          styleUrl: 'mapbox://styles/mapbox/outdoors-v12',
+        },
+        {
+          label: t('map.styles.satellite'),
+          styleName: 'Mapbox Satellite Streets',
+          styleUrl: 'mapbox://styles/mapbox/satellite-streets-v12',
+        },
+        {
+          label: t('map.styles.traffic'),
+          styleName: 'Mapbox Navigation Day',
+          styleUrl: 'mapbox://styles/mapbox/navigation-day-v1',
+        },
+      ],
+    }),
+    'bottom-right'
+  )
 
   // ADD ZOOM BUTTONS
   const nav = new mapboxgl.NavigationControl({
@@ -100,11 +93,6 @@ onMounted(() => {
   })
   map.addControl(scale)
 })
-
-function switchStyle(style) {
-  selectedStyle.value = style
-  map.setStyle(style)
-}
 </script>
 <style scoped>
 .map-container {

@@ -9,6 +9,7 @@ export default {
     styles: {
       standard: 'Standard',
       satellite: 'Satellite',
+      terrain: 'Terrain',
       traffic: 'Traffic',
     },
   },
