@@ -2,10 +2,22 @@ import api from '@/api'
 import { defineStore } from 'pinia'
 import { DateTime } from 'luxon'
 import { dt } from '@/utils'
+import { mapUtils } from '@/utils/map'
+import { useMapStore } from '@/stores/mapStore'
 
 function parseReport(report) {
   const activeFrom = dt.parseSimpleDateString(report.activeFrom)
   const activeUntil = dt.parseSimpleDateString(report.activeUntil)
+  return { ...report, activeFrom, activeUntil }
+}
+
+function serializeForApi(report) {
+  const activeFrom = DateTime.isDateTime(report.activeFrom)
+    ? report.activeFrom.toFormat(dt.simpleDateFormat)
+    : null
+  const activeUntil = DateTime.isDateTime(report.activeUntil)
+    ? report.activeUntil.toFormat(dt.simpleDateFormat)
+    : null
   return { ...report, activeFrom, activeUntil }
 }
 
@@ -19,7 +31,6 @@ export const useReportStore = defineStore('report', {
       Object.entries(state.categories).map(([key, category]) => ({
         label: category.title,
         value: key,
-        icon: category.icon,
       })),
     blankReport: () => {
       return {
@@ -53,12 +64,11 @@ export const useReportStore = defineStore('report', {
     },
 
     async addReport(newReport) {
-      const preparedReport = {
-        ...newReport,
-        activeFrom: newReport.activeFrom.toFormat(dt.simpleDateFormat),
-        activeUntil: newReport.activeUntil.toFormat(dt.simpleDateFormat) || '',
-      }
-      const { data } = await api.post('/reports', { report: preparedReport })
+      const { data } = await api.post('admin/reports', { report: serializeForApi(newReport) })
+      const parsedReport = parseReport(data)
+      this.reports.push(parsedReport)
+      const mapStore = useMapStore()
+      mapUtils.drawReport({ map: mapStore.map, report: parsedReport, categories: this.categories })
     },
   },
 })

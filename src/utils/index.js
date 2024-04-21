@@ -5,6 +5,7 @@ const quasarDateFormat = 'yyyy/MM/dd'
 
 const dt = {
   parseSimpleDateString: function (string) {
+    if (!string) return null
     return DateTime.fromFormat(string, simpleDateFormat)
   },
 

@@ -1,15 +1,12 @@
 import mapboxgl from 'mapbox-gl'
 import center from '@turf/center'
-import { useMapStore } from '@/stores/mapStore'
-import { useReportStore } from '@/stores/reportStore'
-const mapStore = useMapStore()
-const reportStore = useReportStore()
 
 const mapUtils = {
-  drawReport: function ({ map, report }) {
+  drawReport: function ({ map, report, categories }) {
     // set color
-    const color = reportStore.categories[report.category]?.color
+    const color = categories[report.category]?.color
     if (!color) return
+    if (!report.geoData) return
     report.geoData.features.forEach((gd, index) => {
       // unique id
       const id = `${report.id}-${index}`

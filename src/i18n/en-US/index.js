@@ -6,7 +6,9 @@ export default {
     addReport: {
       category: 'Category',
       description: 'Description',
+      error: 'Error adding report',
       publish: 'Publish',
+      reportAdded: 'Report added',
       title: 'Title',
     },
     menu: {

@@ -13,8 +13,6 @@
 import { useMapStore } from '@/stores/mapStore'
 const mapStore = useMapStore()
 function addReport() {
-  mapStore.leftDrawerOpen = false
-  mapStore.showHeader = false
   mapStore.rightDrawerOpen = 'addReport'
 }
 </script>

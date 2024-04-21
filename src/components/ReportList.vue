@@ -7,7 +7,14 @@
       </q-item-section>
       <q-item-section side top>
         <q-item-label caption>{{ dt.short(report.activeFrom) }}</q-item-label>
-        <q-btn @click="moveToLocation(report)" round class="icon" size="xs" icon="my_location" />
+        <q-btn
+          v-if="report.geoData"
+          @click="moveToLocation(report)"
+          round
+          class="icon"
+          size="xs"
+          icon="my_location"
+        />
       </q-item-section>
     </q-item>
   </q-list>

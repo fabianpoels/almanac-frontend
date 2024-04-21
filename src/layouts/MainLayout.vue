@@ -25,15 +25,7 @@
       <report-list />
     </q-drawer>
 
-    <q-drawer
-      side="right"
-      :model-value="mapStore.rightDrawerOpen === 'addReport'"
-      bordered
-      class="q-pa-md"
-      :width="322"
-    >
-      <add-report />
-    </q-drawer>
+    <add-report />
 
     <q-page-container>
       <router-view />
