@@ -15,7 +15,7 @@ export default route(function (/* { store, ssrContext } */) {
       ? createWebHistory
       : createWebHashHistory
 
-  const Router = createRouter({
+  const router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
     routes,
 
@@ -25,7 +25,7 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   })
 
-  Router.beforeEach(async (to) => {
+  router.beforeEach(async (to) => {
     const publicPages = ['/login']
     const authRequired = !publicPages.includes(to.path)
     const authStore = useAuthStore()
@@ -39,5 +39,5 @@ export default route(function (/* { store, ssrContext } */) {
     }
   })
 
-  return Router
+  return router
 })

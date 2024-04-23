@@ -64,7 +64,7 @@ export const useReportStore = defineStore('report', {
     },
 
     async addReport(newReport) {
-      const { data } = await api.post('admin/reports', { report: serializeForApi(newReport) })
+      const { data } = await api.post('/admin/reports', { report: serializeForApi(newReport) })
       const parsedReport = parseReport(data)
       this.reports.push(parsedReport)
       const mapStore = useMapStore()

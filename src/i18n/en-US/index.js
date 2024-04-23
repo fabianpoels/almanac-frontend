@@ -18,6 +18,11 @@ export default {
   header: {
     almanac: 'Almanac',
   },
+  login: {
+    email: 'E-mail',
+    login: 'login',
+    password: 'Password',
+  },
   map: {
     styles: {
       standard: 'Standard',
