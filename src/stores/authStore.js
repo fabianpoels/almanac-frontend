@@ -1,9 +1,10 @@
 import api from '@/api'
+// import { useRouter, useRoute } from 'vue-router'
 import { defineStore } from 'pinia'
 import { DateTime } from 'luxon'
 import { dt } from '@/utils'
 
-export const useAuthStore = defineStore('report', {
+export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null,
     refreshTokenTimeout: null,
@@ -14,21 +15,25 @@ export const useAuthStore = defineStore('report', {
   },
   actions: {
     async login({ email, password }) {
-      const { data } = await api.post('/login', { email, password })
+      const { data } = await api.post('/auth/login', { email, password })
       this.user = data.user
       this.jwt = data.jwt
       this.startRefreshTokenTimer()
+
+      // const router = useRouter()
+      // const route = useRoute()
+      this.router.push({ name: 'root' })
     },
 
     logout() {
-      api.post('/logout')
+      api.post('/auth/logout')
       this.stopRefreshTokenTimer()
       this.user = null
-      router.push('/login')
+      router.push({ name: 'login' })
     },
 
     async refreshToken() {
-      const { data } = await api.post(`/refresh-token`)
+      const { data } = await api.post(`/auth/refresh-token`)
 
       this.startRefreshTokenTimer()
     },

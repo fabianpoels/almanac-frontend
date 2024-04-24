@@ -61,7 +61,9 @@ const login = async function () {
   loggingIn.value = true
   try {
     await authStore.login({ email: email.value, password: password.value })
-  } catch (e) {}
+  } catch (e) {
+    loggingIn.value = false
+  }
 }
 </script>
 <style scoped>
