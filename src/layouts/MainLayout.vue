@@ -17,7 +17,15 @@
           unchecked-icon="light_mode"
           color="grey-4"
         />
-        <q-btn flat round dense icon="account_circle" />
+        <q-btn flat round dense icon="account_circle">
+          <q-menu fit>
+            <q-list>
+              <q-item clickable @click="logout" v-close-popup>
+                <q-item-section>{{ $t('header.logout') }}</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -38,8 +46,10 @@ import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
 import { useReportStore } from '@/stores/reportStore'
+import { useAuthStore } from '@/stores/authStore'
 const mapStore = useMapStore()
 const reportStore = useReportStore()
+const authStore = useAuthStore()
 const $q = useQuasar()
 
 import ReportList from '@/components/ReportList.vue'
@@ -62,4 +72,8 @@ const darkMode = computed({
     $q.dark.set(val)
   },
 })
+
+function logout() {
+  authStore.logout()
+}
 </script>

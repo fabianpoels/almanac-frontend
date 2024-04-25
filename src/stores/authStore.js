@@ -32,11 +32,15 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    logout() {
-      api.post('/auth/logout')
+    async logout() {
+      try {
+        const response = await api.post('/auth/logout')
+      } catch (e) {
+        console.log(e)
+      }
       this.stopRefreshTokenTimer()
       this.user = null
-      router.push({ name: 'login' })
+      this.router.push({ name: 'login' })
     },
 
     async refreshToken() {

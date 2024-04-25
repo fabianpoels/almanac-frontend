@@ -17,6 +17,7 @@ export default {
   },
   header: {
     almanac: 'Almanac',
+    logout: 'Logout',
   },
   login: {
     email: 'E-mail',
