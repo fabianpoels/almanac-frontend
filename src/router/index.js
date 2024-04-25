@@ -29,15 +29,12 @@ export default route(function (/* { store, ssrContext } */) {
     const publicPages = ['/login']
     const authRequired = !publicPages.includes(to.path)
     const authStore = useAuthStore()
-    console.log(`auth required: ${authRequired}`)
-    console.log(`!authstore.user: ${!authStore.user}`)
 
     if (authRequired && !authStore.user) {
-      console.log('!!redirecting')
       const routeName = to.matched[0]?.name
       return {
         path: '/login',
-        query: { redirect: routeName && routeName !== 'login' ? routeName : 'root' },
+        query: { redirect: routeName && routeName !== 'login' ? routeName : 'map' },
       }
     }
   })

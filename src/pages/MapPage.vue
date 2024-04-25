@@ -13,6 +13,9 @@ import { mapUtils } from '@/utils/map'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
+import { useRoute } from 'vue-router'
+const route = useRoute()
+
 // mapbox + plugins css
 import '@/../node_modules/mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox-controls/styles/src/index.css'

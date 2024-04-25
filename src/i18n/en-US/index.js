@@ -22,6 +22,7 @@ export default {
     email: 'E-mail',
     login: 'login',
     password: 'Password',
+    wrong_email_or_password: 'Wrong email or password',
   },
   map: {
     styles: {

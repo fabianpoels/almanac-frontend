@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { Loading, QSpinnerGears } from 'quasar'
 
 // mapboxgl
 import mapboxgl from 'mapbox-gl'
@@ -25,10 +26,12 @@ export const useMapStore = defineStore('map', {
     rightDrawerOpen: null,
     showHeader: true,
     draw: null,
+    loadingMap: false,
   }),
   getters: {},
   actions: {
     initializeMap({ element, center, t }) {
+      Loading.show()
       const reportStore = useReportStore()
       if (!this.mapboxApiKey) return
       mapboxgl.accessToken = this.mapboxApiKey
@@ -46,6 +49,7 @@ export const useMapStore = defineStore('map', {
         reportStore.reports.forEach((report) =>
           mapUtils.drawReport({ map, report, categories: reportStore.categories })
         )
+        Loading.hide()
       })
 
       map.on('style.load', () => {

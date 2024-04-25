@@ -3,7 +3,14 @@ const routes = [
     path: '/',
     name: 'root',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', name: 'map', component: () => import('pages/MapPage.vue') }],
+    redirect: { name: 'map' },
+    children: [
+      {
+        path: '',
+        name: 'map',
+        component: () => import('pages/MapPage.vue'),
+      },
+    ],
   },
   {
     path: '/login',
@@ -11,8 +18,7 @@ const routes = [
     component: () => import('pages/LoginPage.vue'),
   },
 
-  // Always leave this as last one,
-  // but you can also remove it
+  // handle unexisting pages
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),

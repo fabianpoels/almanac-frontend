@@ -1,5 +1,4 @@
 import api from '@/api'
-// import { useRouter, useRoute } from 'vue-router'
 import { defineStore } from 'pinia'
 import { DateTime } from 'luxon'
 import { dt } from '@/utils'
@@ -20,9 +19,17 @@ export const useAuthStore = defineStore('auth', {
       this.jwt = data.jwt
       this.startRefreshTokenTimer()
 
-      // const router = useRouter()
-      // const route = useRoute()
-      this.router.push({ name: 'root' })
+      const currentRoute = this.router.currentRoute.value
+      if (currentRoute.query.redirect) {
+        const redirect = currentRoute.query.redirect
+        delete currentRoute.query.redirect
+        this.router.push({
+          name: redirect,
+          query: currentRoute.query,
+        })
+      } else {
+        this.router.push({ name: 'map' })
+      }
     },
 
     logout() {
@@ -34,7 +41,8 @@ export const useAuthStore = defineStore('auth', {
 
     async refreshToken() {
       const { data } = await api.post(`/auth/refresh-token`)
-
+      this.user = data.user
+      this.jwt = data.jwt
       this.startRefreshTokenTimer()
     },
 

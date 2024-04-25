@@ -29,7 +29,6 @@
               :disable="!formValid"
               @click="login"
             >
-              <!-- <q-spinner size="xs" v-if="saving" class="q-ml-xs" /> -->
             </q-btn>
           </q-form>
         </q-card>
@@ -42,6 +41,9 @@
 import { ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 const authStore = useAuthStore()
+import { alert } from '@/utils/alert'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 defineOptions({
   name: 'LoginPage',
@@ -63,6 +65,8 @@ const login = async function () {
     await authStore.login({ email: email.value, password: password.value })
   } catch (e) {
     loggingIn.value = false
+    console.log(e)
+    alert.error(t('login.wrong_email_or_password'))
   }
 }
 </script>
