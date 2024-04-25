@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', {
   },
   actions: {
     async login({ email, password }) {
-      const { data } = await api.post('/auth/login', { email, password })
+      const { data } = await api.post('/auth/login', { email, password }, { withCredentials: true })
       this.user = data.user
       this.jwt = data.jwt
       this.startRefreshTokenTimer()
@@ -44,10 +44,12 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async refreshToken() {
-      const { data } = await api.post(`/auth/refresh-token`)
-      this.user = data.user
-      this.jwt = data.jwt
-      this.startRefreshTokenTimer()
+      const response = await api.post(`/auth/refresh-token`, {}, { withCredentials: true })
+      if (response.status === 200 && response.data.user && response.data.jwt) {
+        this.user = response.data.user
+        this.jwt = response.data.jwt
+        this.startRefreshTokenTimer()
+      }
     },
 
     startRefreshTokenTimer() {

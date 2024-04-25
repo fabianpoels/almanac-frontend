@@ -3,17 +3,19 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
 import { useAuthStore } from '@/stores/authStore'
 const authStore = useAuthStore()
-import { onMounted } from 'vue'
+import { onBeforeMount } from 'vue'
 
 defineOptions({
   name: 'App',
 })
 
-onMounted(async () => {
-  try {
-    await authStore.refreshToken()
-  } catch (e) {}
-})
+// onBeforeMount(async () => {
+//   try {
+//     if (authStore.authenticated) router.push({ name: 'map' })
+//   } catch (e) {}
+// })
 </script>

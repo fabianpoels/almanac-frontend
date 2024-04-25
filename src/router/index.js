@@ -25,7 +25,7 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   })
 
-  router.beforeEach(async (to) => {
+  router.beforeEach((to) => {
     const publicPages = ['/login']
     const authRequired = !publicPages.includes(to.path)
     const authStore = useAuthStore()
