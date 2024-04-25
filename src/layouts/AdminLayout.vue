@@ -1,12 +1,8 @@
 <template>
   <q-layout view="hHh lpr fFf">
-    <q-header v-model="mapStore.showHeader">
+    <q-header>
       <q-toolbar>
-        <q-btn flat round dense icon="list" @click="toggleLeftDrawer">
-          <q-badge v-if="reportStore.reports.length > 0" color="red" floating>
-            {{ reportStore.reports.length }}
-          </q-badge>
-        </q-btn>
+        <q-btn flat round dense icon="map" @click="router.push({ name: 'map' })" />
         <q-toolbar-title>
           {{ $t('header.almanac') }}
         </q-toolbar-title>
@@ -29,12 +25,6 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer side="left" v-model="mapStore.leftDrawerOpen" bordered>
-      <report-list />
-    </q-drawer>
-
-    <add-report />
-
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -44,25 +34,17 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { computed } from 'vue'
-import { useMapStore } from '@/stores/mapStore'
-import { useReportStore } from '@/stores/reportStore'
 import { useAuthStore } from '@/stores/authStore'
-const mapStore = useMapStore()
-const reportStore = useReportStore()
+import { useRouter } from 'vue-router'
 const authStore = useAuthStore()
 const $q = useQuasar()
+const router = useRouter()
 
-import ReportList from '@/components/ReportList.vue'
 import AdminControls from '@/components/admin/AdminControls.vue'
-import AddReport from '@/components/admin/AddReport.vue'
 
 defineOptions({
-  name: 'MainLayout',
+  name: 'AdminLayout',
 })
-
-function toggleLeftDrawer() {
-  mapStore.leftDrawerOpen = !mapStore.leftDrawerOpen
-}
 
 const darkMode = computed({
   get() {

@@ -13,6 +13,8 @@ export default {
     },
     menu: {
       addReport: 'Add report',
+      reports: 'Reports',
+      users: 'Users',
     },
   },
   header: {

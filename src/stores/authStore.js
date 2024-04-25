@@ -11,6 +11,7 @@ export const useAuthStore = defineStore('auth', {
   }),
   getters: {
     authenticated: (state) => !!state.user && !!state.jwt,
+    isAdmin: (state) => state.user && ['admin', 'superadmin'].includes(state.user.role),
   },
   actions: {
     async login({ email, password }) {
