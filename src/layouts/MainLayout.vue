@@ -2,15 +2,10 @@
   <q-layout view="hHh lpr fFf">
     <q-header v-model="mapStore.showHeader">
       <q-toolbar>
-        <q-btn flat round dense icon="list" @click="toggleLeftDrawer">
-          <q-badge v-if="reportStore.reports.length > 0" color="red" floating>
-            {{ reportStore.reports.length }}
-          </q-badge>
-        </q-btn>
+        <admin-controls v-if="authStore.isAdmin" />
         <q-toolbar-title>
           {{ $t('header.almanac') }}
         </q-toolbar-title>
-        <admin-controls v-if="authStore.isAdmin" />
         <q-toggle
           v-model="darkMode"
           checked-icon="dark_mode"
@@ -29,14 +24,37 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer side="left" v-model="mapStore.leftDrawerOpen" bordered>
+    <q-drawer
+      side="left"
+      v-model="mapStore.leftDrawerOpen"
+      bordered
+      class="q-pa-sm"
+      style="width: 400px"
+    >
       <report-list />
+      <div class="q-drawer-hide absolute" style="top: 15px; right: -17px">
+        <q-btn
+          dense
+          round
+          unelevated
+          color="primary"
+          icon="chevron_left"
+          @click="mapStore.leftDrawerOpen = false"
+        />
+      </div>
     </q-drawer>
 
     <add-report />
 
     <q-page-container>
       <router-view />
+      <q-page-sticky position="top-left" :offset="[18, 18]" v-if="!mapStore.leftDrawerOpen">
+        <q-btn round size="md" icon="info" color="primary" @click="toggleLeftDrawer">
+          <q-badge v-if="reportStore.reports.length > 0" color="red" floating>
+            {{ reportStore.reports.length }}
+          </q-badge>
+        </q-btn>
+      </q-page-sticky>
     </q-page-container>
   </q-layout>
 </template>

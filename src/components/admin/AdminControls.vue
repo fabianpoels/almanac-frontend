@@ -1,5 +1,5 @@
 <template>
-  <q-btn flat round icon="admin_panel_settings">
+  <q-btn flat round dense icon="menu">
     <q-menu fit>
       <q-list class="admin-menu-list">
         <template v-if="showAddReport">
