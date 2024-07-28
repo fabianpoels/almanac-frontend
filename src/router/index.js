@@ -26,7 +26,7 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   router.beforeEach((to) => {
-    const publicPages = ['/login']
+    const publicPages = ['/']
     const authRequired = !publicPages.includes(to.path)
     const authStore = useAuthStore()
 

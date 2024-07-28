@@ -7,5 +7,7 @@ const authStore = useAuthStore()
 export default boot(async (/* { app, router, ... } */) => {
   try {
     await authStore.refreshToken()
-  } catch (e) {}
+  } catch (e) {
+    console.log(e)
+  }
 })

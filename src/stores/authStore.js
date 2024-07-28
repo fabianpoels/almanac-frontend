@@ -20,17 +20,17 @@ export const useAuthStore = defineStore('auth', {
       this.jwt = data.jwt
       this.startRefreshTokenTimer()
 
-      const currentRoute = this.router.currentRoute.value
-      if (currentRoute.query.redirect) {
-        const redirect = currentRoute.query.redirect
-        delete currentRoute.query.redirect
-        this.router.push({
-          name: redirect,
-          query: currentRoute.query,
-        })
-      } else {
-        this.router.push({ name: 'map' })
-      }
+      // const currentRoute = this.router.currentRoute.value
+      // if (currentRoute.query.redirect) {
+      //   const redirect = currentRoute.query.redirect
+      //   delete currentRoute.query.redirect
+      //   this.router.push({
+      //     name: redirect,
+      //     query: currentRoute.query,
+      //   })
+      // } else {
+      //   this.router.push({ name: 'map' })
+      // }
     },
 
     async logout() {
@@ -41,15 +41,25 @@ export const useAuthStore = defineStore('auth', {
       }
       this.stopRefreshTokenTimer()
       this.user = null
-      this.router.push({ name: 'login' })
+      this.jwt = null
+      this.router.push({ name: 'root' })
     },
 
     async refreshToken() {
-      const response = await api.post(`/auth/refresh-token`, {}, { withCredentials: true })
-      if (response.status === 200 && response.data.user && response.data.jwt) {
-        this.user = response.data.user
-        this.jwt = response.data.jwt
-        this.startRefreshTokenTimer()
+      try {
+        const response = await api.post(`/auth/refresh-token`, {}, { withCredentials: true })
+        if (response.status === 200 && response.data.user && response.data.jwt) {
+          this.user = response.data.user
+          this.jwt = response.data.jwt
+          this.startRefreshTokenTimer()
+        }
+      } catch (e) {
+        // console.error(e)
+        console.log('ALMANAC: error refreshing token, clearing session')
+        this.stopRefreshTokenTimer()
+        this.user = null
+        this.jwt = null
+        this.router.push({ name: 'root' })
       }
     },
 

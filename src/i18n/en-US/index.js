@@ -3,18 +3,18 @@
 
 export default {
   admin: {
-    addReport: {
+    addNewsItem: {
       category: 'Category',
       description: 'Description',
-      error: 'Error adding report',
+      error: 'Error adding news item',
       publish: 'Publish',
-      reportAdded: 'Report added',
+      newsItemAdded: 'News item added added',
       title: 'Title',
     },
     menu: {
-      addReport: 'Add report',
+      addNewsItem: 'Add news item',
       map: 'Map',
-      reports: 'Reports',
+      newsItems: 'News items',
       users: 'Users',
     },
   },

@@ -18,9 +18,9 @@ const routes = [
     component: () => import('layouts/AdminLayout.vue'),
     children: [
       {
-        path: '/reports',
-        name: 'adminReports',
-        component: () => import('pages/admin/ReportsPage.vue'),
+        path: '/newsItems',
+        name: 'adminNewsItems',
+        component: () => import('pages/admin/NewsItemsPage.vue'),
       },
       {
         path: '/users',

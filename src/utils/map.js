@@ -2,14 +2,14 @@ import mapboxgl from 'mapbox-gl'
 import center from '@turf/center'
 
 const mapUtils = {
-  drawReport: function ({ map, report, categories }) {
+  drawNewsItem: function ({ map, newsItem, categories }) {
     // set color
-    const color = categories[report.category]?.color
+    const color = categories[newsItem.category]?.color
     if (!color) return
-    if (!report.geoData) return
-    report.geoData.features.forEach((gd, index) => {
+    if (!newsItem.geoData) return
+    newsItem.geoData.features.forEach((gd, index) => {
       // unique id
-      const id = `${report.id}-${index}`
+      const id = `${newsItem.id}-${index}`
 
       // point
       if (gd.geometry.type === 'Point') {
@@ -24,9 +24,9 @@ const mapUtils = {
       // polygon
       if (gd.geometry.type === 'Polygon') {
         if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: gd })
-        if (!map.getLayer(`${report.id}-fill`)) {
+        if (!map.getLayer(`${newsItem.id}-fill`)) {
           map.addLayer({
-            id: `${report.id}-fill`,
+            id: `${newsItem.id}-fill`,
             type: 'fill',
             source: id,
             layout: {},
@@ -36,9 +36,9 @@ const mapUtils = {
             },
           })
         }
-        if (!map.getLayer(`${report.id}-line`)) {
+        if (!map.getLayer(`${newsItem.id}-line`)) {
           map.addLayer({
-            id: `${report.id}-line`,
+            id: `${newsItem.id}-line`,
             type: 'line',
             source: id,
             layout: {},
@@ -58,8 +58,8 @@ const mapUtils = {
     })
   },
 
-  moveMapToReport: function ({ map, report }) {
-    const coords = center(report.geoData).geometry.coordinates
+  moveMapToNewsItem: function ({ map, newsItem }) {
+    const coords = center(newsItem.geoData).geometry.coordinates
     map.easeTo({ center: coords, duration: 1000 })
   },
 }

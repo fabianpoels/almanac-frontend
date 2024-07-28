@@ -6,13 +6,13 @@
         <q-toolbar-title>
           {{ $t('header.almanac') }}
         </q-toolbar-title>
-        <q-toggle
+        <!-- <q-toggle
           v-model="darkMode"
           checked-icon="dark_mode"
           unchecked-icon="light_mode"
           color="grey-4"
-        />
-        <q-btn flat round icon="account_circle">
+        /> -->
+        <q-btn v-if="authStore.authenticated" flat round icon="account_circle">
           <q-menu fit>
             <q-list>
               <q-item clickable @click="logout" v-close-popup>
@@ -21,6 +21,7 @@
             </q-list>
           </q-menu>
         </q-btn>
+        <q-btn v-else @click="showLogin = true" flat>{{ $t('login.login') }}</q-btn>
       </q-toolbar>
     </q-header>
 
@@ -32,7 +33,7 @@
       class="q-pa-sm"
       style="width: 400px"
     >
-      <report-list />
+      <news-item-list />
       <div class="q-drawer-hide absolute" style="top: 15px; right: -17px">
         <q-btn
           dense
@@ -45,14 +46,15 @@
       </div>
     </q-drawer>
 
-    <add-report />
+    <add-news-item />
+    <login-dialog v-model="showLogin" />
 
     <q-page-container>
       <router-view />
       <q-page-sticky position="top-left" :offset="[18, 18]" v-if="!mapStore.leftDrawerOpen">
         <q-btn round size="md" icon="feed" color="primary" @click="toggleLeftDrawer">
-          <q-badge v-if="reportStore.reports.length > 0" color="red" floating>
-            {{ reportStore.reports.length }}
+          <q-badge v-if="newsStore.newsItems.length > 0" color="red" floating>
+            {{ newsStore.newsItems.length }}
           </q-badge>
         </q-btn>
       </q-page-sticky>
@@ -62,18 +64,19 @@
 
 <script setup>
 import { useQuasar } from 'quasar'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
-import { useReportStore } from '@/stores/reportStore'
+import { useNewsStore } from '@/stores/newsStore'
 import { useAuthStore } from '@/stores/authStore'
 const mapStore = useMapStore()
-const reportStore = useReportStore()
+const newsStore = useNewsStore()
 const authStore = useAuthStore()
 const $q = useQuasar()
 
-import ReportList from '@/components/ReportList.vue'
+import NewsItemList from '@/components/NewsItemList.vue'
 import AdminControls from '@/components/admin/AdminControls.vue'
-import AddReport from '@/components/admin/AddReport.vue'
+import AddNewsItem from '@/components/admin/AddNewsItem.vue'
+import LoginDialog from 'src/components/LoginDialog.vue'
 
 defineOptions({
   name: 'MainLayout',
@@ -82,6 +85,8 @@ defineOptions({
 function toggleLeftDrawer() {
   mapStore.leftDrawerOpen = !mapStore.leftDrawerOpen
 }
+
+const showLogin = ref(false)
 
 const darkMode = computed({
   get() {

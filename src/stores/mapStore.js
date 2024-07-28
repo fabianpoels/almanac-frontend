@@ -11,7 +11,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 import { mapUtils } from '@/utils/map'
 
 // other stores
-import { useReportStore } from '@/stores/reportStore'
+import { useNewsStore } from '@/stores/newsStore'
 
 const defaultCenter = [35.4903, 33.8964]
 
@@ -30,7 +30,7 @@ export const useMapStore = defineStore('map', {
   actions: {
     initializeMap({ element, center, t }) {
       Loading.show()
-      const reportStore = useReportStore()
+      const newsStore = useNewsStore()
       if (!this.mapboxApiKey) return
       mapboxgl.accessToken = this.mapboxApiKey
       const map = new mapboxgl.Map({
@@ -42,17 +42,17 @@ export const useMapStore = defineStore('map', {
       })
 
       map.on('load', async () => {
-        await reportStore.fetchReports()
-        await reportStore.fetchCategories()
-        reportStore.reports.forEach((report) =>
-          mapUtils.drawReport({ map, report, categories: reportStore.categories })
+        await newsStore.fetchNewsItems()
+        await newsStore.fetchCategories()
+        newsStore.newsItems.forEach((newsItem) =>
+          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories })
         )
         Loading.hide()
       })
 
       map.on('style.load', () => {
-        reportStore.reports.forEach((report) =>
-          mapUtils.drawReport({ map, report, categories: reportStore.categories })
+        newsStore.newsItems.forEach((newsItem) =>
+          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories })
         )
       })
 
