@@ -25,6 +25,7 @@ export default {
   login: {
     email: 'E-mail',
     login: 'login',
+    loggedIn: 'Logged in',
     password: 'Password',
     wrong_email_or_password: 'Wrong email or password',
   },

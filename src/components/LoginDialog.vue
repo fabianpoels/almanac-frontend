@@ -60,6 +60,8 @@ const login = async function () {
   loggingIn.value = true
   try {
     await authStore.login({ email: email.value, password: password.value })
+    alert.success(t('login.loggedIn'))
+    showDialog.value = false
   } catch (e) {
     loggingIn.value = false
     console.log(e)
