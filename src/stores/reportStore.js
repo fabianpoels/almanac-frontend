@@ -23,6 +23,7 @@ function serializeForApi(report) {
 
 export const useReportStore = defineStore('report', {
   state: () => ({
+    adminReports: [],
     reports: [],
     categories: {},
   }),
@@ -32,22 +33,25 @@ export const useReportStore = defineStore('report', {
         label: category.title,
         value: key,
       })),
-    blankReport: () => {
-      return {
-        title: '',
-        category: '',
-        description: '',
-        activeFrom: DateTime.now(),
-        activeUntil: '',
-        status: 'published',
-        geoData: {},
-      }
-    },
+    blankReport: () => ({
+      title: '',
+      category: '',
+      description: '',
+      activeFrom: DateTime.now(),
+      activeUntil: '',
+      status: 'published',
+      geoData: {},
+    }),
   },
   actions: {
     async fetchReports() {
       const { data } = await api.get('/reports')
       this.reports = data.map(parseReport)
+    },
+
+    async fetchAdminReports() {
+      const { data } = await api.get('/admin/reports')
+      this.adminReports = data.map(parseReport)
     },
 
     async fetchCategories() {

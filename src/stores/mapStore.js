@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { Loading, QSpinnerGears } from 'quasar'
+import { Loading } from 'quasar'
 
 // mapboxgl
 import mapboxgl from 'mapbox-gl'
@@ -8,7 +8,6 @@ import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 // utilities
-import { dt } from '@/utils'
 import { mapUtils } from '@/utils/map'
 
 // other stores

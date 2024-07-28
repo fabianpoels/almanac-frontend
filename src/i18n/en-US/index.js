@@ -13,6 +13,7 @@ export default {
     },
     menu: {
       addReport: 'Add report',
+      map: 'Map',
       reports: 'Reports',
       users: 'Users',
     },

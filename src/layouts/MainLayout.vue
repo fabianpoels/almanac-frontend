@@ -27,6 +27,7 @@
     <q-drawer
       side="left"
       v-model="mapStore.leftDrawerOpen"
+      overlay
       bordered
       class="q-pa-sm"
       style="width: 400px"
@@ -49,7 +50,7 @@
     <q-page-container>
       <router-view />
       <q-page-sticky position="top-left" :offset="[18, 18]" v-if="!mapStore.leftDrawerOpen">
-        <q-btn round size="md" icon="info" color="primary" @click="toggleLeftDrawer">
+        <q-btn round size="md" icon="feed" color="primary" @click="toggleLeftDrawer">
           <q-badge v-if="reportStore.reports.length > 0" color="red" floating>
             {{ reportStore.reports.length }}
           </q-badge>

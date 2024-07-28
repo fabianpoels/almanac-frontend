@@ -7,8 +7,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
-import { useReportStore } from '@/stores/reportStore'
-import { mapUtils } from '@/utils/map'
 
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -21,7 +19,6 @@ import '@/../node_modules/mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox-controls/styles/src/index.css'
 
 const mapStore = useMapStore()
-const reportStore = useReportStore()
 const mapContainer = ref(null)
 
 defineOptions({

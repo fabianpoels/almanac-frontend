@@ -2,11 +2,10 @@
   <q-layout view="hHh lpr fFf">
     <q-header>
       <q-toolbar>
-        <q-btn flat round dense icon="map" @click="router.push({ name: 'map' })" />
+        <admin-controls v-if="authStore.isAdmin" />
         <q-toolbar-title>
           {{ $t('header.almanac') }}
         </q-toolbar-title>
-        <admin-controls v-if="authStore.isAdmin" />
         <q-toggle
           v-model="darkMode"
           checked-icon="dark_mode"
