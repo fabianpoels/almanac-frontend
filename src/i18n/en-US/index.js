@@ -17,6 +17,10 @@ export default {
       newsItems: 'News items',
       users: 'Users',
     },
+    users: {
+      error_loading_users: 'Error loading users',
+      users: 'Users',
+    },
   },
   header: {
     almanac: 'Almanac',

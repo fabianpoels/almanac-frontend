@@ -6,12 +6,12 @@
         <q-toolbar-title>
           {{ $t('header.almanac') }}
         </q-toolbar-title>
-        <q-toggle
+        <!-- <q-toggle
           v-model="darkMode"
           checked-icon="dark_mode"
           unchecked-icon="light_mode"
           color="grey-4"
-        />
+        /> -->
         <q-btn flat round icon="account_circle">
           <q-menu fit>
             <q-list>
