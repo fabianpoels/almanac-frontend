@@ -50,7 +50,7 @@
     <login-dialog v-model="showLogin" />
 
     <q-page-container>
-      <router-view />
+      <map-page />
       <q-page-sticky position="top-left" :offset="[18, 18]" v-if="!mapStore.leftDrawerOpen">
         <q-btn round size="md" icon="feed" color="primary" @click="toggleLeftDrawer">
           <q-badge v-if="newsStore.newsItems.length > 0" color="red" floating>
@@ -73,10 +73,11 @@ const newsStore = useNewsStore()
 const authStore = useAuthStore()
 const $q = useQuasar()
 
+import MapPage from '@/pages/MapPage.vue'
 import NewsItemList from '@/components/NewsItemList.vue'
 import AdminControls from '@/components/admin/AdminControls.vue'
 import AddNewsItem from '@/components/admin/AddNewsItem.vue'
-import LoginDialog from 'src/components/LoginDialog.vue'
+import LoginDialog from '@/components/LoginDialog.vue'
 
 defineOptions({
   name: 'MainLayout',

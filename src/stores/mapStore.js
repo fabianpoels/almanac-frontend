@@ -17,8 +17,7 @@ const defaultCenter = [35.4903, 33.8964]
 
 export const useMapStore = defineStore('map', {
   state: () => ({
-    mapboxApiKey:
-      'pk.eyJ1IjoiZmFiaWFucG9lbHMiLCJhIjoiY2x2NDJuZjVvMDQ0OTJqbjFvMTdkMHRzZiJ9.CkgoSJz5vC_P9WBsQfIeBw',
+    mapboxApiKey: import.meta.env.VITE_MAPBOX_API_KEY,
     mapStyle: 'mapbox://styles/mapbox/standard',
     map: null,
     leftDrawerOpen: false,
@@ -37,7 +36,7 @@ export const useMapStore = defineStore('map', {
         container: element,
         style: 'mapbox://styles/mapbox/light-v11',
         center: center instanceof Array && center.length === 2 ? center : defaultCenter,
-        zoom: 13,
+        zoom: 8,
         pitchWithRotate: false,
       })
 

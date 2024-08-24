@@ -1,5 +1,7 @@
-import enUS from './en-US'
+import ar from './ar'
+import en from './en'
 
 export default {
-  'en-US': enUS
+  en: en,
+  ar: ar,
 }

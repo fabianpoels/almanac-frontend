@@ -7,6 +7,7 @@ import {
 } from 'vue-router'
 import routes from './routes'
 import { useAuthStore } from '@/stores/authStore'
+const locales = ['en', 'ar']
 
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
@@ -25,18 +26,27 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   })
 
-  router.beforeEach((to) => {
-    const publicPages = ['/']
-    const authRequired = !publicPages.includes(to.path)
-    const authStore = useAuthStore()
-
-    if (authRequired && !authStore.user) {
-      const routeName = to.matched[0]?.name
+  router.beforeEach((to, from) => {
+    // SET THE LANGUAGE
+    if (!to.params.lang || !locales.includes(to.params.lang)) {
+      // TODO: get locale from cookie
       return {
-        path: '/login',
-        query: { redirect: routeName && routeName !== 'login' ? routeName : 'map' },
+        name: to.name || 'root',
+        params: { lang: 'en' },
+        replace: true,
       }
     }
+
+    // REDIRECT TO AUTH IF REQUIRED
+    const publicPages = ['root', 'lang', 'mapRoot', 'map']
+    const authRequired = !publicPages.includes(to.name)
+    const authStore = useAuthStore()
+
+    // if (authRequired && !authStore.user) {
+    //   return {
+    //     name: 'map',
+    //   }
+    // }
   })
 
   return router

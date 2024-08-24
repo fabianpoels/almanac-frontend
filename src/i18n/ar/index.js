@@ -1,0 +1,47 @@
+// This is just an example,
+// so you can safely delete all default props below
+
+export default {
+  admin: {
+    addNewsItem: {
+      category: 'Category',
+      description: 'Description',
+      error: 'Error adding news item',
+      publish: 'Publish',
+      newsItemAdded: 'News item added added',
+      title: 'Title',
+    },
+    menu: {
+      addNewsItem: 'Add news item',
+      map: 'Map',
+      newsItems: 'News items',
+      users: 'Users',
+    },
+    users: {
+      error_loading_users: 'Error loading users',
+      users: 'Users',
+    },
+  },
+  header: {
+    almanac: 'Almanac',
+    logout: 'Logout',
+  },
+  login: {
+    email: 'E-mail',
+    login: 'Login',
+    loggedIn: 'Logged in',
+    password: 'Password',
+    wrong_email_or_password: 'Wrong email or password',
+  },
+  map: {
+    styles: {
+      standard: 'Standard',
+      satellite: 'Satellite',
+      terrain: 'Terrain',
+      traffic: 'Traffic',
+    },
+  },
+  shared: {
+    cancel: 'Cancel',
+  },
+}

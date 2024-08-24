@@ -59,7 +59,7 @@ export const useAuthStore = defineStore('auth', {
         this.stopRefreshTokenTimer()
         this.user = null
         this.jwt = null
-        this.router.push({ name: 'root' })
+        // this.router.push({ name: 'root' })
       }
     },
 

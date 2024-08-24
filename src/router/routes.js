@@ -1,45 +1,31 @@
 const routes = [
   {
-    path: '/',
+    path: '/:lang',
     name: 'root',
     component: () => import('layouts/MainLayout.vue'),
-    redirect: { name: 'map' },
-    children: [
-      {
-        path: '',
-        name: 'map',
-        component: () => import('pages/MapPage.vue'),
-      },
-    ],
   },
   {
-    path: '/admin',
+    path: '/:lang/admin',
     name: 'admin',
     component: () => import('layouts/AdminLayout.vue'),
     children: [
       {
-        path: '/newsItems',
+        path: 'newsItems',
         name: 'adminNewsItems',
         component: () => import('pages/admin/NewsItemsPage.vue'),
       },
       {
-        path: '/users',
+        path: 'users',
         name: 'adminUsers',
         component: () => import('pages/admin/UsersPage.vue'),
       },
     ],
   },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('pages/LoginPage.vue'),
-  },
-
-  // handle unexisting pages
-  {
-    path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue'),
-  },
+  // {
+  //   path: 'login',
+  //   name: 'login',
+  //   component: () => import('pages/LoginPage.vue'),
+  // },
 ]
 
 export default routes
