@@ -33,7 +33,7 @@
   </q-dialog>
 </template>
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 const authStore = useAuthStore()
 import { alert } from '@/utils/alert'
@@ -44,6 +44,14 @@ const showDialog = defineModel()
 
 defineOptions({
   name: 'LoginDialog',
+})
+
+watch(showDialog, (val) => {
+  if (val === true) {
+    email.value = ''
+    password.value = ''
+    loggingIn.value = false
+  }
 })
 
 const email = ref('')
