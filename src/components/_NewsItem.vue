@@ -5,7 +5,7 @@
       <q-item-label caption>{{ description }}</q-item-label>
     </q-item-section>
     <q-item-section side top>
-      <!-- <q-item-label caption>{{ dt.short(newsItem.activeFrom) }}</q-item-label> -->
+      <q-item-label caption>{{ dt.short(newsItem.timestamp) }}</q-item-label>
       <q-btn
         v-if="newsItem.geoData"
         @click="moveToLocation(newsItem)"
@@ -20,6 +20,7 @@
 <script setup>
 import { computed } from 'vue'
 import { mapUtils } from '@/utils/map'
+import { dt } from '@/utils'
 import { useI18n } from 'vue-i18n'
 const { locale } = useI18n()
 import { useMapStore } from '@/stores/mapStore'

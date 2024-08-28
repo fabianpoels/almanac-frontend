@@ -6,24 +6,22 @@ import { mapUtils } from '@/utils/map'
 import { useMapStore } from '@/stores/mapStore'
 
 function parseNewsItem(newsItem) {
-  const activeFrom = dt.parseSimpleDateString(newsItem.activeFrom)
-  const activeUntil = dt.parseSimpleDateString(newsItem.activeUntil)
-  return { ...newsItem, activeFrom, activeUntil }
+  const timestamp = dt.parseServerDatetime(newsItem.timestamp)
+
+  return { ...newsItem, timestamp }
 }
 
 function serializeForApi(newsItem) {
-  const activeFrom = DateTime.isDateTime(newsItem.activeFrom)
-    ? newsItem.activeFrom.toFormat(dt.simpleDateFormat)
+  const timestamp = DateTime.isDateTime(newsItem.timestamp)
+    ? newsItem.timestamp.toFormat(dt.simpleDateFormat)
     : null
-  const activeUntil = DateTime.isDateTime(newsItem.activeUntil)
-    ? newsItem.activeUntil.toFormat(dt.simpleDateFormat)
-    : null
-  return { ...newsItem, activeFrom, activeUntil }
+  return { ...newsItem, timestamp }
 }
 
 export const useNewsStore = defineStore('news', {
   state: () => ({
     newsItems: [],
+    adminNewsItems: [],
     categories: {},
   }),
   getters: {
@@ -44,13 +42,13 @@ export const useNewsStore = defineStore('news', {
   },
   actions: {
     async fetchNewsItems() {
-      const { data } = await api.get('/newsItems')
+      const { data } = await api.get('/news')
       this.newsItems = data.map(parseNewsItem)
     },
 
     async fetchAdminNewsItems() {
-      const { data } = await api.get('/admin/newsItems')
-      this.newsItems = data.map(parseNewsItem)
+      const { data } = await api.get('/a/news')
+      this.adminNewsItems = data.map(parseNewsItem)
     },
 
     async fetchCategories() {
@@ -66,18 +64,18 @@ export const useNewsStore = defineStore('news', {
       )
     },
 
-    async addNewsItem(newNewsItem) {
-      const { data } = await api.post('/admin/newsItems', {
-        newsItem: serializeForApi(newNewsItem),
-      })
-      const parsedNewsItem = parseNewsItem(data)
-      this.newsItems.push(parsedNewsItem)
-      const mapStore = useMapStore()
-      mapUtils.drawNewsItem({
-        map: mapStore.map,
-        newsItem: parsedNewsItem,
-        categories: this.categories,
-      })
-    },
+    // async addNewsItem(newNewsItem) {
+    //   const { data } = await api.post('/admin/news', {
+    //     newsItem: serializeForApi(newNewsItem),
+    //   })
+    //   const parsedNewsItem = parseNewsItem(data)
+    //   this.newsItems.push(parsedNewsItem)
+    //   const mapStore = useMapStore()
+    //   mapUtils.drawNewsItem({
+    //     map: mapStore.map,
+    //     newsItem: parsedNewsItem,
+    //     categories: this.categories,
+    //   })
+    // },
   },
 })

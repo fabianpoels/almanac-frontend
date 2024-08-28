@@ -2,7 +2,7 @@
   <q-btn flat round dense icon="menu">
     <q-menu>
       <q-list class="admin-menu-list">
-        <q-item clickable @click="router.push({ name: 'map' })">
+        <q-item v-if="showMap" clickable @click="router.push({ name: 'root' })">
           <q-item-section avatar>
             <q-avatar icon="map" />
           </q-item-section>
@@ -47,6 +47,10 @@ function addNewsItem() {
 }
 
 const showAddNewsItem = computed(() => {
-  return route.name === 'map'
+  return route.name === 'root'
+})
+
+const showMap = computed(() => {
+  return route.name !== 'root'
 })
 </script>

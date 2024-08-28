@@ -1,6 +1,3 @@
-// This is just an example,
-// so you can safely delete all default props below
-
 export default {
   admin: {
     addNewsItem: {
@@ -16,6 +13,14 @@ export default {
       map: 'Map',
       newsItems: 'News items',
       users: 'Users',
+    },
+    news: {
+      newsItems: 'Newsitems',
+      status: {
+        archived: 'archived',
+        pending: 'pending',
+        published: 'published',
+      },
     },
     users: {
       error_loading_users: 'Error loading users',

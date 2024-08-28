@@ -1,12 +1,11 @@
 import { DateTime } from 'luxon'
 
-const simpleDateFormat = 'yyyyMMdd'
 const quasarDateFormat = 'yyyy/MM/dd'
 
 const dt = {
-  parseSimpleDateString: function (string) {
+  parseServerDatetime: function (string) {
     if (!string) return null
-    return DateTime.fromFormat(string, simpleDateFormat)
+    return DateTime.fromISO(string).setZone('Asia/Beirut')
   },
 
   todayAsSimpleString: function () {
@@ -17,6 +16,10 @@ const dt = {
     return datetime.toFormat('d MMM')
   },
 
+  long: function (datetime) {
+    return datetime.toRFC2822()
+  },
+
   toQuasarDateString: function (datetime) {
     return datetime.toFormat(quasarDateFormat)
   },
@@ -24,7 +27,6 @@ const dt = {
   parseQuasarDateString: function (string) {
     return DateTime.fromFormat(string, quasarDateFormat)
   },
-  simpleDateFormat,
   quasarDateFormat,
 }
 

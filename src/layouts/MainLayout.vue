@@ -46,7 +46,7 @@
       </div>
     </q-drawer>
 
-    <add-news-item />
+    <add-news-item v-if="authStore.isAdmin" />
     <login-dialog v-model="showLogin" />
 
     <q-page-container>

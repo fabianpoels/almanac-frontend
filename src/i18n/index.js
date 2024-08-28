@@ -1,5 +1,5 @@
-import ar from './ar'
-import en from './en'
+import ar from './ar.lang'
+import en from './en.lang'
 
 export default {
   en: en,
