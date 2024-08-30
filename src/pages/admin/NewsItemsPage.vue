@@ -14,8 +14,10 @@
           <q-badge :color="color(props.value)" :label="$t(`admin.news.status.${props.value}`)" />
         </q-td>
       </template>
-      <template #body-cell-actions="props">
-        <q-btn><q-icon icon="pencil" />{{ props }}</q-btn>
+      <template #body-cell-actions="">
+        <q-btn flat rounded color="primary">
+          <q-icon icon="edit" color="primary" />
+        </q-btn>
       </template>
     </q-table>
   </q-page>
