@@ -15,8 +15,10 @@ export default {
       users: 'Users',
     },
     news: {
+      editNewsItem: 'Edit news item',
       newsItems: 'Newsitems',
-      status: {
+      status: 'Status',
+      statuses: {
         archived: 'archived',
         pending: 'pending',
         published: 'published',
@@ -26,6 +28,13 @@ export default {
       error_loading_users: 'Error loading users',
       users: 'Users',
     },
+  },
+  forms: {
+    cancel: 'Cancel',
+    edit: 'Edit',
+    errorSaving: 'Error saving',
+    save: 'Save',
+    saved: 'Saved',
   },
   header: {
     almanac: 'Almanac',

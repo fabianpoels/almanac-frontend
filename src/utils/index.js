@@ -8,6 +8,12 @@ const dt = {
     return DateTime.fromISO(string).setZone('Asia/Beirut')
   },
 
+  serializeDatetime: function (datetime) {
+    if (!datetime) return ''
+    if (!DateTime.isDateTime(datetime)) return ''
+    return datetime.toISO()
+  },
+
   todayAsSimpleString: function () {
     return DateTime.now().toFormat(simpleDateFormat)
   },

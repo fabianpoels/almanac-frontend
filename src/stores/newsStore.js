@@ -12,9 +12,8 @@ function parseNewsItem(newsItem) {
 }
 
 function serializeForApi(newsItem) {
-  const timestamp = DateTime.isDateTime(newsItem.timestamp)
-    ? newsItem.timestamp.toFormat(dt.simpleDateFormat)
-    : null
+  const timestamp = dt.serializeDatetime(newsItem.timestamp)
+
   return { ...newsItem, timestamp }
 }
 
@@ -64,18 +63,22 @@ export const useNewsStore = defineStore('news', {
       )
     },
 
-    // async addNewsItem(newNewsItem) {
-    //   const { data } = await api.post('/admin/news', {
-    //     newsItem: serializeForApi(newNewsItem),
-    //   })
-    //   const parsedNewsItem = parseNewsItem(data)
-    //   this.newsItems.push(parsedNewsItem)
-    //   const mapStore = useMapStore()
-    //   mapUtils.drawNewsItem({
-    //     map: mapStore.map,
-    //     newsItem: parsedNewsItem,
-    //     categories: this.categories,
-    //   })
-    // },
+    async updateNewsItem(newsItem) {
+      const { data } = await api.put(`/a/news/${newsItem.id}`, serializeForApi(newsItem))
+      const parsedNewsItem = parseNewsItem(data)
+      const index = this.adminNewsItems.findIndex((ni) => ni.id === parsedNewsItem.id)
+      if (index > -1) {
+        this.adminNewsItems[index] = parsedNewsItem
+      }
+
+      // TODO: add updatenewsitem method in maputils
+      //
+      // const mapStore = useMapStore()
+      // mapUtils.drawNewsItem({
+      //   map: mapStore.map,
+      //   newsItem: parsedNewsItem,
+      //   categories: this.categories,
+      // })
+    },
   },
 })

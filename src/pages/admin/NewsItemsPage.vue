@@ -11,34 +11,38 @@
     >
       <template #body-cell-status="props">
         <q-td :props="props">
-          <q-badge :color="color(props.value)" :label="$t(`admin.news.status.${props.value}`)" />
+          <q-badge :color="color(props.value)" :label="$t(`admin.news.statuses.${props.value}`)" />
         </q-td>
       </template>
-      <template #body-cell-actions="">
-        <q-btn flat rounded color="primary">
-          <q-icon icon="edit" color="primary" />
-        </q-btn>
+      <template #body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn @click="editItem(props.row)" flat rounded color="primary">
+            {{ $t('forms.edit') }}
+          </q-btn>
+        </q-td>
       </template>
     </q-table>
+    <edit-news-item v-model="showEdit" :newsItem="itemToEdit" />
   </q-page>
 </template>
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { alert } from '@/utils/alert'
+import EditNewsItem from '@/components/admin/EditNewsItem.vue'
 import { useNewsStore } from '@/stores/newsStore'
 const newsStore = useNewsStore()
 import { useI18n } from 'vue-i18n'
 const { locale } = useI18n()
 import { dt } from 'src/utils'
 
-import { useAuthStore } from '@/stores/authStore'
-const authStore = useAuthStore()
-
 const loading = ref(false)
+const showEdit = ref(false)
+const itemToEdit = ref({})
 
-function onRowClick(val) {
-  console.log(val)
+function editItem(item) {
+  itemToEdit.value = item
+  showEdit.value = true
 }
 
 const colors = {
