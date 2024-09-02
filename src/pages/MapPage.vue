@@ -9,7 +9,7 @@ import { ref, onMounted } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
 
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 import { useRoute } from 'vue-router'
 const route = useRoute()
@@ -26,7 +26,7 @@ defineOptions({
 })
 
 onMounted(() => {
-  mapStore.initializeMap({ element: mapContainer.value, t })
+  mapStore.initializeMap({ element: mapContainer.value, t, locale })
 })
 </script>
 <style scoped>
@@ -44,5 +44,12 @@ onMounted(() => {
 
 .mapboxgl-ctrl-bottom-right div:last-child {
   display: none !important;
+}
+</style>
+<style>
+h6.popup-header {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
 }
 </style>

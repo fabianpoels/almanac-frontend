@@ -2,11 +2,21 @@ import mapboxgl from 'mapbox-gl'
 import center from '@turf/center'
 
 const mapUtils = {
-  drawNewsItem: function ({ map, newsItem, categories }) {
+  drawNewsItem: function ({ map, newsItem, categories, locale }) {
     // set color
     const color = categories[newsItem.category]?.color
     if (!color) return
     if (!newsItem.geoData) return
+
+    console.log(`lang: ${locale.value}`)
+    console.log(newsItem)
+
+    // create popup
+    const popup = new mapboxgl.Popup() // add popups
+      .setHTML(
+        `<h6 class="popup-header">${newsItem.title[locale.value]}</h6><p>${newsItem.description[locale.value]}</p>`
+      )
+
     newsItem.geoData.features.forEach((gd, index) => {
       // unique id
       const id = `${newsItem.id}-${index}`
@@ -18,6 +28,7 @@ const mapUtils = {
           className: id,
         })
         marker.setLngLat(gd.geometry.coordinates)
+        marker.setPopup(popup)
         marker.addTo(map)
       }
 
@@ -52,7 +63,9 @@ const mapUtils = {
           color: color,
           className: id,
         })
+
         marker.setLngLat(center(gd).geometry.coordinates)
+        marker.setPopup(popup)
         marker.addTo(map)
       }
     })

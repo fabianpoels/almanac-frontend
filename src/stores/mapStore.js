@@ -27,7 +27,7 @@ export const useMapStore = defineStore('map', {
   }),
   getters: {},
   actions: {
-    initializeMap({ element, center, t }) {
+    initializeMap({ element, center, t, locale }) {
       Loading.show()
       const newsStore = useNewsStore()
       if (!this.mapboxApiKey) return
@@ -44,14 +44,14 @@ export const useMapStore = defineStore('map', {
         await newsStore.fetchNewsItems()
         await newsStore.fetchCategories()
         newsStore.newsItems.forEach((newsItem) =>
-          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories })
+          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories, locale })
         )
         Loading.hide()
       })
 
       map.on('style.load', () => {
         newsStore.newsItems.forEach((newsItem) =>
-          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories })
+          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories, locale })
         )
       })
 
