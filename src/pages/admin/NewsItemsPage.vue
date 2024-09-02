@@ -8,6 +8,7 @@
       :loading="loading"
       flat
       bordered
+      :pagination="{ rowsPerPage: 0 }"
     >
       <template #body-cell-status="props">
         <q-td :props="props">
