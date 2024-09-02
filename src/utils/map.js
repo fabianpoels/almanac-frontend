@@ -8,11 +8,8 @@ const mapUtils = {
     if (!color) return
     if (!newsItem.geoData) return
 
-    console.log(`lang: ${locale.value}`)
-    console.log(newsItem)
-
     // create popup
-    const popup = new mapboxgl.Popup() // add popups
+    const popup = new mapboxgl.Popup({ focusAfterOpen: false }) // add popups
       .setHTML(
         `<h6 class="popup-header">${newsItem.title[locale.value]}</h6><p>${newsItem.description[locale.value]}</p>`
       )

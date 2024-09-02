@@ -14,6 +14,7 @@
         size="xs"
         icon="my_location"
       />
+      <q-badge class="q-mt-sm" :style="{ backgroundColor: color }">{{ categoryTitle }}</q-badge>
     </q-item-section>
   </q-item>
 </template>
@@ -25,6 +26,8 @@ import { useI18n } from 'vue-i18n'
 const { locale } = useI18n()
 import { useMapStore } from '@/stores/mapStore'
 const mapStore = useMapStore()
+import { useNewsStore } from '@/stores/newsStore'
+const newsStore = useNewsStore()
 
 const props = defineProps({
   newsItem: {
@@ -43,6 +46,18 @@ const title = computed(() => {
 
 const description = computed(() => {
   return props.newsItem.description[locale.value]
+})
+
+const category = computed(() => {
+  return newsStore.categories[props.newsItem.category]
+})
+
+const color = computed(() => {
+  return category.value?.color || ''
+})
+
+const categoryTitle = computed(() => {
+  return category.value?.title || ''
 })
 </script>
 <style scoped>

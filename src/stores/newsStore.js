@@ -50,12 +50,13 @@ export const useNewsStore = defineStore('news', {
       this.adminNewsItems = data.map(parseNewsItem)
     },
 
-    async fetchCategories() {
+    async fetchCategories(t) {
       const { data } = await api.get('/categories')
+
       data.forEach(
         (c) =>
           (this.categories[c.key] = {
-            title: c.title,
+            title: t(`category.${c.key}`),
             color: c.color,
             icon: c.icon,
             active: c.active,

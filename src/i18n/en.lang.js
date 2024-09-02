@@ -29,6 +29,13 @@ export default {
       users: 'Users',
     },
   },
+  category: {
+    military: 'Military',
+    protest: 'Protest',
+    red_zone: 'Red zone',
+    traffic_incident: 'Traffic',
+    weather: 'Weather',
+  },
   forms: {
     cancel: 'Cancel',
     edit: 'Edit',
