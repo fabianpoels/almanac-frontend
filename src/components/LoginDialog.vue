@@ -84,7 +84,7 @@ const login = async function () {
 }
 
 #loginForm {
-  width: 300px;
+  /* width: 250px; */
 }
 
 #loginButton {
