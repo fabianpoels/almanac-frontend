@@ -84,7 +84,13 @@ const login = async function () {
 }
 
 #loginForm {
-  /* width: 250px; */
+  width: 300px;
+}
+
+@media only screen and (max-width: 650px) {
+  #loginForm {
+    width: 250px;
+  }
 }
 
 #loginButton {
