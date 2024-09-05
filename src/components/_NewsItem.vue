@@ -6,6 +6,7 @@
     </q-item-section>
     <q-item-section side top>
       <q-item-label caption>{{ dt.short(newsItem.timestamp) }}</q-item-label>
+      <q-item-label caption>{{ dt.time(newsItem.timestamp) }}</q-item-label>
       <q-btn
         v-if="newsItem.geoData"
         @click="moveToLocation(newsItem)"
@@ -14,7 +15,7 @@
         size="xs"
         icon="my_location"
       />
-      <q-badge class="q-mt-sm" :style="{ backgroundColor: color }">{{ categoryTitle }}</q-badge>
+      <q-badge class="q-mt-md" :style="{ backgroundColor: color }">{{ categoryTitle }}</q-badge>
     </q-item-section>
   </q-item>
 </template>

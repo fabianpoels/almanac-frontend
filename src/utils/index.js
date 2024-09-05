@@ -26,6 +26,10 @@ const dt = {
     return datetime.toRFC2822()
   },
 
+  time: function (datetime) {
+    return datetime.toFormat('HH:mm')
+  },
+
   toQuasarDateString: function (datetime) {
     return datetime.toFormat(quasarDateFormat)
   },

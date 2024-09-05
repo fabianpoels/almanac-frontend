@@ -1,8 +1,9 @@
 import mapboxgl from 'mapbox-gl'
 import center from '@turf/center'
+import { dt } from '@/utils'
 
 const mapUtils = {
-  drawNewsItem: function ({ map, newsItem, categories, locale }) {
+  drawNewsItem: function ({ map, newsItem, categories, locale, t }) {
     // set color
     const color = categories[newsItem.category]?.color
     if (!color) return
@@ -11,7 +12,14 @@ const mapUtils = {
     // create popup
     const popup = new mapboxgl.Popup({ focusAfterOpen: false }) // add popups
       .setHTML(
-        `<h6 class="popup-header">${newsItem.title[locale.value]}</h6><p>${newsItem.description[locale.value]}</p>`
+        `<h6 class="popup-header">${newsItem.title[locale.value]}</h6>
+        <div class="flex inline">
+          <div class="q-badge flex inline items-center no-wrap q-badge--single-line" role="status" style="background-color: ${color};">
+            ${t(`category.${newsItem.category}`)}
+          </div>
+          <div class="q-ml-sm">${dt.short(newsItem.timestamp)} - ${dt.time(newsItem.timestamp)}</div>
+        </div>
+        <p class="q-mt-sm">${newsItem.description[locale.value]}</p>`
       )
 
     newsItem.geoData.features.forEach((gd, index) => {
@@ -70,7 +78,7 @@ const mapUtils = {
 
   moveMapToNewsItem: function ({ map, newsItem }) {
     const coords = center(newsItem.geoData).geometry.coordinates
-    map.easeTo({ center: coords, duration: 1000 })
+    map.easeTo({ center: coords, duration: 1000, zoom: 10 })
   },
 }
 

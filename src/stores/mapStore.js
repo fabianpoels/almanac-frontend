@@ -44,14 +44,14 @@ export const useMapStore = defineStore('map', {
         await newsStore.fetchNewsItems()
         await newsStore.fetchCategories(t)
         newsStore.newsItems.forEach((newsItem) =>
-          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories, locale })
+          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories, locale, t })
         )
         Loading.hide()
       })
 
       map.on('style.load', () => {
         newsStore.newsItems.forEach((newsItem) =>
-          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories, locale })
+          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories, locale, t })
         )
       })
 
