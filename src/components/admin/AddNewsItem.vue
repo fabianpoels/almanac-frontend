@@ -1,136 +1,241 @@
 <template>
-  <q-drawer
-    side="right"
-    :model-value="mapStore.rightDrawerOpen === 'addNewsItem'"
-    bordered
-    class="q-pa-md"
-    :width="322"
-    @show="show()"
-    @hide="hide()"
-  >
-    <q-form style="height: 100%">
-      <div class="flex row content-between stretch-items" style="height: 100%">
-        <div>
-          <h5>{{ $t('admin.menu.addNewsItem') }}</h5>
-          <q-separator />
-          <q-input
-            v-model="blankNewsItem.title"
-            :label="$t('admin.addNewsItem.title')"
+  <q-dialog v-model="showDialog" :persistent="saving" maximized>
+    <q-card class="q-pa-md">
+      <q-form id="newsItemForm">
+        <h6>{{ $t('admin.news.addNewsItem') }}</h6>
+        <q-tabs
+          v-model="tab"
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+        >
+          <q-tab name="info" :label="$t('admin.news.info')" />
+          <q-tab name="map" :label="$t('admin.news.map')" />
+          <q-tab name="raw" :label="$t('admin.news.rawData')" />
+        </q-tabs>
+        <q-tab-panels v-model="tab">
+          <q-tab-panel name="info">
+            <div class="row q-my-md">
+              <div class="col-6 q-pr-sm">
+                <q-input
+                  v-model="localNewsItem.title.en"
+                  :label="`${$t('admin.news.title')} - ${$t('language.english')}`"
+                  :disable="saving"
+                />
+              </div>
+              <div class="col-6 q-pl-sm">
+                <q-input
+                  v-model="localNewsItem.title.ar"
+                  :label="`${$t('admin.news.title')} - ${$t('language.arabic')}`"
+                  :disable="saving"
+                />
+              </div>
+            </div>
+            <div class="row q-my-md">
+              <div class="col-6 q-pr-sm">
+                <q-input
+                  type="textarea"
+                  v-model="localNewsItem.description.en"
+                  min-height="5rem"
+                  class="q-my-sm"
+                  :label="`${$t('admin.news.description')} - ${$t('language.english')}`"
+                  :disable="saving"
+                />
+              </div>
+              <div class="col-6 q-pl-sm">
+                <q-input
+                  type="textarea"
+                  v-model="localNewsItem.description.ar"
+                  min-height="5rem"
+                  class="q-my-sm"
+                  :label="`${$t('admin.news.description')} - ${$t('language.arabic')}`"
+                  :disable="saving"
+                />
+              </div>
+            </div>
+            <q-select
+              v-model="localNewsItem.status"
+              :options="statusOptions"
+              :label="$t('admin.news.status')"
+              :disable="saving"
+              class="q-mt-md"
+              emit-value
+            />
+            <q-select
+              v-model="localNewsItem.category"
+              :options="categoryOptions"
+              :label="$t('admin.news.category')"
+              :disable="saving"
+              class="q-mt-md"
+              emit-value
+            />
+            <div class="row q-my-md">
+              <q-date v-model="date" />
+              <q-time v-model="time" format24h class="q-ml-md" />
+            </div>
+          </q-tab-panel>
+          <q-tab-panel name="map">
+            <div ref="mapEditContainer" class="map-edit-container"></div>
+          </q-tab-panel>
+          <q-tab-panel name="raw">
+            {{ localNewsItem }}
+          </q-tab-panel>
+        </q-tab-panels>
+        <div class="flex flex-row">
+          <q-btn
+            flat
+            color="primary"
+            class="q-mt-lg"
+            :label="$t('forms.cancel')"
             :disable="saving"
+            @click="showDialog = false"
           />
-          <q-select
-            v-model="blankNewsItem.category"
-            :label="$t('admin.addNewsItem.category')"
-            :options="newsStore.categoryOptions"
-            class="q-my-sm"
-            :disable="saving"
-            emit-value
-            map-options
-          >
-          </q-select>
-          <q-editor
-            v-model="blankNewsItem.description"
-            min-height="5rem"
-            class="q-my-sm"
-            :placeholder="$t('admin.addNewsItem.description')"
-            :disable="saving"
+          <q-btn
+            class="q-mt-lg q-ml-sm"
+            color="secondary"
+            :label="$t('forms.save')"
+            :loading="saving"
+            :disable="!valid"
+            @click="save"
           />
-          <q-date v-model="dateRange" range class="q-my-sm" :disable="saving" />
         </div>
-        <div class="q-mt-sm row stretch-items" style="width: 100%">
-          <q-btn color="primary" class="col" :disable="saving || !isValid" @click="saveNewsItem">
-            {{ $t('admin.addNewsItem.publish') }}
-            <q-spinner size="xs" v-if="saving" class="q-ml-xs" />
-          </q-btn>
-          <q-btn color="grey-4" class="col q-ml-sm" :disable="saving" @click="cancel">
-            {{ $t('shared.cancel') }}
-          </q-btn>
-        </div>
-      </div>
-    </q-form>
-  </q-drawer>
+      </q-form>
+    </q-card>
+  </q-dialog>
 </template>
 <script setup>
-import { DateTime } from 'luxon'
+import { ref, watch, nextTick, computed } from 'vue'
+import { useNewsStore } from '@/stores/newsStore'
+const newsStore = useNewsStore()
+import { alert } from '@/utils/alert'
+import { dt } from '@/utils'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
-import { dt } from '@/utils'
-import { alert } from '@/utils/alert'
-import { ref, computed } from 'vue'
+
+// mapbox + plugins css
+import '@/../node_modules/mapbox-gl/dist/mapbox-gl.css'
+import '@mapbox-controls/styles/src/index.css'
+
 import { useMapStore } from '@/stores/mapStore'
-import { useNewsStore } from '@/stores/newsStore'
 const mapStore = useMapStore()
-const newsStore = useNewsStore()
+const mapEditContainer = ref(null)
 
-const blankNewsItem = ref({ ...newsStore.blankNewsItem })
-
+const showDialog = defineModel()
+const localNewsItem = ref({})
 const saving = ref(false)
+const statusOptions = ['pending', 'published', 'archived'].map((option) => ({
+  label: t(`admin.news.statuses.${option}`),
+  value: option,
+}))
+const categoryOptions = [
+  'red_zone',
+  'traffic_incident',
+  'protest',
+  'military',
+  'weather',
+  'misc',
+].map((option) => ({
+  label: t(`category.${option}`),
+  value: option,
+}))
 
-const isValid = computed(() => {
-  if (!blankNewsItem.value.title) return false
-  if (!blankNewsItem.value.category) return false
-
-  return true
+defineOptions({
+  name: 'AddNewsItem',
 })
 
-async function saveNewsItem() {
-  saving.value = true
-  try {
-    await newsStore.addNewsItem(blankNewsItem.value)
-    alert.success(t('admin.addNewsItem.newsItemAdded'))
-    saving.value = false
-    mapStore.rightDrawerOpen = null
-  } catch (e) {
-    saving.value = false
-    alert.error(t('admin.addNewsItem.error'))
-  }
-}
+const tab = ref('info')
 
-function show() {
-  mapStore.activateDrawingMode()
-  mapStore.map.on('draw.create', updateGeoJson)
-  mapStore.map.on('draw.delete', updateGeoJson)
-  mapStore.map.on('draw.update', updateGeoJson)
-}
+const valid = computed(() => {
+  return false
+})
 
-function hide() {
-  mapStore.deactiveDrawingMode()
-  mapStore.map.off('draw.create', updateGeoJson)
-  mapStore.map.off('draw.delete', updateGeoJson)
-  mapStore.map.off('draw.update', updateGeoJson)
-  blankNewsItem.value = { ...newsStore.blankNewsItem }
-}
+const props = defineProps({
+  newsItem: {
+    type: Object,
+    required: true,
+  },
+})
 
-function cancel() {
-  mapStore.rightDrawerOpen = null
-}
-
-function updateGeoJson() {
-  blankNewsItem.value.geoData = { ...mapStore.draw.getAll() }
-}
-
-const touched = computed({})
-
-const dateRange = computed({
+const date = computed({
   get() {
-    if (DateTime.isDateTime(blankNewsItem.value.activeUntil)) {
-      return {
-        from: dt.toQuasarDateString(blankNewsItem.value.activeFrom),
-        to: dt.toQuasarDateString(blankNewsItem.value.activeUntil),
-      }
-    }
-    return dt.toQuasarDateString(blankNewsItem.value.activeFrom)
+    return dt.toQuasarDateString(localNewsItem.value.timestamp)
   },
   set(val) {
-    if (val instanceof String) {
-      blankNewsItem.value.activeFrom = dt.parseQuasarDateString(val)
-      blankNewsItem.value.activeUntil = ''
-    }
-
-    if (val instanceof Object) {
-      blankNewsItem.value.activeFrom = dt.parseQuasarDateString(val.from)
-      blankNewsItem.value.activeUntil = dt.parseQuasarDateString(val.to)
-    }
+    let newDate = dt.parseQuasarDateString(val)
+    let ts = localNewsItem.value.timestamp
+    localNewsItem.value.timestamp = ts.set({
+      year: newDate.year,
+      month: newDate.month,
+      day: newDate.day,
+    })
   },
 })
+
+const time = computed({
+  get() {
+    return dt.toQuasarTimeString(localNewsItem.value.timestamp)
+  },
+  set(val) {
+    let newDate = dt.parseQuasarTimeString(val)
+    let ts = localNewsItem.value.timestamp
+    localNewsItem.value.timestamp = ts.set({
+      hour: newDate.hour,
+      minute: newDate.minute,
+    })
+  },
+})
+
+watch(showDialog, (val) => {
+  if (val === true) {
+    saving.value = false
+    tab.value = 'info'
+    localNewsItem.value = { ...props.newsItem }
+  } else if (val === false) {
+    mapStore.clearEditMap()
+  }
+})
+
+watch(tab, async (val) => {
+  if (val === 'map') {
+    await nextTick()
+    mapStore.initializeEditMap({ element: mapEditContainer.value, t })
+    mapStore.editMap.on('draw.create', updateGeoJson)
+    mapStore.editMap.on('draw.delete', updateGeoJson)
+    mapStore.editMap.on('draw.update', updateGeoJson)
+  }
+})
+
+function updateGeoJson() {
+  localNewsItem.value.geoData = { ...mapStore.draw.getAll() }
+}
+
+const save = async function () {
+  saving.value = true
+  try {
+    await newsStore.updateNewsItem({ ...localNewsItem.value })
+    alert.success(t('forms.saved'))
+    showDialog.value = false
+  } catch (e) {
+    saving.value = false
+    console.log(e)
+    alert.error(t('forms.errorSaving'))
+  }
+}
 </script>
+<style scoped>
+.map-edit-container {
+  width: 100%;
+  min-height: 800px;
+  padding: 0;
+}
+</style>
+<style>
+.mapboxgl-ctrl-bottom-left div:last-child {
+  display: none !important;
+}
+
+.mapboxgl-ctrl-bottom-right div:last-child {
+  display: none !important;
+}
+</style>

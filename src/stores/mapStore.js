@@ -22,7 +22,6 @@ export const useMapStore = defineStore('map', {
     map: null,
     editMap: null,
     leftDrawerOpen: false,
-    rightDrawerOpen: null,
     draw: null,
     loadingMap: false,
   }),

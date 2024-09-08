@@ -1,13 +1,5 @@
 export default {
   admin: {
-    addNewsItem: {
-      category: 'Category',
-      description: 'Description',
-      error: 'Error adding news item',
-      publish: 'Publish',
-      newsItemAdded: 'News item added added',
-      title: 'Title',
-    },
     menu: {
       addNewsItem: 'Add news item',
       map: 'Map',
@@ -15,6 +7,8 @@ export default {
       users: 'Users',
     },
     news: {
+      addNewsItem: 'Add news item',
+      category: 'Category',
       description: 'Description',
       editNewsItem: 'Edit news item',
       info: 'Info',
@@ -36,6 +30,7 @@ export default {
   },
   category: {
     military: 'Military',
+    misc: 'Miscellaneous',
     protest: 'Protest',
     red_zone: 'Red zone',
     traffic_incident: 'Traffic',

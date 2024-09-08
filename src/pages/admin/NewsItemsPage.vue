@@ -10,6 +10,10 @@
       bordered
       :pagination="{ rowsPerPage: 0 }"
     >
+      <template v-slot:top>
+        <h5 class="q-my-sm">{{ $t('admin.news.newsItems') }}</h5>
+        <q-btn class="q-ml-md" @click="showAdd = true" flat round :disable="loading" icon="add" />
+      </template>
       <template #body-cell-status="props">
         <q-td :props="props">
           <q-badge :color="color(props.value)" :label="$t(`admin.news.statuses.${props.value}`)" />
@@ -23,6 +27,7 @@
         </q-td>
       </template>
     </q-table>
+    <add-news-item v-model="showAdd" :newsItem="newsStore.blankNewsItem" />
     <edit-news-item v-model="showEdit" :newsItem="itemToEdit" />
   </q-page>
 </template>
@@ -31,6 +36,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { alert } from '@/utils/alert'
+import AddNewsItem from '@/components/admin/AddNewsItem.vue'
 import EditNewsItem from '@/components/admin/EditNewsItem.vue'
 import { useNewsStore } from '@/stores/newsStore'
 const newsStore = useNewsStore()
@@ -41,6 +47,7 @@ const { locale } = useI18n()
 import { dt } from 'src/utils'
 
 const loading = ref(false)
+const showAdd = ref(false)
 const showEdit = ref(false)
 const itemToEdit = ref({})
 

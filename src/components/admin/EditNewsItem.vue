@@ -67,6 +67,14 @@
               @update:model-value="touched = true"
               emit-value
             />
+            <q-select
+              v-model="localNewsItem.category"
+              :options="categoryOptions"
+              :label="$t('admin.news.category')"
+              :disable="saving"
+              class="q-mt-md"
+              emit-value
+            />
             <div class="row q-my-md">
               <q-date v-model="date" @update:model-value="touched = true" />
               <q-time
@@ -129,6 +137,17 @@ const touched = ref(false)
 const saving = ref(false)
 const statusOptions = ['pending', 'published', 'archived'].map((option) => ({
   label: t(`admin.news.statuses.${option}`),
+  value: option,
+}))
+const categoryOptions = [
+  'red_zone',
+  'traffic_incident',
+  'protest',
+  'military',
+  'weather',
+  'misc',
+].map((option) => ({
+  label: t(`category.${option}`),
   value: option,
 }))
 
