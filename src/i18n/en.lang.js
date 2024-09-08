@@ -15,14 +15,19 @@ export default {
       users: 'Users',
     },
     news: {
+      description: 'Description',
       editNewsItem: 'Edit news item',
+      info: 'Info',
+      map: 'Map',
       newsItems: 'Newsitems',
+      rawData: 'Raw data',
       status: 'Status',
       statuses: {
         archived: 'archived',
         pending: 'pending',
         published: 'published',
       },
+      title: 'Title',
     },
     users: {
       error_loading_users: 'Error loading users',
@@ -47,6 +52,10 @@ export default {
   header: {
     almanac: 'Almanac',
     logout: 'Logout',
+  },
+  language: {
+    arabic: 'Arabic',
+    english: 'English',
   },
   login: {
     email: 'E-mail',

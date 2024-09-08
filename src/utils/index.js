@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 
 const quasarDateFormat = 'yyyy/MM/dd'
+const quasarTimeFormat = 'HH:mm'
 
 const dt = {
   parseServerDatetime: function (string) {
@@ -37,7 +38,17 @@ const dt = {
   parseQuasarDateString: function (string) {
     return DateTime.fromFormat(string, quasarDateFormat)
   },
+
+  toQuasarTimeString: function (datetime) {
+    return datetime.toFormat(quasarTimeFormat)
+  },
+
+  parseQuasarTimeString: function (string) {
+    return DateTime.fromFormat(string, quasarTimeFormat)
+  },
+
   quasarDateFormat,
+  quasarTimeFormat,
 }
 
 export { dt }
