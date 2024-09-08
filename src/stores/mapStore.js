@@ -20,6 +20,7 @@ export const useMapStore = defineStore('map', {
     mapboxApiKey: import.meta.env.VITE_MAPBOX_API_KEY,
     mapStyle: 'mapbox://styles/mapbox/standard',
     map: null,
+    editMap: null,
     leftDrawerOpen: false,
     rightDrawerOpen: null,
     draw: null,
@@ -28,9 +29,14 @@ export const useMapStore = defineStore('map', {
   getters: {},
   actions: {
     initializeMap({ element, center, t, locale }) {
+      console.log('initializing map')
       Loading.show()
       const newsStore = useNewsStore()
       if (!this.mapboxApiKey) return
+      if (this.map) {
+        this.map.remove()
+        this.map = null
+      }
       mapboxgl.accessToken = this.mapboxApiKey
       const map = new mapboxgl.Map({
         container: element,
@@ -97,6 +103,99 @@ export const useMapStore = defineStore('map', {
       map.addControl(scale)
 
       this.map = map
+    },
+
+    initializeEditMap({ element, center, t, geoData }) {
+      console.log('initializing edit map')
+      if (!this.mapboxApiKey) return
+      if (this.editMap) {
+        this.editMap.remove()
+        this.editMap = null
+      }
+      mapboxgl.accessToken = this.mapboxApiKey
+      const map = new mapboxgl.Map({
+        container: element,
+        style: 'mapbox://styles/mapbox/light-v11',
+        center: center instanceof Array && center.length === 2 ? center : defaultCenter,
+        zoom: 8,
+        pitchWithRotate: false,
+      })
+
+      map.addControl(
+        new StylesControl({
+          styles: [
+            {
+              label: t('map.styles.standard'),
+              styleName: 'Mapbox Light',
+              styleUrl: 'mapbox://styles/mapbox/light-v11',
+            },
+            {
+              label: t('map.styles.terrain'),
+              styleName: 'Mapbox Outdoors',
+              styleUrl: 'mapbox://styles/mapbox/outdoors-v12',
+            },
+            {
+              label: t('map.styles.satellite'),
+              styleName: 'Mapbox Satellite Streets',
+              styleUrl: 'mapbox://styles/mapbox/satellite-streets-v12',
+            },
+            {
+              label: t('map.styles.traffic'),
+              styleName: 'Mapbox Navigation Day',
+              styleUrl: 'mapbox://styles/mapbox/navigation-day-v1',
+            },
+          ],
+        }),
+        'bottom-right'
+      )
+
+      // ADD ZOOM BUTTONS
+      const nav = new mapboxgl.NavigationControl({
+        showCompass: true,
+      })
+      map.addControl(nav, 'bottom-right')
+
+      // ADD SCALE
+      const scale = new mapboxgl.ScaleControl({
+        maxWidth: 100,
+        unit: 'metric',
+      })
+      map.addControl(scale)
+
+      const draw = new MapboxDraw({
+        controls: {
+          point: true,
+          polygon: true,
+          trash: true,
+        },
+        displayControlsDefault: false,
+      })
+
+      map.addControl(draw, 'top-right')
+
+      this.editMap = map
+      this.draw = draw
+
+      map.once('load', () => {
+        map.resize()
+      })
+    },
+
+    clearMap() {
+      console.log('clearing map')
+      if (this.map) {
+        this.map.remove()
+        this.map = null
+      }
+    },
+
+    clearEditMap() {
+      console.log('clearing edit map')
+      if (this.editMap) {
+        this.editMap.remove()
+        this.editMap = null
+        this.draw = null
+      }
     },
 
     activateDrawingMode() {

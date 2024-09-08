@@ -1,6 +1,10 @@
 <template>
   <q-list separator>
-    <news-item v-for="newsItem in newsStore.newsItems" :key="newsItem.id" :newsItem="newsItem" />
+    <news-item
+      v-for="newsItem in newsStore.activeNewsItems"
+      :key="newsItem.id"
+      :newsItem="newsItem"
+    />
   </q-list>
 </template>
 <script setup>

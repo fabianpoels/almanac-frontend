@@ -68,6 +68,7 @@ import { computed, ref } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
 import { useNewsStore } from '@/stores/newsStore'
 import { useAuthStore } from '@/stores/authStore'
+
 const mapStore = useMapStore()
 const newsStore = useNewsStore()
 const authStore = useAuthStore()

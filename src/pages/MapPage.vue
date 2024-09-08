@@ -11,7 +11,7 @@ import { useMapStore } from '@/stores/mapStore'
 import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
 
-import { useRoute } from 'vue-router'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 const route = useRoute()
 
 // mapbox + plugins css
@@ -27,6 +27,10 @@ defineOptions({
 
 onMounted(() => {
   mapStore.initializeMap({ element: mapContainer.value, t, locale })
+})
+
+onBeforeRouteLeave(() => {
+  mapStore.clearMap()
 })
 </script>
 <style scoped>

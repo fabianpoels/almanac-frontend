@@ -39,6 +39,7 @@ export default {
   forms: {
     cancel: 'Cancel',
     edit: 'Edit',
+    editLocation: 'Edit location',
     errorSaving: 'Error saving',
     save: 'Save',
     saved: 'Saved',

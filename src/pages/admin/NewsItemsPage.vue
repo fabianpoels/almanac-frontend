@@ -29,10 +29,13 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 import { alert } from '@/utils/alert'
 import EditNewsItem from '@/components/admin/EditNewsItem.vue'
 import { useNewsStore } from '@/stores/newsStore'
 const newsStore = useNewsStore()
+import { useMapStore } from '@/stores/mapStore'
+const mapStore = useMapStore()
 import { useI18n } from 'vue-i18n'
 const { locale } = useI18n()
 import { dt } from 'src/utils'
@@ -55,6 +58,10 @@ const colors = {
 function color(status) {
   return colors[status]
 }
+
+onBeforeRouteLeave(() => {
+  mapStore.clearEditMap()
+})
 
 const columns = computed(() => {
   return [

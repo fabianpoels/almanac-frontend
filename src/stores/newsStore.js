@@ -38,6 +38,7 @@ export const useNewsStore = defineStore('news', {
       status: 'published',
       geoData: {},
     }),
+    activeNewsItems: (state) => state.newsItems.filter((ni) => ni.status === 'published'),
   },
   actions: {
     async fetchNewsItems() {
