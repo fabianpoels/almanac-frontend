@@ -76,13 +76,8 @@
               emit-value
             />
             <div class="row q-my-md">
-              <q-date v-model="date" @update:model-value="touched = true" />
-              <q-time
-                v-model="time"
-                format24h
-                class="q-ml-md"
-                @update:model-value="touched = true"
-              />
+              <q-date v-model="date" class="q-mr-md" @update:model-value="touched = true" />
+              <q-time v-model="time" format24h @update:model-value="touched = true" />
             </div>
           </q-tab-panel>
           <q-tab-panel name="map">
@@ -96,13 +91,13 @@
           <q-btn
             flat
             color="primary"
-            class="q-mt-lg"
+            class="q-mt-lg q-mr-sm"
             :label="$t('forms.cancel')"
             :disable="saving"
             @click="showDialog = false"
           />
           <q-btn
-            class="q-mt-lg q-ml-sm"
+            class="q-mt-lg"
             color="secondary"
             :label="$t('forms.save')"
             :loading="saving"

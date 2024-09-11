@@ -13,7 +13,7 @@ export default {
       editNewsItem: 'Edit news item',
       info: 'Info',
       map: 'Map',
-      newsItems: 'Newsitems',
+      newsItems: 'News items',
       rawData: 'Raw data',
       status: 'Status',
       statuses: {

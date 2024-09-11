@@ -91,6 +91,18 @@ const columns = computed(() => {
       sortable: false,
     },
     {
+      name: 'location',
+      label: 'location',
+      field: (row) => row.location,
+      sortable: false,
+    },
+    {
+      name: 'category',
+      label: 'category',
+      field: (row) => row.category,
+      sortable: false,
+    },
+    {
       name: 'channel',
       label: 'channel',
       field: (row) => row.provider,

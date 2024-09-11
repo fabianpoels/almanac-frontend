@@ -64,6 +64,12 @@ export const useNewsStore = defineStore('news', {
       )
     },
 
+    async createNewsItem(newsItem) {
+      const { data } = await api.post(`/a/news`, serializeForApi(newsItem))
+      const parsedNewsItem = parseNewsItem(data)
+      this.adminNewsItems.unshift(parsedNewsItem)
+    },
+
     async updateNewsItem(newsItem) {
       const { data } = await api.put(`/a/news/${newsItem.id}`, serializeForApi(newsItem))
       const parsedNewsItem = parseNewsItem(data)

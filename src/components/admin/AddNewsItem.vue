@@ -71,8 +71,8 @@
               emit-value
             />
             <div class="row q-my-md">
-              <q-date v-model="date" />
-              <q-time v-model="time" format24h class="q-ml-md" />
+              <q-date v-model="date" class="q-mr-md" />
+              <q-time v-model="time" format24h />
             </div>
           </q-tab-panel>
           <q-tab-panel name="map">
@@ -147,7 +147,13 @@ defineOptions({
 const tab = ref('info')
 
 const valid = computed(() => {
-  return false
+  const li = localNewsItem.value
+  if (li.title.en.length < 1) return false
+  if (li.title.ar.length < 1) return false
+  if (li.description.en.length < 1) return false
+  if (li.description.ar.length < 1) return false
+  if (li.category.length < 1) return false
+  return true
 })
 
 const props = defineProps({
@@ -213,7 +219,7 @@ function updateGeoJson() {
 const save = async function () {
   saving.value = true
   try {
-    await newsStore.updateNewsItem({ ...localNewsItem.value })
+    await newsStore.createNewsItem({ ...localNewsItem.value })
     alert.success(t('forms.saved'))
     showDialog.value = false
   } catch (e) {
