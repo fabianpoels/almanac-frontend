@@ -70,4 +70,9 @@ export default {
   shared: {
     cancel: 'Cancel',
   },
+  sos: {
+    callUs: 'Call us at +961-111111',
+    text: 'Have instant access to a control room and team of professionals ready to assist around the clock.',
+    title: 'Activate your SOS-service',
+  },
 }

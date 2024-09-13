@@ -12,6 +12,8 @@
           unchecked-icon="light_mode"
           color="grey-4"
         /> -->
+        <q-btn color="negative" icon="phone" label="SOS" @click="showSos = true" />
+        <sos-dialog v-model="showSos" />
         <q-btn v-if="authStore.authenticated" flat round icon="account_circle">
           <q-menu fit>
             <q-list>
@@ -76,8 +78,8 @@ const $q = useQuasar()
 import MapPage from '@/pages/MapPage.vue'
 import NewsItemList from '@/components/NewsItemList.vue'
 import AdminControls from '@/components/admin/AdminControls.vue'
-import AddNewsItem from '@/components/admin/AddNewsItem.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
+import SosDialog from '@/components/SosDialog.vue'
 
 defineOptions({
   name: 'MainLayout',
@@ -88,6 +90,7 @@ function toggleLeftDrawer() {
 }
 
 const showLogin = ref(false)
+const showSos = ref(false)
 
 const darkMode = computed({
   get() {
