@@ -8,7 +8,7 @@
       <q-item-label caption>{{ dt.short(newsItem.timestamp) }}</q-item-label>
       <q-item-label caption>{{ dt.time(newsItem.timestamp) }}</q-item-label>
       <q-btn
-        v-if="newsItem.geoData"
+        v-if="hasLocationData"
         @click="moveToLocation(newsItem)"
         round
         class="icon"
