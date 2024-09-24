@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { Loading } from 'quasar'
 
 // mapboxgl
-import mapboxgl from 'mapbox-gl'
+import mapboxgl, { AttributionControl } from 'mapbox-gl'
 import StylesControl from '@mapbox-controls/styles'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'

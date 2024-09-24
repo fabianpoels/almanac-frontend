@@ -3,7 +3,8 @@
     <q-header v-model="mapStore.showHeader">
       <q-toolbar>
         <admin-controls v-if="authStore.isAdmin" />
-        <q-toolbar-title>
+        <q-toolbar-title class="title">
+          <LogoRound class="q-mr-sm" />
           {{ $t('header.almanac') }}
         </q-toolbar-title>
         <!-- <q-toggle
@@ -81,6 +82,7 @@ const newsStore = useNewsStore()
 const authStore = useAuthStore()
 const $q = useQuasar()
 
+import LogoRound from '@/components/LogoRound.vue'
 import MapPage from '@/pages/MapPage.vue'
 import NewsItemList from '@/components/NewsItemList.vue'
 import AdminControls from '@/components/admin/AdminControls.vue'
@@ -111,3 +113,9 @@ function logout() {
   authStore.logout()
 }
 </script>
+<style scoped>
+.title {
+  display: flex;
+  align-items: center;
+}
+</style>
