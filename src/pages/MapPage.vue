@@ -42,13 +42,13 @@ onBeforeRouteLeave(() => {
 }
 </style>
 <style>
-/* .mapboxgl-ctrl-bottom-left div:last-child {
+.mapboxgl-ctrl-bottom-left div:last-child {
   display: none !important;
 }
 
 .mapboxgl-ctrl-bottom-right div:last-child {
   display: none !important;
-} */
+}
 </style>
 <style>
 h6.popup-header {
