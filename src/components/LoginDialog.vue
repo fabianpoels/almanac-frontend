@@ -82,7 +82,7 @@ const login = async function () {
   width: 100%;
   height: 300px;
   text-align: center;
-  background: url('images/almanac_logo_full.png') center no-repeat;
+  background: url('/images/almanac_logo_full.png') center no-repeat;
   background-size: contain;
 }
 
