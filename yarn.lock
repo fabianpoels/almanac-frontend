@@ -4576,6 +4576,11 @@ vue-eslint-parser@^9.4.3:
     lodash "^4.17.21"
     semver "^7.3.6"
 
+vue-gtag@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/vue-gtag/-/vue-gtag-2.0.1.tgz#d4dc1b9cf79809c37ce844824c0f7fa97af520dd"
+  integrity sha512-aM4A58FVL0wV2ptYi+xzAjeg+pQVRyUcfBc5UkXAwQrR4t3WBhor50Izp2I+3Oo7+l+vWJ7u78DGcNzReb8S/A==
+
 vue-i18n@^9.0.0:
   version "9.14.0"
   resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-9.14.0.tgz#d6f1b3d95bfc4f40e630ff9456c78ab5becfd933"
