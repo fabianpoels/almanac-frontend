@@ -62,7 +62,7 @@ const categoryTitle = computed(() => {
 })
 
 const hasLocationData = computed(() => {
-  const d = props.newsItem.geoData
+  const d = props.newsItem
   if (!d.geoData) return false
   if (!d.geoData.features) return false
   if (!d.geoData.type) return false
