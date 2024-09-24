@@ -12,7 +12,13 @@
           unchecked-icon="light_mode"
           color="grey-4"
         /> -->
-        <q-btn color="negative" icon="phone" label="SOS" @click="showSos = true" />
+        <q-btn
+          color="negative"
+          icon="phone"
+          label="SOS"
+          @click="showSos = true"
+          v-if="authStore.authenticated"
+        />
         <sos-dialog v-model="showSos" />
         <q-btn v-if="authStore.authenticated" flat round icon="account_circle">
           <q-menu fit>
