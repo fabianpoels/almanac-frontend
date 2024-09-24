@@ -60,6 +60,15 @@ const color = computed(() => {
 const categoryTitle = computed(() => {
   return category.value?.title || ''
 })
+
+const hasLocationData = computed(() => {
+  const d = props.newsItem.geoData
+  if (!d.geoData) return false
+  if (!d.geoData.features) return false
+  if (!d.geoData.type) return false
+  if (d.geoData.features.length < 1) return false
+  return true
+})
 </script>
 <style scoped>
 .icon {
