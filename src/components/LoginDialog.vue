@@ -1,7 +1,7 @@
 <template>
   <q-dialog v-model="showDialog" :persistent="loggingIn">
     <q-card class="q-pa-xl">
-      <div id="formHeader"><h4>Almanac</h4></div>
+      <div id="formHeader"></div>
       <q-form id="loginForm">
         <q-input
           v-model="email"
@@ -80,7 +80,10 @@ const login = async function () {
 <style scoped>
 #formHeader {
   width: 100%;
+  height: 300px;
   text-align: center;
+  background: url('images/almanac_logo_full.png') center no-repeat;
+  background-size: contain;
 }
 
 #loginForm {
