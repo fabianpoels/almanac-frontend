@@ -1,6 +1,5 @@
 import { boot } from 'quasar/wrappers'
 import VueGtag from 'vue-gtag'
-
 export default boot(async ({ app, router }) => {
   app.use(
     VueGtag,
