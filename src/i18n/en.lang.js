@@ -30,7 +30,7 @@ export default {
   },
   category: {
     military: 'Military',
-    misc: 'Miscellaneous',
+    misc: 'Misc',
     protest: 'Protest',
     red_zone: 'Red zone',
     traffic_incident: 'Traffic',
