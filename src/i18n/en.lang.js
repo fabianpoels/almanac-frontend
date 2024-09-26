@@ -46,6 +46,7 @@ export default {
   },
   header: {
     almanac: 'Almanac',
+    backToMap: 'Back to map',
     logout: 'Logout',
   },
   language: {

@@ -30,7 +30,7 @@
             </q-list>
           </q-menu>
         </q-btn>
-        <q-btn v-else @click="showLogin = true" flat>{{ $t('login.login') }}</q-btn>
+        <!-- <q-btn v-else @click="showLogin = true" flat>{{ $t('login.login') }}</q-btn> -->
       </q-toolbar>
     </q-header>
 

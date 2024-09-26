@@ -3,7 +3,8 @@
     <q-header>
       <q-toolbar>
         <admin-controls v-if="authStore.isAdmin" />
-        <q-toolbar-title>
+        <q-toolbar-title class="title">
+          <LogoRound class="q-mr-sm" />
           {{ $t('header.almanac') }}
         </q-toolbar-title>
         <!-- <q-toggle
@@ -40,6 +41,7 @@ const $q = useQuasar()
 const router = useRouter()
 
 import AdminControls from '@/components/admin/AdminControls.vue'
+import LogoRound from '@/components/LogoRound.vue'
 
 defineOptions({
   name: 'AdminLayout',
@@ -58,3 +60,9 @@ function logout() {
   authStore.logout()
 }
 </script>
+<style scoped>
+.title {
+  display: flex;
+  align-items: center;
+}
+</style>

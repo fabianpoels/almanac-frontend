@@ -5,6 +5,11 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
   },
   {
+    path: '/:lang/login',
+    name: 'login',
+    component: () => import('pages/LoginPage.vue'),
+  },
+  {
     path: '/:lang/admin',
     name: 'admin',
     component: () => import('layouts/AdminLayout.vue'),

@@ -38,13 +38,13 @@ export default route(function (/* { store, ssrContext } */) {
     }
 
     // REDIRECT TO AUTH IF REQUIRED
-    const publicPages = ['root']
+    const publicPages = ['root', 'login']
     const authRequired = !publicPages.includes(to.name)
     const authStore = useAuthStore()
 
     if (authRequired && !authStore.user) {
       return {
-        name: 'root',
+        name: 'login',
         params: { lang: to.params.lang },
       }
     }

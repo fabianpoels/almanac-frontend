@@ -1,9 +1,29 @@
 <template>
   <q-layout view="hHh lpR fFf">
+    <q-header>
+      <q-toolbar>
+        <q-btn
+          flat
+          icon="arrow_back"
+          :label="$t('header.backToMap')"
+          @click="$router.push({ name: 'root' })"
+        />
+        <q-toolbar-title class="title">
+          <LogoRound class="q-mr-sm" />
+          {{ $t('header.almanac') }}
+        </q-toolbar-title>
+        <!-- <q-toggle
+          v-model="darkMode"
+          checked-icon="dark_mode"
+          unchecked-icon="light_mode"
+          color="grey-4"
+        /> -->
+      </q-toolbar>
+    </q-header>
     <q-page-container>
       <q-page class="row justify-center items-center">
         <q-card class="q-pa-xl">
-          <div id="formHeader"><h4>Almanac</h4></div>
+          <div id="formHeader"></div>
           <q-form id="loginForm">
             <q-input
               v-model="email"
@@ -45,6 +65,8 @@ import { alert } from '@/utils/alert'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
+import LogoRound from '@/components/LogoRound.vue'
+
 defineOptions({
   name: 'LoginPage',
 })
@@ -71,13 +93,27 @@ const login = async function () {
 }
 </script>
 <style scoped>
+.title {
+  display: flex;
+  align-items: center;
+}
+
 #formHeader {
   width: 100%;
+  height: 300px;
   text-align: center;
+  background: url('/images/almanac_logo_full.png') center no-repeat;
+  background-size: contain;
 }
 
 #loginForm {
   width: 300px;
+}
+
+@media only screen and (max-width: 650px) {
+  #loginForm {
+    width: 250px;
+  }
 }
 
 #loginButton {
