@@ -16,39 +16,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useAuthStore } from '@/stores/authStore'
-const authStore = useAuthStore()
-import { alert } from '@/utils/alert'
-import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
-
 import BlankLayout from '@/layouts/BlankLayout.vue'
 
 defineOptions({
-  name: 'LoginPage',
+  name: 'AboutPage',
 })
-
-const email = ref('')
-const password = ref('')
-const loggingIn = ref(false)
-
-const formValid = computed(() => {
-  if (!email.value || email.value.length < 10) return false
-  if (!password.value || password.value.length < 9) return false
-  return true
-})
-
-const login = async function () {
-  loggingIn.value = true
-  try {
-    await authStore.login({ email: email.value, password: password.value })
-  } catch (e) {
-    loggingIn.value = false
-    console.log(e)
-    alert.error(t('login.wrong_email_or_password'))
-  }
-}
 </script>
 <style scoped>
 #header {
