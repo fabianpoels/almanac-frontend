@@ -42,6 +42,9 @@ export const useNewsStore = defineStore('news', {
       state.newsItems.filter(
         (ni) => ni.status === 'published' && state.categoryFilter.includes(ni.category)
       ),
+    activeCategories() {
+      return [...new Set(this.activeNewsItems.map((i) => i.category))]
+    },
   },
   actions: {
     async fetchNewsItems() {

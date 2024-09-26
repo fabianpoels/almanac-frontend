@@ -41,7 +41,7 @@
     <q-menu fit>
       <q-option-group
         v-model="newsStore.categoryFilter"
-        :options="newsStore.categoryOptions"
+        :options="categoryOptions"
         type="checkbox"
       />
     </q-menu>
@@ -77,6 +77,10 @@ const disableApply = computed(() => {
     if (range.value.to !== newsStore.customRange.to) return false
   }
   return true
+})
+
+const categoryOptions = computed(() => {
+  return newsStore.categoryOptions.filter((opt) => newsStore.activeCategories.includes(opt.value))
 })
 
 function show() {

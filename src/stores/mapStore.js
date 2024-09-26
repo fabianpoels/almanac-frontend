@@ -2,13 +2,10 @@ import { defineStore } from 'pinia'
 import { Loading } from 'quasar'
 
 // mapboxgl
-import mapboxgl, { AttributionControl } from 'mapbox-gl'
+import mapboxgl from 'mapbox-gl'
 import StylesControl from '@mapbox-controls/styles'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
-
-// utilities
-import { mapUtils } from '@/utils/map'
 
 // other stores
 import { useNewsStore } from '@/stores/newsStore'
@@ -27,38 +24,12 @@ export const useMapStore = defineStore('map', {
   }),
   getters: {},
   actions: {
-    initializeMap({ element, center, t, locale }) {
-      console.log('initializing map')
+    async initializeMap({ map, t, locale }) {
       Loading.show()
+
       const newsStore = useNewsStore()
-      if (!this.mapboxApiKey) return
-      if (this.map) {
-        this.map.remove()
-        this.map = null
-      }
-      mapboxgl.accessToken = this.mapboxApiKey
-      const map = new mapboxgl.Map({
-        container: element,
-        style: 'mapbox://styles/mapbox/light-v11',
-        center: center instanceof Array && center.length === 2 ? center : defaultCenter,
-        zoom: 8,
-        pitchWithRotate: false,
-      })
-
-      map.on('load', async () => {
-        await newsStore.fetchNewsItems()
-        await newsStore.fetchCategories(t)
-        newsStore.newsItems.forEach((newsItem) =>
-          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories, locale, t })
-        )
-        Loading.hide()
-      })
-
-      map.on('style.load', () => {
-        newsStore.newsItems.forEach((newsItem) =>
-          mapUtils.drawNewsItem({ map, newsItem, categories: newsStore.categories, locale, t })
-        )
-      })
+      await newsStore.fetchNewsItems()
+      await newsStore.fetchCategories(t)
 
       map.addControl(
         new StylesControl({
@@ -88,20 +59,16 @@ export const useMapStore = defineStore('map', {
         'bottom-right'
       )
 
-      // ADD ZOOM BUTTONS
-      const nav = new mapboxgl.NavigationControl({
-        showCompass: true,
-      })
-      map.addControl(nav, 'bottom-right')
-
       // ADD SCALE
-      const scale = new mapboxgl.ScaleControl({
-        maxWidth: 100,
-        unit: 'metric',
-      })
-      map.addControl(scale)
+      // apparently this plugin breaks the map
+      // const scale = new mapboxgl.ScaleControl({
+      //   maxWidth: 100,
+      //   unit: 'metric',
+      // })
+      // map.addControl(scale, 'bottom-left')
 
       this.map = map
+      Loading.hide()
     },
 
     initializeEditMap({ element, center, t, geoData }) {
