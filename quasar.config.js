@@ -64,11 +64,11 @@ export default configure((ctx) => {
         })
 
         viteConf.optimizeDeps.include = ['map-promisified']
-        viteConf.optimizeDeps.exclude = ['@mapbox/mapbox-gl-geocoder']
+        // viteConf.optimizeDeps.exclude = ['@mapbox/mapbox-gl-geocoder']
 
-        viteConf.build.rollupOptions = {
-          external: (id) => /^@mapbox\/mapbox-gl-geocoder/.test(id),
-        }
+        // viteConf.build.rollupOptions = {
+        //   external: (id) => /^@mapbox\/mapbox-gl-geocoder/.test(id),
+        // }
       },
       // viteVuePluginOptions: {},
 
