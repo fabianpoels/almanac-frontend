@@ -4,7 +4,13 @@
       <div id="header"></div>
       <div class="q-pa-lg">{{ $t('about.p1') }}</div>
       <div class="q-pa-lg">{{ $t('about.p2') }}</div>
-      <q-btn class="q-ma-lg" icon="map" color="primary" :label="$t('about.goToMap')" />
+      <q-btn
+        class="q-ma-lg"
+        icon="map"
+        color="primary"
+        :label="$t('about.goToMap')"
+        @click="$router.push({ name: 'root' })"
+      />
     </q-page>
   </blank-layout>
 </template>
