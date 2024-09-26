@@ -2,8 +2,6 @@ import api from '@/api'
 import { defineStore } from 'pinia'
 import { DateTime } from 'luxon'
 import { dt } from '@/utils'
-import { mapUtils } from '@/utils/map'
-import { useMapStore } from '@/stores/mapStore'
 
 function parseNewsItem(newsItem) {
   const timestamp = dt.parseServerDatetime(newsItem.timestamp)
@@ -22,6 +20,9 @@ export const useNewsStore = defineStore('news', {
     newsItems: [],
     adminNewsItems: [],
     categories: {},
+    categoryFilter: [],
+    timespan: '24hr',
+    customRange: { from: '', to: '' },
   }),
   getters: {
     categoryOptions: (state) =>
@@ -37,11 +38,18 @@ export const useNewsStore = defineStore('news', {
       status: 'published',
       geoData: {},
     }),
-    activeNewsItems: (state) => state.newsItems.filter((ni) => ni.status === 'published'),
+    activeNewsItems: (state) =>
+      state.newsItems.filter(
+        (ni) => ni.status === 'published' && state.categoryFilter.includes(ni.category)
+      ),
   },
   actions: {
     async fetchNewsItems() {
-      const { data } = await api.get('/news')
+      const { data } = await api.post('/news', {
+        span: this.timespan,
+        from: this.customRange.from,
+        to: this.customRange.to,
+      })
       this.newsItems = data.map(parseNewsItem)
     },
 
@@ -53,15 +61,15 @@ export const useNewsStore = defineStore('news', {
     async fetchCategories(t) {
       const { data } = await api.get('/categories')
 
-      data.forEach(
-        (c) =>
-          (this.categories[c.key] = {
-            title: t(`category.${c.key}`),
-            color: c.color,
-            icon: c.icon,
-            active: c.active,
-          })
-      )
+      data.forEach((c) => {
+        this.categoryFilter.push(c.key)
+        this.categories[c.key] = {
+          title: t(`category.${c.key}`),
+          color: c.color,
+          icon: c.icon,
+          active: c.active,
+        }
+      })
     },
 
     async createNewsItem(newsItem) {

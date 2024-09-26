@@ -15,10 +15,6 @@ const dt = {
     return datetime.toISO()
   },
 
-  todayAsSimpleString: function () {
-    return DateTime.now().toFormat(simpleDateFormat)
-  },
-
   short: function (datetime) {
     return datetime.toFormat('d MMM')
   },
@@ -29,6 +25,10 @@ const dt = {
 
   time: function (datetime) {
     return datetime.toFormat('HH:mm')
+  },
+
+  todayAsQuasarDateString: function () {
+    return DateTime.now().toFormat(quasarDateFormat)
   },
 
   toQuasarDateString: function (datetime) {

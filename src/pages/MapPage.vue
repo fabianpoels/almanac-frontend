@@ -11,8 +11,7 @@ import { useMapStore } from '@/stores/mapStore'
 import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
 
-import { onBeforeRouteLeave, useRoute } from 'vue-router'
-const route = useRoute()
+import { onBeforeRouteLeave } from 'vue-router'
 
 // mapbox + plugins css
 import '@/../node_modules/mapbox-gl/dist/mapbox-gl.css'

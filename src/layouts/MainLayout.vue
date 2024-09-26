@@ -54,10 +54,11 @@
       <map-page />
       <q-page-sticky position="top-left" :offset="[18, 18]" v-if="!mapStore.leftDrawerOpen">
         <q-btn round size="md" icon="feed" color="primary" @click="toggleLeftDrawer">
-          <q-badge v-if="newsStore.newsItems.length > 0" color="red" floating>
-            {{ newsStore.newsItems.length }}
+          <q-badge v-if="newsStore.activeNewsItems.length > 0" color="red" floating>
+            {{ newsStore.activeNewsItems.length }}
           </q-badge>
         </q-btn>
+        <filter-buttons />
       </q-page-sticky>
     </q-page-container>
   </q-layout>
@@ -80,6 +81,7 @@ import NewsItemList from '@/components/NewsItemList.vue'
 import AdminControls from '@/components/admin/AdminControls.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
 import SosDialog from '@/components/SosDialog.vue'
+import FilterButtons from '@/components/map/FilterButtons.vue'
 
 defineOptions({
   name: 'MainLayout',

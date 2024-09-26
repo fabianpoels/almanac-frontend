@@ -41,7 +41,16 @@ export default {
     traffic_incident: 'Traffic',
     weather: 'Weather',
   },
+  filter: {
+    '12hr': 'Last 12 hours',
+    '24hr': 'Last 24 hours',
+    '48hr': 'Last 48 hours',
+    week: 'This week',
+    month: 'This month',
+    custom: 'Custom',
+  },
   forms: {
+    apply: 'Apply',
     cancel: 'Cancel',
     edit: 'Edit',
     editLocation: 'Edit location',

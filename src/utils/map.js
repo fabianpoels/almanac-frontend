@@ -43,41 +43,41 @@ const mapUtils = {
       }
 
       // polygon
-      if (gd.geometry.type === 'Polygon') {
-        if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: gd })
-        if (!map.getLayer(`${newsItem.id}-fill`)) {
-          map.addLayer({
-            id: `${newsItem.id}-fill`,
-            type: 'fill',
-            source: id,
-            layout: {},
-            paint: {
-              'fill-color': color,
-              'fill-opacity': 0.5,
-            },
-          })
-        }
-        if (!map.getLayer(`${newsItem.id}-line`)) {
-          map.addLayer({
-            id: `${newsItem.id}-line`,
-            type: 'line',
-            source: id,
-            layout: {},
-            paint: {
-              'line-color': color,
-              'line-width': 1,
-            },
-          })
-        }
-        const marker = new mapboxgl.Marker({
-          color: color,
-          className: id,
-        })
+      // if (gd.geometry.type === 'Polygon') {
+      //   if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: gd })
+      //   if (!map.getLayer(`${newsItem.id}-fill`)) {
+      //     map.addLayer({
+      //       id: `${newsItem.id}-fill`,
+      //       type: 'fill',
+      //       source: id,
+      //       layout: {},
+      //       paint: {
+      //         'fill-color': color,
+      //         'fill-opacity': 0.5,
+      //       },
+      //     })
+      //   }
+      //   if (!map.getLayer(`${newsItem.id}-line`)) {
+      //     map.addLayer({
+      //       id: `${newsItem.id}-line`,
+      //       type: 'line',
+      //       source: id,
+      //       layout: {},
+      //       paint: {
+      //         'line-color': color,
+      //         'line-width': 1,
+      //       },
+      //     })
+      //   }
+      //   const marker = new mapboxgl.Marker({
+      //     color: color,
+      //     className: id,
+      //   })
 
-        marker.setLngLat(center(gd).geometry.coordinates)
-        marker.setPopup(popup)
-        marker.addTo(map)
-      }
+      //   marker.setLngLat(center(gd).geometry.coordinates)
+      //   marker.setPopup(popup)
+      //   marker.addTo(map)
+      // }
     })
   },
 
