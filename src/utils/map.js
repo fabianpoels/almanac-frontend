@@ -1,12 +1,16 @@
 import mapboxgl from 'mapbox-gl'
 import center from '@turf/center'
 import { dt } from '@/utils'
+import CustomPin from '@/components/map/CustomPin.vue'
+import { render, h } from 'vue'
 
 const mapUtils = {
   drawNewsItem: function ({ map, newsItem, categories, locale, t }) {
     // set color
     const color = categories[newsItem.category]?.color
+    const icon = categories[newsItem.category]?.icon
     if (!color) return
+    if (!icon) return
     if (!newsItem.geoData) return
 
     // create popup
@@ -28,10 +32,11 @@ const mapUtils = {
 
       // point
       if (gd.geometry.type === 'Point') {
-        const marker = new mapboxgl.Marker({
-          color: color,
-          className: id,
-        })
+        const el = document.createElement('div')
+        el.className = 'marker'
+        const vueComponent = h(CustomPin, { color, icon })
+        render(vueComponent, el)
+        const marker = new mapboxgl.Marker(el)
         marker.setLngLat(gd.geometry.coordinates)
         marker.setPopup(popup)
         marker.addTo(map)
