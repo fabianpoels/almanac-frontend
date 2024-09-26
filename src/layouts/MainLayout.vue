@@ -21,16 +21,9 @@
           v-if="authStore.authenticated"
         />
         <sos-dialog v-model="showSos" />
-        <q-btn v-if="authStore.authenticated" flat round icon="account_circle">
-          <q-menu fit>
-            <q-list>
-              <q-item clickable @click="logout" v-close-popup>
-                <q-item-section>{{ $t('header.logout') }}</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
+        <user-button v-if="authStore.authenticated" />
         <!-- <q-btn v-else @click="showLogin = true" flat>{{ $t('login.login') }}</q-btn> -->
+        <q-btn icon="info" flat round @click="$router.push({ name: 'about' })" />
       </q-toolbar>
     </q-header>
 
@@ -71,8 +64,7 @@
 </template>
 
 <script setup>
-import { useQuasar } from 'quasar'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
 import { useNewsStore } from '@/stores/newsStore'
 import { useAuthStore } from '@/stores/authStore'
@@ -80,8 +72,8 @@ import { useAuthStore } from '@/stores/authStore'
 const mapStore = useMapStore()
 const newsStore = useNewsStore()
 const authStore = useAuthStore()
-const $q = useQuasar()
 
+import UserButton from '@/components/_UserButton.vue'
 import LogoRound from '@/components/LogoRound.vue'
 import MapPage from '@/pages/MapPage.vue'
 import NewsItemList from '@/components/NewsItemList.vue'
@@ -99,19 +91,6 @@ function toggleLeftDrawer() {
 
 const showLogin = ref(false)
 const showSos = ref(false)
-
-const darkMode = computed({
-  get() {
-    return $q.dark.isActive
-  },
-  set(val) {
-    $q.dark.set(val)
-  },
-})
-
-function logout() {
-  authStore.logout()
-}
 </script>
 <style scoped>
 .title {

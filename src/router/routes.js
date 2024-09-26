@@ -10,6 +10,11 @@ const routes = [
     component: () => import('pages/LoginPage.vue'),
   },
   {
+    path: '/:lang/about',
+    name: 'about',
+    component: () => import('pages/AboutPage.vue'),
+  },
+  {
     path: '/:lang/admin',
     name: 'admin',
     component: () => import('layouts/AdminLayout.vue'),

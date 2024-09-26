@@ -1,4 +1,9 @@
 export default {
+  about: {
+    goToMap: 'Go to map',
+    p1: 'Welcome to Almanac, your intelligence-led platform for real-time updates on Lebanon’s political and security landscape. Created by Lebanese, our platform is designed to spread awareness and provide accurate, timely information to help both locals and international audiences understand the current situation in Lebanon. We offer a unique geographical view of the news, allowing you to see all updates directly on a map. All our news items are sourced from approved and reputable public sources.',
+    p2: 'At Almanac24, we are driven by our core values of transparency, accuracy, and community engagement. We believe in the power of information to foster understanding and drive change. Our platform was created out of a deep commitment to our homeland and a desire to ensure that everyone has access to reliable information. By providing a clear and comprehensive view of the political and security landscape, we aim to empower individuals and communities to make informed decisions and contribute to a more informed society.',
+  },
   admin: {
     menu: {
       addNewsItem: 'Add news item',

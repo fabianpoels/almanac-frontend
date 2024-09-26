@@ -1,36 +1,10 @@
 <template>
   <blank-layout>
-    <q-page class="row justify-center items-center">
-      <q-card class="q-pa-xl">
-        <div id="formHeader"></div>
-        <q-form id="loginForm">
-          <q-input
-            v-model="email"
-            name="email"
-            type="email"
-            :label="$t('login.email')"
-            :disable="loggingIn"
-          />
-          <q-input
-            class="q-mt-md"
-            v-model="password"
-            name="password"
-            type="password"
-            :label="$t('login.password')"
-            :disable="loggingIn"
-          />
-          <q-btn
-            id="loginButton"
-            class="q-mt-lg"
-            color="primary"
-            :label="$t('login.login')"
-            :loading="loggingIn"
-            :disable="!formValid"
-            @click="login"
-          >
-          </q-btn>
-        </q-form>
-      </q-card>
+    <q-page class="page">
+      <div id="header"></div>
+      <div class="q-pa-lg">{{ $t('about.p1') }}</div>
+      <div class="q-pa-lg">{{ $t('about.p2') }}</div>
+      <q-btn class="q-ma-lg" icon="map" color="primary" :label="$t('about.goToMap')" />
     </q-page>
   </blank-layout>
 </template>
@@ -71,7 +45,7 @@ const login = async function () {
 }
 </script>
 <style scoped>
-#formHeader {
+#header {
   width: 100%;
   height: 300px;
   text-align: center;
@@ -79,17 +53,17 @@ const login = async function () {
   background-size: contain;
 }
 
-#loginForm {
-  width: 300px;
+.page {
+  width: 650px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
 }
 
 @media only screen and (max-width: 650px) {
-  #loginForm {
-    width: 250px;
+  .page {
+    width: 100%;
   }
-}
-
-#loginButton {
-  width: 100%;
 }
 </style>
