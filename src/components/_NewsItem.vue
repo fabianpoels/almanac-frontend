@@ -15,7 +15,9 @@
         size="xs"
         icon="my_location"
       />
-      <q-badge class="q-mt-md" :style="{ backgroundColor: color }">{{ categoryTitle }}</q-badge>
+      <q-badge class="q-mt-md" :style="{ backgroundColor: color }">{{
+        $t(`category.${newsItem.category}`)
+      }}</q-badge>
     </q-item-section>
   </q-item>
 </template>
@@ -55,10 +57,6 @@ const category = computed(() => {
 
 const color = computed(() => {
   return category.value?.color || ''
-})
-
-const categoryTitle = computed(() => {
-  return category.value?.title || ''
 })
 
 const hasLocationData = computed(() => {
