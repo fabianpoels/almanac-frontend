@@ -13,6 +13,7 @@
           unchecked-icon="light_mode"
           color="grey-4"
         /> -->
+        <language-selector />
         <q-btn flat round icon="account_circle">
           <q-menu fit>
             <q-list>
@@ -42,6 +43,7 @@ const router = useRouter()
 
 import AdminControls from '@/components/admin/AdminControls.vue'
 import LogoRound from '@/components/LogoRound.vue'
+import LanguageSelector from '@/components/LanguageSelector.vue'
 
 defineOptions({
   name: 'AdminLayout',

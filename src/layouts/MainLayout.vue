@@ -13,14 +13,7 @@
           unchecked-icon="light_mode"
           color="grey-4"
         /> -->
-        <q-btn
-          color="negative"
-          icon="phone"
-          label="SOS"
-          @click="showSos = true"
-          v-if="authStore.authenticated"
-        />
-        <sos-dialog v-model="showSos" />
+        <sos-button v-if="authStore.authenticated" />
         <language-selector />
         <q-btn icon="info" flat round @click="$router.push({ name: 'about' })" />
         <user-button v-if="authStore.authenticated" />
@@ -81,7 +74,7 @@ import MapPage from '@/pages/MapPage.vue'
 import NewsItemList from '@/components/NewsItemList.vue'
 import AdminControls from '@/components/admin/AdminControls.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
-import SosDialog from '@/components/SosDialog.vue'
+import SosButton from '@/components/SosButton.vue'
 import FilterButtons from '@/components/map/FilterButtons.vue'
 import LanguageSelector from '@/components/LanguageSelector.vue'
 

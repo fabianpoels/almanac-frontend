@@ -42,6 +42,8 @@ const authStore = useAuthStore()
 import { alert } from '@/utils/alert'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 import BlankLayout from '@/layouts/BlankLayout.vue'
 
@@ -63,6 +65,7 @@ const login = async function () {
   loggingIn.value = true
   try {
     await authStore.login({ email: email.value, password: password.value })
+    router.push({ name: 'root' })
   } catch (e) {
     loggingIn.value = false
     console.log(e)

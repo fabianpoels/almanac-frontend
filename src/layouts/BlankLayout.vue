@@ -12,6 +12,7 @@
           <LogoRound class="q-mr-sm" />
           {{ $t('header.almanac') }}
         </q-toolbar-title>
+        <language-selector />
         <user-button v-if="authStore.authenticated" />
       </q-toolbar>
     </q-header>
@@ -27,6 +28,7 @@ const authStore = useAuthStore()
 
 import LogoRound from '@/components/LogoRound.vue'
 import UserButton from '@/components/_UserButton.vue'
+import LanguageSelector from '@/components/LanguageSelector.vue'
 
 defineOptions({
   name: 'BlankLayout',
