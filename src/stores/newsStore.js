@@ -54,6 +54,7 @@ export const useNewsStore = defineStore('news', {
         to: this.customRange.to,
       })
       this.newsItems = data.map(parseNewsItem)
+      this.categoryFilter = Object.keys(this.categories)
     },
 
     async fetchAdminNewsItems() {
@@ -63,7 +64,7 @@ export const useNewsStore = defineStore('news', {
 
     async fetchCategories(t) {
       const { data } = await api.get('/categories')
-
+      this.categoryFilter = []
       data.forEach((c) => {
         this.categoryFilter.push(c.key)
         this.categories[c.key] = {

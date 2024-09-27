@@ -1,5 +1,5 @@
 <template>
-  <q-btn outline :label="timeFilterLabel" class="q-ml-md">
+  <q-btn color="secondary" rounded :label="timeFilterLabel" class="q-ml-md">
     <q-menu v-model="showDateFilter" @before-show="show" :persistent="loading" fit>
       <q-list separator>
         <q-item v-for="opt in presets" :key="opt">
@@ -36,7 +36,13 @@
       </q-list>
     </q-menu>
   </q-btn>
-  <q-btn outline label="categories" class="q-ml-md">
+  <q-btn
+    :disable="newsStore.activeCategories.length < 1"
+    color="secondary"
+    rounded
+    label="categories"
+    class="q-ml-md"
+  >
     <q-badge v-if="showCategoryWarning" color="red" floating> ! </q-badge>
     <q-menu fit>
       <q-option-group
@@ -57,7 +63,10 @@ const newsStore = useNewsStore()
 import { dt } from '@/utils'
 
 const timeFilterLabel = computed(() => {
-  return t('filter.24hr')
+  if (newsStore.timespan === 'custom') {
+    return `${newsStore.customRange.from} - ${newsStore.customRange.to}`
+  }
+  return t(`filter.${newsStore.timespan}`)
 })
 
 const showCategoryWarning = computed(() => {

@@ -33,13 +33,7 @@ const { t, locale } = useI18n()
 
 // MAP STUFF
 // mapbox + plugins css
-// import '@/../node_modules/mapbox-gl/dist/mapbox-gl.css'
-import {
-  MapboxMap,
-  MapboxMarker,
-  MapboxNavigationControl,
-  MapboxPopup,
-} from '@studiometa/vue-mapbox-gl'
+import { MapboxMap, MapboxMarker, MapboxNavigationControl } from '@studiometa/vue-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox-controls/styles/src/index.css'
 
