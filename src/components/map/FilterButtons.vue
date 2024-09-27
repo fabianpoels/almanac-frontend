@@ -1,5 +1,5 @@
 <template>
-  <q-btn color="secondary" rounded :label="timeFilterLabel" class="q-ml-md">
+  <q-btn color="secondary" rounded :label="timeFilterLabel" class="q-ml-md" padding="xs md">
     <q-menu v-model="showDateFilter" @before-show="show" :persistent="loading" fit>
       <q-list dense>
         <q-item v-for="opt in presets" :key="opt">
@@ -42,6 +42,7 @@
     rounded
     :label="$t('filter.categories')"
     class="q-ml-md"
+    padding="xs md"
   >
     <q-badge v-if="showCategoryWarning" color="red" floating> ! </q-badge>
     <q-menu fit>
