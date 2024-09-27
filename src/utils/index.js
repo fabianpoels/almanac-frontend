@@ -16,7 +16,7 @@ const dt = {
   },
 
   short: function (datetime) {
-    return datetime.toFormat('d MMM')
+    return datetime.toFormat('d MMM yyyy')
   },
 
   long: function (datetime) {
