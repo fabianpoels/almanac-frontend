@@ -71,7 +71,7 @@ const timeFilterLabel = computed(() => {
 })
 
 const showCategoryWarning = computed(() => {
-  return newsStore.categoryFilter.length < newsStore.categoryOptions.length
+  return newsStore.categoryFilter.length < newsStore.categoryOptions(t).length
 })
 
 const presets = ['12hr', '24hr', '48hr', 'week', 'month']
@@ -90,7 +90,9 @@ const disableApply = computed(() => {
 })
 
 const categoryOptions = computed(() => {
-  return newsStore.categoryOptions.filter((opt) => newsStore.activeCategories.includes(opt.value))
+  return newsStore
+    .categoryOptions(t)
+    .filter((opt) => newsStore.activeCategories.includes(opt.value))
 })
 
 function show() {

@@ -24,12 +24,12 @@ export const useMapStore = defineStore('map', {
   }),
   getters: {},
   actions: {
-    async initializeMap({ map, t, locale }) {
+    async initializeMap({ map, t }) {
       Loading.show()
 
       const newsStore = useNewsStore()
       await newsStore.fetchNewsItems()
-      await newsStore.fetchCategories(t)
+      await newsStore.fetchCategories()
 
       map.addControl(
         new StylesControl({

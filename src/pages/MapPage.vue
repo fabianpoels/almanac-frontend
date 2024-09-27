@@ -29,7 +29,7 @@ import { useMapStore } from '@/stores/mapStore'
 import { useNewsStore } from '@/stores/newsStore'
 
 import { useI18n } from 'vue-i18n'
-const { t, locale } = useI18n()
+const { t } = useI18n()
 
 // MAP STUFF
 // mapbox + plugins css
@@ -50,7 +50,7 @@ defineOptions({
 const defaultCenter = [35.4903, 33.8964]
 
 function mapLoaded(map) {
-  mapStore.initializeMap({ map, t, locale })
+  mapStore.initializeMap({ map, t })
 }
 
 const markers = computed(() => {

@@ -25,11 +25,13 @@ export const useNewsStore = defineStore('news', {
     customRange: { from: '', to: '' },
   }),
   getters: {
-    categoryOptions: (state) =>
-      Object.entries(state.categories).map(([key, category]) => ({
-        label: category.title,
-        value: key,
-      })),
+    categoryOptions: (state) => {
+      return (t) =>
+        Object.keys(state.categories).map((key) => ({
+          label: t(`category.${key}`),
+          value: key,
+        }))
+    },
     blankNewsItem: () => ({
       title: { en: '', ar: '' },
       category: '',
@@ -62,13 +64,12 @@ export const useNewsStore = defineStore('news', {
       this.adminNewsItems = data.map(parseNewsItem)
     },
 
-    async fetchCategories(t) {
+    async fetchCategories() {
       const { data } = await api.get('/categories')
       this.categoryFilter = []
       data.forEach((c) => {
         this.categoryFilter.push(c.key)
         this.categories[c.key] = {
-          title: t(`category.${c.key}`),
           color: c.color,
           icon: c.icon,
           active: c.active,

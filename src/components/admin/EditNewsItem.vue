@@ -69,7 +69,7 @@
             />
             <q-select
               v-model="localNewsItem.category"
-              :options="categoryOptions"
+              :options="newsStore.categoryOptions($t)"
               :label="$t('admin.news.category')"
               :disable="saving"
               class="q-mt-md"
@@ -132,17 +132,6 @@ const touched = ref(false)
 const saving = ref(false)
 const statusOptions = ['pending', 'published', 'archived'].map((option) => ({
   label: t(`admin.news.statuses.${option}`),
-  value: option,
-}))
-const categoryOptions = [
-  'red_zone',
-  'traffic_incident',
-  'protest',
-  'military',
-  'weather',
-  'misc',
-].map((option) => ({
-  label: t(`category.${option}`),
   value: option,
 }))
 
