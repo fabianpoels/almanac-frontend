@@ -1,15 +1,15 @@
 <template>
   <q-btn color="secondary" rounded :label="timeFilterLabel" class="q-ml-md">
     <q-menu v-model="showDateFilter" @before-show="show" :persistent="loading" fit>
-      <q-list separator>
+      <q-list dense>
         <q-item v-for="opt in presets" :key="opt">
           <q-item-section>
-            <q-radio v-model="span" :val="opt" :label="$t(`filter.${opt}`)" :key="opt" />
+            <q-radio v-model="span" :val="opt" :label="$t(`filter.${opt}`)" :key="opt" size="sm" />
           </q-item-section>
         </q-item>
         <q-item>
           <q-item-section>
-            <q-radio v-model="span" val="custom" :label="$t('filter.custom')" />
+            <q-radio v-model="span" val="custom" :label="$t('filter.custom')" size="sm" />
             <q-slide-transition>
               <q-date
                 minimal
@@ -49,6 +49,7 @@
         v-model="newsStore.categoryFilter"
         :options="categoryOptions"
         type="checkbox"
+        size="sm"
       />
     </q-menu>
   </q-btn>
