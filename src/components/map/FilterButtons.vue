@@ -40,7 +40,7 @@
     :disable="newsStore.activeCategories.length < 1"
     color="secondary"
     rounded
-    label="categories"
+    :label="$t('filter.categories')"
     class="q-ml-md"
   >
     <q-badge v-if="showCategoryWarning" color="red" floating> ! </q-badge>

@@ -21,9 +21,10 @@
           v-if="authStore.authenticated"
         />
         <sos-dialog v-model="showSos" />
+        <language-selector />
+        <q-btn icon="info" flat round @click="$router.push({ name: 'about' })" />
         <user-button v-if="authStore.authenticated" />
         <!-- <q-btn v-else @click="showLogin = true" flat>{{ $t('login.login') }}</q-btn> -->
-        <q-btn icon="info" flat round @click="$router.push({ name: 'about' })" />
       </q-toolbar>
     </q-header>
 
@@ -82,6 +83,7 @@ import AdminControls from '@/components/admin/AdminControls.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
 import SosDialog from '@/components/SosDialog.vue'
 import FilterButtons from '@/components/map/FilterButtons.vue'
+import LanguageSelector from '@/components/LanguageSelector.vue'
 
 defineOptions({
   name: 'MainLayout',
