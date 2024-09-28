@@ -16,8 +16,11 @@ const defaultSeen = DateTime.fromFormat('2024/08/31', dt.quasarDateFormat) //the
 
 export const useApplicationStore = defineStore('application', {
   state: () => ({
+    leftDrawerOpen: false,
     newestSeen: defaultSeen,
     seenNewsItems: [],
+    focusedNewsItem: null,
+    showFocusedNewsItemPopup: false,
   }),
   getters: {
     isNew: (state) => (newsItem) => !state.seenNewsItems.includes(newsItem.id),

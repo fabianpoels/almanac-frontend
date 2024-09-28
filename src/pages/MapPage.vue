@@ -11,17 +11,25 @@
       :attributionControl="false"
     >
       <MapboxNavigationControl position="bottom-right" visualizePitch />
+      <MapboxPopup
+        :lng-lat="focusedMarker.coordinates"
+        v-if="showFocusedNewsItemPopup"
+        @mb-close="applicationStore.showFocusedNewsItemPopup = false"
+      >
+        <CustomPopup :newsItem="focusedMarker.newsItem" :color="focusedMarker.color" />
+      </MapboxPopup>
       <template v-for="marker in markers" :key="marker.newsItem.id">
-        <MapboxMarker :lng-lat="marker.coordinates">
+        <MapboxMarker :lng-lat="marker.coordinates" :popup="true">
+          <template #popup>
+            <CustomPopup :newsItem="marker.newsItem" :color="marker.color" />
+          </template>
           <CustomPin
             :icon="marker.icon"
             :color="marker.color"
             :isNew="applicationStore.isNew(marker.newsItem)"
             @click="applicationStore.markAsSeen(marker.newsItem)"
+            :isDimmed="marker.dimmed"
           />
-          <template #popup>
-            <CustomPopup :newsItem="marker.newsItem" :color="marker.color" />
-          </template>
         </MapboxMarker>
       </template>
     </MapboxMap>
@@ -41,7 +49,12 @@ const { t } = useI18n()
 
 // MAP STUFF
 // mapbox + plugins css
-import { MapboxMap, MapboxMarker, MapboxNavigationControl } from '@studiometa/vue-mapbox-gl'
+import {
+  MapboxMap,
+  MapboxMarker,
+  MapboxNavigationControl,
+  MapboxPopup,
+} from '@studiometa/vue-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox-controls/styles/src/index.css'
 
@@ -81,16 +94,38 @@ const markers = computed(() => {
     if (!newsItem.geoData.features[0].geometry.type === 'Point') return
     const color = newsStore.categories[newsItem.category]?.color
     const icon = newsStore.categories[newsItem.category]?.icon
+    const dimmed =
+      applicationStore.focusedNewsItem && applicationStore.focusedNewsItem.id !== newsItem.id
     if (!color) return
     if (!icon) return
     result.push({
       coordinates: newsItem.geoData.features[0].geometry.coordinates,
       color,
       icon,
+      dimmed,
       newsItem,
     })
   })
   return result
+})
+
+const showFocusedNewsItemPopup = computed(() => {
+  return applicationStore.focusedNewsItem && applicationStore.showFocusedNewsItemPopup
+})
+
+const focusedMarker = computed(() => {
+  const newsItem = applicationStore.focusedNewsItem
+  if (!newsItem) return null
+  if (!newsItem.geoData?.features) return
+  if (!newsItem.geoData?.features[0]) return
+  if (!newsItem.geoData.features[0].geometry.type === 'Point') return
+  const color = newsStore.categories[newsItem.category]?.color
+
+  return {
+    coordinates: newsItem.geoData.features[0].geometry.coordinates,
+    color,
+    newsItem,
+  }
 })
 </script>
 <style>

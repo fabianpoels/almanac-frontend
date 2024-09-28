@@ -27,13 +27,17 @@
 
     <q-page-container>
       <map-page />
-      <q-page-sticky position="top-left" :offset="[18, 18]" v-if="!mapStore.leftDrawerOpen">
+      <q-page-sticky position="top-left" :offset="[18, 18]" v-if="!applicationStore.leftDrawerOpen">
         <q-btn round size="md" icon="feed" color="primary" @click="toggleLeftDrawer">
           <q-badge v-if="applicationStore.unseenNewsItemsCount > 0" color="red" floating>
             {{ applicationStore.unseenNewsItemsCount }}
           </q-badge>
         </q-btn>
-        <filter-buttons />
+        <focused-news-item
+          v-if="applicationStore.focusedNewsItem"
+          :newsItem="applicationStore.focusedNewsItem"
+        />
+        <filter-buttons v-else />
       </q-page-sticky>
     </q-page-container>
   </q-layout>
@@ -58,13 +62,14 @@ import LoginDialog from '@/components/LoginDialog.vue'
 import SosButton from '@/components/SosButton.vue'
 import FilterButtons from '@/components/map/FilterButtons.vue'
 import LanguageSelector from '@/components/LanguageSelector.vue'
+import FocusedNewsItem from '@/components/map/FocusedNewsItem.vue'
 
 defineOptions({
   name: 'MainLayout',
 })
 
 function toggleLeftDrawer() {
-  mapStore.leftDrawerOpen = !mapStore.leftDrawerOpen
+  applicationStore.leftDrawerOpen = !applicationStore.leftDrawerOpen
 }
 
 const showLogin = ref(false)

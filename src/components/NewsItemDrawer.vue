@@ -1,7 +1,7 @@
 <template>
   <q-drawer
     side="left"
-    v-model="mapStore.leftDrawerOpen"
+    v-model="applicationStore.leftDrawerOpen"
     overlay
     bordered
     class="q-pa-sm"
@@ -37,7 +37,7 @@
         unelevated
         color="primary"
         icon="chevron_left"
-        @click="mapStore.leftDrawerOpen = false"
+        @click="applicationStore.leftDrawerOpen = false"
       />
     </div>
 
@@ -72,7 +72,7 @@ async function refresh(done) {
     alert.error(t('map.errorLoading'))
   } finally {
     loading.value = false
-    if (done) done()
+    if (typeof done === 'function') done()
   }
 }
 

@@ -14,7 +14,6 @@ export const useMapStore = defineStore('map', {
     mapStyle: 'mapbox://styles/mapbox/standard',
     map: null,
     editMap: null,
-    leftDrawerOpen: false,
     draw: null,
     loadingMap: false,
   }),

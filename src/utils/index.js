@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+import map from './map'
 
 const quasarDateFormat = 'yyyy/MM/dd'
 const quasarTimeFormat = 'HH:mm'
@@ -51,4 +52,4 @@ const dt = {
   quasarTimeFormat,
 }
 
-export { dt }
+export { dt, map }

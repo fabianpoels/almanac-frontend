@@ -37,7 +37,7 @@
     </q-menu>
   </q-btn>
   <q-btn
-    :disable="newsStore.activeCategories.length < 1"
+    :disable="newsStore.activeCategories.length < 2"
     color="secondary"
     rounded
     :label="$t('filter.categories')"

@@ -83,8 +83,12 @@ const mapUtils = {
 
   moveMapToNewsItem: function ({ map, newsItem }) {
     const coords = center(newsItem.geoData).geometry.coordinates
-    map.easeTo({ center: coords, duration: 1000, zoom: 10 })
+    map.easeTo({ center: coords, duration: 1000, zoom: 12 })
+  },
+
+  resetZoom: function ({ map }) {
+    map.easeTo({ duration: 1000, zoom })
   },
 }
 
-export { mapUtils }
+export default mapUtils
