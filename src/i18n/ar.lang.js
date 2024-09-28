@@ -76,12 +76,17 @@ export default {
     wrong_email_or_password: 'البريد الإلكتروني أو كلمة المرور غير صحيحة',
   },
   map: {
+    errorLoading: 'حدث خطأ أثناء تحميل البيانات',
     styles: {
       standard: 'قياسي',
       satellite: 'قمر صناعي',
       terrain: 'تضاريس',
       traffic: 'حركة المرور',
     },
+  },
+  news: {
+    markAllAsSeen: 'تحديد الكل كمقروء',
+    noRefreshWhenCustom: 'التحديث معطل عند اختيار فترة زمنية مخصصة',
   },
   shared: {
     cancel: 'إلغاء',
