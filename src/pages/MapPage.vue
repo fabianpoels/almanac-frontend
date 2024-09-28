@@ -13,7 +13,12 @@
       <MapboxNavigationControl position="bottom-right" visualizePitch />
       <template v-for="marker in markers" :key="marker.newsItem.id">
         <MapboxMarker :lng-lat="marker.coordinates">
-          <CustomPin :icon="marker.icon" :color="marker.color" />
+          <CustomPin
+            :icon="marker.icon"
+            :color="marker.color"
+            :isNew="applicationStore.isNew(marker.newsItem)"
+            @click="applicationStore.markAsSeen(marker.newsItem)"
+          />
           <template #popup>
             <CustomPopup :newsItem="marker.newsItem" :color="marker.color" />
           </template>
@@ -25,8 +30,11 @@
 
 <script setup>
 import { computed } from 'vue'
+import { Loading } from 'quasar'
 import { useMapStore } from '@/stores/mapStore'
 import { useNewsStore } from '@/stores/newsStore'
+import { useApplicationStore } from '@/stores/applicationStore'
+import { alert } from '@/utils/alert'
 
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -42,6 +50,7 @@ import CustomPopup from '@/components/map/CustomPopup.vue'
 
 const mapStore = useMapStore()
 const newsStore = useNewsStore()
+const applicationStore = useApplicationStore()
 
 defineOptions({
   name: 'MapPage',
@@ -49,8 +58,19 @@ defineOptions({
 
 const defaultCenter = [35.4903, 33.8964]
 
-function mapLoaded(map) {
-  mapStore.initializeMap({ map, t })
+async function mapLoaded(map) {
+  Loading.show()
+  try {
+    await newsStore.fetchNewsItems()
+    await newsStore.fetchCategories()
+    await applicationStore.loadHasSeen()
+    mapStore.initializeMap({ map, t })
+  } catch (e) {
+    console.error(e)
+    alert.error(t('map.errorLoading'))
+  } finally {
+    Loading.hide()
+  }
 }
 
 const markers = computed(() => {

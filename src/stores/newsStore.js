@@ -60,7 +60,7 @@ export const useNewsStore = defineStore('news', {
     },
 
     async fetchAdminNewsItems() {
-      const { data } = await api.get('/a/news')
+      const { data } = await api.get('/admin/news')
       this.adminNewsItems = data.map(parseNewsItem)
     },
 
@@ -78,7 +78,7 @@ export const useNewsStore = defineStore('news', {
     },
 
     async createNewsItem(newsItem) {
-      const { data } = await api.post(`/a/news`, serializeForApi(newsItem))
+      const { data } = await api.post(`/admin/news`, serializeForApi(newsItem))
       const parsedNewsItem = parseNewsItem(data)
       this.adminNewsItems.unshift(parsedNewsItem)
     },
@@ -87,18 +87,7 @@ export const useNewsStore = defineStore('news', {
       const { data } = await api.put(`/a/news/${newsItem.id}`, serializeForApi(newsItem))
       const parsedNewsItem = parseNewsItem(data)
       const index = this.adminNewsItems.findIndex((ni) => ni.id === parsedNewsItem.id)
-      if (index > -1) {
-        this.adminNewsItems[index] = parsedNewsItem
-      }
-
-      // TODO: add updatenewsitem method in maputils
-      //
-      // const mapStore = useMapStore()
-      // mapUtils.drawNewsItem({
-      //   map: mapStore.map,
-      //   newsItem: parsedNewsItem,
-      //   categories: this.categories,
-      // })
+      if (index > -1) this.adminNewsItems[index] = parsedNewsItem
     },
   },
 })

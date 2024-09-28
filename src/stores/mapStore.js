@@ -1,14 +1,10 @@
 import { defineStore } from 'pinia'
-import { Loading } from 'quasar'
 
 // mapboxgl
 import mapboxgl from 'mapbox-gl'
 import StylesControl from '@mapbox-controls/styles'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
-
-// other stores
-import { useNewsStore } from '@/stores/newsStore'
 
 const defaultCenter = [35.4903, 33.8964]
 
@@ -25,12 +21,6 @@ export const useMapStore = defineStore('map', {
   getters: {},
   actions: {
     async initializeMap({ map, t }) {
-      Loading.show()
-
-      const newsStore = useNewsStore()
-      await newsStore.fetchNewsItems()
-      await newsStore.fetchCategories()
-
       map.addControl(
         new StylesControl({
           styles: [
@@ -68,7 +58,6 @@ export const useMapStore = defineStore('map', {
       // map.addControl(scale, 'bottom-left')
 
       this.map = map
-      Loading.hide()
     },
 
     initializeEditMap({ element, center, t, geoData }) {

@@ -19,23 +19,11 @@ export const useAuthStore = defineStore('auth', {
       this.user = data.user
       this.jwt = data.jwt
       this.startRefreshTokenTimer()
-
-      // const currentRoute = this.router.currentRoute.value
-      // if (currentRoute.query.redirect) {
-      //   const redirect = currentRoute.query.redirect
-      //   delete currentRoute.query.redirect
-      //   this.router.push({
-      //     name: redirect,
-      //     query: currentRoute.query,
-      //   })
-      // } else {
-      //   this.router.push({ name: 'map' })
-      // }
     },
 
     async logout() {
       try {
-        const response = await api.post('/auth/logout')
+        await api.post('/auth/logout')
       } catch (e) {
         console.log(e)
       }

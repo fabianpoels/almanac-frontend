@@ -31,7 +31,8 @@
     "vue": "^3.4.18",
     "vue-gtag": "^2.0.1",
     "vue-i18n": "^9.0.0",
-    "vue-router": "^4.0.0"
+    "vue-router": "^4.0.0",
+    "vue3-cookies": "^1.0.6"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^2.0.0",

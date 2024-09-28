@@ -1,5 +1,6 @@
 <template>
   <q-item>
+    <div v-if="applicationStore.isNew(newsItem)" class="red-dot" />
     <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
       <q-item-label caption>{{ description }}</q-item-label>
@@ -9,7 +10,7 @@
       <q-item-label caption>{{ dt.time(newsItem.timestamp) }}</q-item-label>
       <q-btn
         v-if="hasLocationData"
-        @click="moveToLocation(newsItem)"
+        @click="clicked()"
         round
         class="icon"
         size="xs"
@@ -31,6 +32,8 @@ import { useMapStore } from '@/stores/mapStore'
 const mapStore = useMapStore()
 import { useNewsStore } from '@/stores/newsStore'
 const newsStore = useNewsStore()
+import { useApplicationStore } from '@/stores/applicationStore'
+const applicationStore = useApplicationStore()
 
 const props = defineProps({
   newsItem: {
@@ -39,8 +42,9 @@ const props = defineProps({
   },
 })
 
-function moveToLocation(newsItem) {
-  mapUtils.moveMapToNewsItem({ newsItem, map: mapStore.map })
+function clicked() {
+  mapUtils.moveMapToNewsItem({ newsItem: props.newsItem, map: mapStore.map })
+  applicationStore.markAsSeen(props.newsItem)
 }
 
 const title = computed(() => {
@@ -68,8 +72,17 @@ const hasLocationData = computed(() => {
   return true
 })
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .icon {
   margin-top: 10px;
+}
+.red-dot {
+  position: absolute;
+  top: 10px;
+  left: 1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: $red;
 }
 </style>

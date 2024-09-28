@@ -33,6 +33,7 @@
     >
       {{ props.icon }}
     </i>
+    <div v-if="props.isNew" class="red-dot" />
   </div>
 </template>
 <script setup>
@@ -45,12 +46,25 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  isNew: {
+    type: Boolean,
+    default: false,
+  },
 })
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .map-icon {
   width: 28px;
   height: 28px;
   border-radius: 50%;
+}
+.red-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: $red;
 }
 </style>

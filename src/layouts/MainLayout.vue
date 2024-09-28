@@ -21,26 +21,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      side="left"
-      v-model="mapStore.leftDrawerOpen"
-      overlay
-      bordered
-      class="q-pa-sm"
-      style="width: 400px"
-    >
-      <news-item-list />
-      <div class="q-drawer-hide absolute" style="top: 15px; right: -17px">
-        <q-btn
-          dense
-          round
-          unelevated
-          color="primary"
-          icon="chevron_left"
-          @click="mapStore.leftDrawerOpen = false"
-        />
-      </div>
-    </q-drawer>
+    <news-item-drawer />
 
     <login-dialog v-model="showLogin" />
 
@@ -48,8 +29,8 @@
       <map-page />
       <q-page-sticky position="top-left" :offset="[18, 18]" v-if="!mapStore.leftDrawerOpen">
         <q-btn round size="md" icon="feed" color="primary" @click="toggleLeftDrawer">
-          <q-badge v-if="newsStore.activeNewsItems.length > 0" color="red" floating>
-            {{ newsStore.activeNewsItems.length }}
+          <q-badge v-if="applicationStore.unseenNewsItemsCount > 0" color="red" floating>
+            {{ applicationStore.unseenNewsItemsCount }}
           </q-badge>
         </q-btn>
         <filter-buttons />
@@ -61,17 +42,17 @@
 <script setup>
 import { ref } from 'vue'
 import { useMapStore } from '@/stores/mapStore'
-import { useNewsStore } from '@/stores/newsStore'
 import { useAuthStore } from '@/stores/authStore'
+import { useApplicationStore } from '@/stores/applicationStore'
 
 const mapStore = useMapStore()
-const newsStore = useNewsStore()
 const authStore = useAuthStore()
+const applicationStore = useApplicationStore()
 
 import UserButton from '@/components/_UserButton.vue'
 import LogoRound from '@/components/LogoRound.vue'
 import MapPage from '@/pages/MapPage.vue'
-import NewsItemList from '@/components/NewsItemList.vue'
+import NewsItemDrawer from '@/components/NewsItemDrawer.vue'
 import AdminControls from '@/components/admin/AdminControls.vue'
 import LoginDialog from '@/components/LoginDialog.vue'
 import SosButton from '@/components/SosButton.vue'
@@ -87,7 +68,6 @@ function toggleLeftDrawer() {
 }
 
 const showLogin = ref(false)
-const showSos = ref(false)
 </script>
 <style scoped>
 .title {

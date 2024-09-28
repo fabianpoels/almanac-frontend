@@ -61,6 +61,8 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import { useNewsStore } from '@/stores/newsStore'
 const newsStore = useNewsStore()
+import { useApplicationStore } from '@/stores/applicationStore'
+const applicationStore = useApplicationStore()
 
 import { dt } from '@/utils'
 
@@ -107,6 +109,7 @@ async function apply() {
     newsStore.timespan = span.value
     if (span.value === 'custom') newsStore.customRange = range.value
     await newsStore.fetchNewsItems()
+    await applicationStore.loadHasSeen()
     showDateFilter.value = false
   } catch (e) {
     console.log(e)

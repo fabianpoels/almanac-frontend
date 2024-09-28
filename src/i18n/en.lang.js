@@ -76,12 +76,17 @@ export default {
     wrong_email_or_password: 'Wrong email or password',
   },
   map: {
+    errorLoading: 'Something went wrong loading data',
     styles: {
       standard: 'Standard',
       satellite: 'Satellite',
       terrain: 'Terrain',
       traffic: 'Traffic',
     },
+  },
+  news: {
+    markAllAsSeen: 'Mark all as seen',
+    noRefreshWhenCustom: 'Refreshing is disabled when a custom timespan is selected',
   },
   shared: {
     cancel: 'Cancel',
