@@ -19,7 +19,7 @@
         <CustomPopup :newsItem="focusedMarker.newsItem" :color="focusedMarker.color" />
       </MapboxPopup>
       <template v-for="marker in markers" :key="marker.newsItem.id">
-        <MapboxMarker :lng-lat="marker.coordinates" :popup="true">
+        <MapboxMarker :lng-lat="marker.coordinates">
           <template #popup>
             <CustomPopup :newsItem="marker.newsItem" :color="marker.color" />
           </template>
@@ -27,7 +27,7 @@
             :icon="marker.icon"
             :color="marker.color"
             :isNew="applicationStore.isNew(marker.newsItem)"
-            @click="applicationStore.markAsSeen(marker.newsItem)"
+            @click="pinClicked(marker.newsItem)"
             :isDimmed="marker.dimmed"
           />
         </MapboxMarker>
@@ -127,6 +127,12 @@ const focusedMarker = computed(() => {
     newsItem,
   }
 })
+
+function pinClicked(newsItem) {
+  applicationStore.markAsSeen(newsItem)
+  applicationStore.focusedNewsItem = null
+  applicationStore.showFocusedNewsItemPopup = false
+}
 </script>
 <style>
 .map-container {
