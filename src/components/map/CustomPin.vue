@@ -30,7 +30,7 @@
     >
       {{ props.icon }}
     </i>
-    <div v-if="props.isNew" class="red-dot" />
+    <div v-if="props.isNew" class="red-dot" :class="{ dimmed: isDimmed }" />
   </div>
 </template>
 <script setup>
@@ -67,5 +67,8 @@ const props = defineProps({
   height: 10px;
   border-radius: 50%;
   background-color: $red;
+}
+.dimmed {
+  opacity: 25%;
 }
 </style>
