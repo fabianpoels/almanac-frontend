@@ -6,6 +6,7 @@
     bordered
     class="q-pa-sm"
     style="width: 400px"
+    behavior="mobile"
   >
     <div class="drawer-actions q-py-xs q-mb-sm">
       <q-btn

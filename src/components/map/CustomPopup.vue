@@ -9,7 +9,6 @@
     </div>
   </div>
   <p class="q-mt-sm">{{ newsItem.description[locale] }}</p>
-  `
 </template>
 <script setup>
 import { useI18n } from 'vue-i18n'
@@ -33,5 +32,11 @@ h6.popup-header {
   margin: 0;
   padding: 0;
   margin-bottom: 10px;
+  line-height: 1.35rem;
+}
+</style>
+<style>
+.mapboxgl-popup-content {
+  border-radius: 5px;
 }
 </style>
