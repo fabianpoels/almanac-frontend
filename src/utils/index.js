@@ -7,7 +7,7 @@ const quasarTimeFormat = 'HH:mm'
 const dt = {
   parseServerDatetime: function (string) {
     if (!string) return null
-    return DateTime.fromISO(string).setZone('Asia/Beirut')
+    return DateTime.fromISO(string) //.setZone('Asia/Beirut')
   },
 
   serializeDatetime: function (datetime) {
