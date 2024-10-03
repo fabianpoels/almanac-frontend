@@ -49,6 +49,8 @@ export default {
     '30days': 'آخر 30 يومًا',
     categories: 'الفئات',
     custom: 'مخصص',
+    filters: 'الفلاتر',
+    showUnreadNews: 'إظهار الأخبار غير المقروءة',
   },
   forms: {
     apply: 'تطبيق',

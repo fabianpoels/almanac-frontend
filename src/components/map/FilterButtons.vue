@@ -1,5 +1,8 @@
 <template>
-  <q-btn color="secondary" rounded :label="timeFilterLabel" class="q-ml-md">
+  <q-btn color="secondary" rounded icon="schedule" class="q-ml-md">
+    <div class="button-text q-ml-sm">
+      {{ timeFilterLabel }}
+    </div>
     <q-menu
       v-model="showDateFilter"
       @before-show="show"
@@ -45,19 +48,32 @@
     :disable="newsStore.activeCategories.length < 2"
     color="secondary"
     rounded
-    :label="$t('filter.categories')"
+    icon="filter_alt"
     class="q-ml-md"
   >
-    <q-badge v-if="showCategoryWarning" color="primary" floating>
-      {{ activeFilterCount }}
-    </q-badge>
-    <q-menu fit class="q-py-md q-px-sm">
-      <q-option-group
-        v-model="newsStore.categoryFilter"
-        :options="categoryOptions"
-        type="checkbox"
-        size="sm"
-      />
+    <div class="button-text q-ml-sm">
+      {{ $t('filter.filters') }}
+    </div>
+    <q-badge v-if="showFilterWarning" color="primary" floating rounded />
+    <q-menu fit class="q-py-md">
+      <q-list>
+        <q-item>
+          <q-item-section>
+            <q-toggle v-model="newsStore.showUnread" :label="$t('filter.showUnreadNews')" />
+          </q-item-section>
+        </q-item>
+        <q-separator />
+        <q-item>
+          <q-item-section>
+            <q-option-group
+              v-model="newsStore.categoryFilter"
+              :options="categoryOptions"
+              type="toggle"
+              size="md"
+            />
+          </q-item-section>
+        </q-item>
+      </q-list>
     </q-menu>
   </q-btn>
 </template>
@@ -79,7 +95,8 @@ const timeFilterLabel = computed(() => {
   return t(`filter.${newsStore.timespan}`)
 })
 
-const showCategoryWarning = computed(() => {
+const showFilterWarning = computed(() => {
+  if (!newsStore.showUnread) return true
   return newsStore.categoryFilter.length < newsStore.categoryOptions(t).length
 })
 
@@ -87,10 +104,6 @@ const categoryOptions = computed(() => {
   return newsStore
     .categoryOptions(t)
     .filter((opt) => newsStore.activeCategories.includes(opt.value))
-})
-
-const activeFilterCount = computed(() => {
-  return newsStore.categoryFilter.filter((f) => newsStore.activeCategories.includes(f)).length
 })
 
 const presets = ['12hr', '24hr', '48hr', '7days', '30days']
@@ -132,3 +145,10 @@ function validDates(date) {
   return date <= dt.todayAsQuasarDateString()
 }
 </script>
+<style scoped>
+@media only screen and (max-width: 500px) {
+  .button-text {
+    display: none;
+  }
+}
+</style>

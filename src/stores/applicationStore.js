@@ -6,9 +6,6 @@ const { cookies } = useCookies()
 
 const cookieString = 'AlmanacNewestSeen'
 
-import { useAuthStore } from './authStore'
-const authStore = useAuthStore()
-
 import { useNewsStore } from './newsStore'
 
 const defaultSeen = DateTime.fromFormat('2024/08/31', dt.quasarDateFormat) //the day the first item was parsed on PROD

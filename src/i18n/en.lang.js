@@ -49,6 +49,8 @@ export default {
     '30days': 'Last 30 days',
     categories: 'Categories',
     custom: 'Custom',
+    filters: 'Filters',
+    showUnreadNews: 'Show unread news',
   },
   forms: {
     apply: 'Apply',

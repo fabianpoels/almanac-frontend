@@ -2,6 +2,7 @@ import api from '@/api'
 import { defineStore } from 'pinia'
 import { DateTime } from 'luxon'
 import { dt } from '@/utils'
+import { useApplicationStore } from './applicationStore'
 
 function parseNewsItem(newsItem) {
   const timestamp = dt.parseServerDatetime(newsItem.timestamp)
@@ -21,6 +22,7 @@ export const useNewsStore = defineStore('news', {
     adminNewsItems: [],
     categories: {},
     categoryFilter: [],
+    showUnread: true,
     timespan: '24hr',
     customRange: { from: '', to: '' },
   }),
@@ -40,10 +42,14 @@ export const useNewsStore = defineStore('news', {
       status: 'published',
       geoData: {},
     }),
-    activeNewsItems: (state) =>
-      state.newsItems.filter(
-        (ni) => ni.status === 'published' && state.categoryFilter.includes(ni.category)
-      ),
+    activeNewsItems() {
+      const applicationStore = useApplicationStore()
+
+      return this.newsItems.filter((ni) => {
+        if (!this.showUnread && !applicationStore.isNew(ni)) return false
+        return ni.status === 'published' && this.categoryFilter.includes(ni.category)
+      })
+    },
     activeCategories() {
       return [...new Set(this.newsItems.map((i) => i.category))]
     },
