@@ -44,13 +44,7 @@
       </q-list>
     </q-menu>
   </q-btn>
-  <q-btn
-    :disable="newsStore.activeCategories.length < 2"
-    color="secondary"
-    rounded
-    icon="filter_alt"
-    class="q-ml-md"
-  >
+  <q-btn color="secondary" rounded icon="filter_alt" class="q-ml-md">
     <div class="button-text q-ml-sm">
       {{ $t('filter.filters') }}
     </div>
