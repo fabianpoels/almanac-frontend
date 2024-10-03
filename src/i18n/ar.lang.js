@@ -50,7 +50,7 @@ export default {
     categories: 'الفئات',
     custom: 'مخصص',
     filters: 'الفلاتر',
-    showUnreadNews: 'إظهار الأخبار غير المقروءة',
+    showReadNews: 'إظهار الأخبار المقروءة',
   },
   forms: {
     apply: 'تطبيق',

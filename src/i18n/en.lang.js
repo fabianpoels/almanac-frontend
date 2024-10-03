@@ -50,7 +50,7 @@ export default {
     categories: 'Categories',
     custom: 'Custom',
     filters: 'Filters',
-    showUnreadNews: 'Show unread news',
+    showReadNews: 'Show read news',
   },
   forms: {
     apply: 'Apply',

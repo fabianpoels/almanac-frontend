@@ -59,7 +59,7 @@
       <q-list>
         <q-item>
           <q-item-section>
-            <q-toggle v-model="newsStore.showUnread" :label="$t('filter.showUnreadNews')" />
+            <q-toggle v-model="newsStore.showUnread" :label="$t('filter.showReadNews')" />
           </q-item-section>
         </q-item>
         <q-separator />
