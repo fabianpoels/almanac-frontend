@@ -45,10 +45,10 @@ export default {
     '12hr': 'Last 12 hours',
     '24hr': 'Last 24 hours',
     '48hr': 'Last 48 hours',
+    '7days': 'Last 7 days',
+    '30days': 'Last 30 days',
     categories: 'Categories',
     custom: 'Custom',
-    month: 'This month',
-    week: 'This week',
   },
   forms: {
     apply: 'Apply',

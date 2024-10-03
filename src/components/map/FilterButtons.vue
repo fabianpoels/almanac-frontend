@@ -93,7 +93,7 @@ const activeFilterCount = computed(() => {
   return newsStore.categoryFilter.filter((f) => newsStore.activeCategories.includes(f)).length
 })
 
-const presets = ['12hr', '24hr', '48hr', 'week', 'month']
+const presets = ['12hr', '24hr', '48hr', '7days', '30days']
 const span = ref('24hr')
 const range = ref(null)
 const loading = ref(false)
