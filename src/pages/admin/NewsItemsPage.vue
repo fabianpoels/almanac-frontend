@@ -93,7 +93,7 @@ const columns = computed(() => {
     {
       name: 'location',
       label: 'location',
-      field: (row) => row.location,
+      field: (row) => row.locations.map((l) => `${l.description}; `),
       sortable: false,
     },
     {

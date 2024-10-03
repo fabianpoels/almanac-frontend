@@ -90,19 +90,23 @@ const markers = computed(() => {
   newsStore.activeNewsItems.forEach((newsItem) => {
     if (!newsItem.geoData?.features) return
     if (!newsItem.geoData?.features[0]) return
-    if (!newsItem.geoData.features[0].geometry.type === 'Point') return
+
     const color = newsStore.categories[newsItem.category]?.color
     const icon = newsStore.categories[newsItem.category]?.icon
     const dimmed =
       applicationStore.focusedNewsItem && applicationStore.focusedNewsItem.id !== newsItem.id
     if (!color) return
     if (!icon) return
-    result.push({
-      coordinates: newsItem.geoData.features[0].geometry.coordinates,
-      color,
-      icon,
-      dimmed,
-      newsItem,
+
+    newsItem.geoData.features.forEach((feature) => {
+      if (feature.geometry.type !== 'Point') return
+      result.push({
+        coordinates: feature.geometry.coordinates,
+        color,
+        icon,
+        dimmed,
+        newsItem,
+      })
     })
   })
   return result
