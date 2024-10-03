@@ -84,7 +84,7 @@ export const useNewsStore = defineStore('news', {
     },
 
     async updateNewsItem(newsItem) {
-      const { data } = await api.put(`/a/news/${newsItem.id}`, serializeForApi(newsItem))
+      const { data } = await api.put(`/admin/news/${newsItem.id}`, serializeForApi(newsItem))
       const parsedNewsItem = parseNewsItem(data)
       const index = this.adminNewsItems.findIndex((ni) => ni.id === parsedNewsItem.id)
       if (index > -1) this.adminNewsItems[index] = parsedNewsItem
