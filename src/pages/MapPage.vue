@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { Loading } from 'quasar'
 import { useMapStore } from '@/stores/mapStore'
 import { useNewsStore } from '@/stores/newsStore'
@@ -45,10 +45,16 @@ import { useApplicationStore } from '@/stores/applicationStore'
 import { alert } from '@/utils/alert'
 
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // MAP STUFF
 // mapbox + plugins css
+import mapboxgl from 'mapbox-gl'
+mapboxgl.setRTLTextPlugin(
+  'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.3.0/mapbox-gl-rtl-text.js',
+  null,
+  true // Lazy load the plugin
+)
 import {
   MapboxMap,
   MapboxMarker,
@@ -77,7 +83,7 @@ async function mapLoaded(map) {
     await newsStore.fetchNewsItems()
     await newsStore.fetchCategories()
     await applicationStore.loadHasSeen()
-    mapStore.initializeMap({ map, t })
+    mapStore.initializeMap({ map, t, locale })
   } catch (e) {
     console.error(e)
     alert.error(t('map.errorLoading'))
