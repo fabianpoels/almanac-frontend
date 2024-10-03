@@ -3,7 +3,7 @@
     <q-btn
       padding="xs sm"
       flat
-      label="EN"
+      label="English"
       style="border-right: 1px solid #fff"
       @click="$router.push({ name: $route.name, params: { lang: 'en' } })"
     />

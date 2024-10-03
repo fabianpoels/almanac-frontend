@@ -85,7 +85,7 @@ export default {
     },
   },
   news: {
-    markAllAsSeen: 'Mark all as seen',
+    markAllAsRead: 'Mark all as read',
     noRefreshWhenCustom: 'Refreshing is disabled when a custom timespan is selected',
   },
   shared: {

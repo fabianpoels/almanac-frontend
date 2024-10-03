@@ -85,7 +85,7 @@ export default {
     },
   },
   news: {
-    markAllAsSeen: 'تحديد الكل كمقروء',
+    markAllAsRead: 'تحديد الكل كمقروء',
     noRefreshWhenCustom: 'التحديث معطل عند اختيار فترة زمنية مخصصة',
   },
   shared: {
