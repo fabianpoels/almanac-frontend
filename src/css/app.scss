@@ -2,3 +2,45 @@
   --q-primary: #263238;
   --q-secondary: #044a43;
 }
+
+.text-red_zone {
+  color: $red_zone !important;
+}
+.bg-red_zone {
+  background: $red_zone !important;
+}
+
+.text-traffic_incident {
+  color: $traffic_incident !important;
+}
+.bg-traffic_incident {
+  background: $traffic_incident !important;
+}
+
+.text-protest {
+  color: $protest !important;
+}
+.bg-protest {
+  background: $protest !important;
+}
+
+.text-military {
+  color: $military !important;
+}
+.bg-military {
+  background: $military !important;
+}
+
+.text-weather {
+  color: $weather !important;
+}
+.bg-weather {
+  background: $weather !important;
+}
+
+.text-misc {
+  color: $misc !important;
+}
+.bg-misc {
+  background: $misc !important;
+}

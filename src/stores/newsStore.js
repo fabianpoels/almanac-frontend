@@ -29,9 +29,11 @@ export const useNewsStore = defineStore('news', {
   getters: {
     categoryOptions: (state) => {
       return (t) =>
-        Object.keys(state.categories).map((key) => ({
+        Object.entries(state.categories).map(([key, category]) => ({
           label: t(`category.${key}`),
           value: key,
+          color: category.color,
+          icon: category.icon,
         }))
     },
     blankNewsItem: () => ({

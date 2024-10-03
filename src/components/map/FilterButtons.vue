@@ -65,11 +65,12 @@
         <q-separator />
         <q-item>
           <q-item-section>
-            <q-option-group
-              v-model="newsStore.categoryFilter"
-              :options="categoryOptions"
-              type="toggle"
-              size="md"
+            <filter-toggle
+              v-for="categoryOption in categoryOptions"
+              :key="categoryOption.value"
+              :categoryOption="categoryOption"
+              :toggledOn="newsStore.categoryFilter.includes(categoryOption.value)"
+              @toggle="(val) => toggle(val, categoryOption.value)"
             />
           </q-item-section>
         </q-item>
@@ -85,6 +86,7 @@ import { useNewsStore } from '@/stores/newsStore'
 const newsStore = useNewsStore()
 import { useApplicationStore } from '@/stores/applicationStore'
 const applicationStore = useApplicationStore()
+import FilterToggle from '@/components/map/_FilterToggle.vue'
 
 import { dt } from '@/utils'
 
@@ -143,6 +145,14 @@ async function apply() {
 
 function validDates(date) {
   return date <= dt.todayAsQuasarDateString()
+}
+
+function toggle(val, category) {
+  if (val === true && !newsStore.categoryFilter.includes(category)) {
+    newsStore.categoryFilter.push(category)
+  } else {
+    newsStore.categoryFilter = newsStore.categoryFilter.filter((c) => c !== category)
+  }
 }
 </script>
 <style scoped>
