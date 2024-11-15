@@ -11,6 +11,14 @@
       :attributionControl="false"
     >
       <MapboxNavigationControl position="bottom-right" visualizePitch />
+      <template v-for="(poi, index) in pois" :key="`poi-${index}`">
+        <MapboxMarker :lng-lat="poi.coordinates">
+          <template #popup>
+            <div>{{ poi.name }}</div>
+          </template>
+          <CustomPoi :icon="poi.icon" />
+        </MapboxMarker>
+      </template>
       <MapboxPopup
         :lng-lat="focusedMarker.coordinates"
         v-if="showFocusedNewsItemPopup"
@@ -42,6 +50,7 @@ import { Loading } from 'quasar'
 import { useMapStore } from '@/stores/mapStore'
 import { useNewsStore } from '@/stores/newsStore'
 import { useApplicationStore } from '@/stores/applicationStore'
+import { usePoisStore } from '@/stores/poisStore'
 import { alert } from '@/utils/alert'
 
 import { useI18n } from 'vue-i18n'
@@ -60,10 +69,12 @@ import '@mapbox-controls/styles/src/index.css'
 
 import CustomPin from '@/components/map/CustomPin.vue'
 import CustomPopup from '@/components/map/CustomPopup.vue'
+import CustomPoi from '@/components/map/CustomPoi.vue'
 
 const mapStore = useMapStore()
 const newsStore = useNewsStore()
 const applicationStore = useApplicationStore()
+const poisStore = usePoisStore()
 
 defineOptions({
   name: 'MapPage',
@@ -76,6 +87,7 @@ async function mapLoaded(map) {
   try {
     await newsStore.fetchNewsItems()
     await newsStore.fetchCategories()
+    await poisStore.fetchPois()
     await applicationStore.loadHasSeen()
     mapStore.initializeMap({ map, t })
   } catch (e) {
@@ -104,6 +116,23 @@ const markers = computed(() => {
       icon,
       dimmed,
       newsItem,
+    })
+  })
+  return result
+})
+
+const pois = computed(() => {
+  const result = []
+  console.log(poisStore.pois)
+  poisStore.pois.forEach((poi) => {
+    if (!poi.geoData?.features) return
+    if (!poi.geoData?.features[0]) return
+    if (!poi.geoData.features[0].geometry.type === 'Point') return
+    if (!poi.icon) return
+    result.push({
+      coordinates: poi.geoData.features[0].geometry.coordinates,
+      name: poi.name,
+      icon: poi.icon,
     })
   })
   return result
