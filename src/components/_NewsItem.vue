@@ -36,6 +36,7 @@ const props = defineProps({
 function onClickItem() {
   applicationStore.showFocusedNewsItemPopup = false
   applicationStore.focusedNewsItem = props.newsItem
+  applicationStore.showFocusedNewsItemPopup = true
   applicationStore.leftDrawerOpen = false
   applicationStore.markAsSeen(props.newsItem)
 }

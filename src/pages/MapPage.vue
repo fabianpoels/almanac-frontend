@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { Loading } from 'quasar'
 import { useMapStore } from '@/stores/mapStore'
 import { useNewsStore } from '@/stores/newsStore'
@@ -54,10 +54,9 @@ import { usePoisStore } from '@/stores/poisStore'
 import { alert } from '@/utils/alert'
 
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // MAP STUFF
-// mapbox + plugins css
 import {
   MapboxMap,
   MapboxMarker,
@@ -89,7 +88,7 @@ async function mapLoaded(map) {
     await newsStore.fetchCategories()
     await poisStore.fetchPois()
     await applicationStore.loadHasSeen()
-    mapStore.initializeMap({ map, t })
+    mapStore.initializeMap({ map, t, locale })
   } catch (e) {
     console.error(e)
     alert.error(t('map.errorLoading'))
@@ -103,19 +102,23 @@ const markers = computed(() => {
   newsStore.activeNewsItems.forEach((newsItem) => {
     if (!newsItem.geoData?.features) return
     if (!newsItem.geoData?.features[0]) return
-    if (!newsItem.geoData.features[0].geometry.type === 'Point') return
+
     const color = newsStore.categories[newsItem.category]?.color
     const icon = newsStore.categories[newsItem.category]?.icon
     const dimmed =
       applicationStore.focusedNewsItem && applicationStore.focusedNewsItem.id !== newsItem.id
     if (!color) return
     if (!icon) return
-    result.push({
-      coordinates: newsItem.geoData.features[0].geometry.coordinates,
-      color,
-      icon,
-      dimmed,
-      newsItem,
+
+    newsItem.geoData.features.forEach((feature) => {
+      if (feature.geometry.type !== 'Point') return
+      result.push({
+        coordinates: feature.geometry.coordinates,
+        color,
+        icon,
+        dimmed,
+        newsItem,
+      })
     })
   })
   return result

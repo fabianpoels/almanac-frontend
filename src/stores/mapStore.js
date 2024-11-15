@@ -5,6 +5,7 @@ import mapboxgl from 'mapbox-gl'
 import StylesControl from '@mapbox-controls/styles'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
+import MapboxLanguage from '@mapbox/mapbox-gl-language'
 
 const defaultCenter = [35.4903, 33.8964]
 
@@ -13,13 +14,14 @@ export const useMapStore = defineStore('map', {
     mapboxApiKey: import.meta.env.VITE_MAPBOX_API_KEY,
     mapStyle: 'mapbox://styles/mapbox/standard',
     map: null,
+    mapLanguage: null,
     editMap: null,
     draw: null,
     loadingMap: false,
   }),
   getters: {},
   actions: {
-    async initializeMap({ map, t }) {
+    async initializeMap({ map, t, locale }) {
       map.addControl(
         new StylesControl({
           styles: [
@@ -47,6 +49,13 @@ export const useMapStore = defineStore('map', {
         }),
         'bottom-right'
       )
+
+      // language control
+      const language = new MapboxLanguage({
+        defaultLanguage: locale.value,
+      })
+      map.addControl(language)
+      this.mapLanguage = language
 
       // ADD SCALE
       // apparently this plugin breaks the map

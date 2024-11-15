@@ -2,6 +2,7 @@ import api from '@/api'
 import { defineStore } from 'pinia'
 import { DateTime } from 'luxon'
 import { dt } from '@/utils'
+import { useApplicationStore } from './applicationStore'
 
 function parseNewsItem(newsItem) {
   const timestamp = dt.parseServerDatetime(newsItem.timestamp)
@@ -21,15 +22,18 @@ export const useNewsStore = defineStore('news', {
     adminNewsItems: [],
     categories: {},
     categoryFilter: [],
+    showUnread: true,
     timespan: '24hr',
     customRange: { from: '', to: '' },
   }),
   getters: {
     categoryOptions: (state) => {
       return (t) =>
-        Object.keys(state.categories).map((key) => ({
+        Object.entries(state.categories).map(([key, category]) => ({
           label: t(`category.${key}`),
           value: key,
+          color: category.color,
+          icon: category.icon,
         }))
     },
     blankNewsItem: () => ({
@@ -40,10 +44,14 @@ export const useNewsStore = defineStore('news', {
       status: 'published',
       geoData: {},
     }),
-    activeNewsItems: (state) =>
-      state.newsItems.filter(
-        (ni) => ni.status === 'published' && state.categoryFilter.includes(ni.category)
-      ),
+    activeNewsItems() {
+      const applicationStore = useApplicationStore()
+
+      return this.newsItems.filter((ni) => {
+        if (!this.showUnread && !applicationStore.isNew(ni)) return false
+        return ni.status === 'published' && this.categoryFilter.includes(ni.category)
+      })
+    },
     activeCategories() {
       return [...new Set(this.newsItems.map((i) => i.category))]
     },
@@ -84,7 +92,7 @@ export const useNewsStore = defineStore('news', {
     },
 
     async updateNewsItem(newsItem) {
-      const { data } = await api.put(`/a/news/${newsItem.id}`, serializeForApi(newsItem))
+      const { data } = await api.put(`/admin/news/${newsItem.id}`, serializeForApi(newsItem))
       const parsedNewsItem = parseNewsItem(data)
       const index = this.adminNewsItems.findIndex((ni) => ni.id === parsedNewsItem.id)
       if (index > -1) this.adminNewsItems[index] = parsedNewsItem

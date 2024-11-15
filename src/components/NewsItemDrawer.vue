@@ -14,7 +14,7 @@
         unelevated
         color="secondary"
         size="sm"
-        :label="$t('news.markAllAsSeen')"
+        :label="$t('news.markAllAsRead')"
         @click="applicationStore.markAllActiveAsSeen"
         :disable="loading"
       />

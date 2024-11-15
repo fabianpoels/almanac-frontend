@@ -1,5 +1,8 @@
 <template>
-  <q-btn color="secondary" rounded :label="timeFilterLabel" class="q-ml-md">
+  <q-btn color="secondary" rounded icon="schedule" class="q-ml-md">
+    <div class="button-text q-ml-sm">
+      {{ timeFilterLabel }}
+    </div>
     <q-menu
       v-model="showDateFilter"
       @before-show="show"
@@ -41,23 +44,31 @@
       </q-list>
     </q-menu>
   </q-btn>
-  <q-btn
-    :disable="newsStore.activeCategories.length < 2"
-    color="secondary"
-    rounded
-    :label="$t('filter.categories')"
-    class="q-ml-md"
-  >
-    <q-badge v-if="showCategoryWarning" color="primary" floating>
-      {{ activeFilterCount }}
-    </q-badge>
-    <q-menu fit class="q-py-md q-px-sm">
-      <q-option-group
-        v-model="newsStore.categoryFilter"
-        :options="categoryOptions"
-        type="checkbox"
-        size="sm"
-      />
+  <q-btn color="secondary" rounded icon="filter_alt" class="q-ml-md">
+    <div class="button-text q-ml-sm">
+      {{ $t('filter.filters') }}
+    </div>
+    <q-badge v-if="showFilterWarning" color="primary" floating rounded />
+    <q-menu fit class="q-py-md">
+      <q-list>
+        <q-item>
+          <q-item-section>
+            <q-toggle v-model="newsStore.showUnread" :label="$t('filter.showReadNews')" />
+          </q-item-section>
+        </q-item>
+        <q-separator />
+        <q-item>
+          <q-item-section>
+            <filter-toggle
+              v-for="categoryOption in categoryOptions"
+              :key="categoryOption.value"
+              :categoryOption="categoryOption"
+              :toggledOn="newsStore.categoryFilter.includes(categoryOption.value)"
+              @toggle="(val) => toggle(val, categoryOption.value)"
+            />
+          </q-item-section>
+        </q-item>
+      </q-list>
     </q-menu>
   </q-btn>
 </template>
@@ -69,6 +80,7 @@ import { useNewsStore } from '@/stores/newsStore'
 const newsStore = useNewsStore()
 import { useApplicationStore } from '@/stores/applicationStore'
 const applicationStore = useApplicationStore()
+import FilterToggle from '@/components/map/_FilterToggle.vue'
 
 import { dt } from '@/utils'
 
@@ -79,7 +91,8 @@ const timeFilterLabel = computed(() => {
   return t(`filter.${newsStore.timespan}`)
 })
 
-const showCategoryWarning = computed(() => {
+const showFilterWarning = computed(() => {
+  if (!newsStore.showUnread) return true
   return newsStore.categoryFilter.length < newsStore.categoryOptions(t).length
 })
 
@@ -89,11 +102,7 @@ const categoryOptions = computed(() => {
     .filter((opt) => newsStore.activeCategories.includes(opt.value))
 })
 
-const activeFilterCount = computed(() => {
-  return newsStore.categoryFilter.filter((f) => newsStore.activeCategories.includes(f)).length
-})
-
-const presets = ['12hr', '24hr', '48hr', 'week', 'month']
+const presets = ['12hr', '24hr', '48hr', '7days', '30days']
 const span = ref('24hr')
 const range = ref(null)
 const loading = ref(false)
@@ -131,4 +140,19 @@ async function apply() {
 function validDates(date) {
   return date <= dt.todayAsQuasarDateString()
 }
+
+function toggle(val, category) {
+  if (val === true && !newsStore.categoryFilter.includes(category)) {
+    newsStore.categoryFilter.push(category)
+  } else {
+    newsStore.categoryFilter = newsStore.categoryFilter.filter((c) => c !== category)
+  }
+}
 </script>
+<style scoped>
+@media only screen and (max-width: 500px) {
+  .button-text {
+    display: none;
+  }
+}
+</style>

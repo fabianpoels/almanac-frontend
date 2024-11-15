@@ -45,10 +45,12 @@ export default {
     '12hr': 'آخر 12 ساعة',
     '24hr': 'آخر 24 ساعة',
     '48hr': 'آخر 48 ساعة',
+    '7days': 'آخر 7 أيام',
+    '30days': 'آخر 30 يومًا',
     categories: 'الفئات',
     custom: 'مخصص',
-    month: 'هذا الشهر',
-    week: 'هذا الأسبوع',
+    filters: 'الفلاتر',
+    showReadNews: 'إظهار الأخبار المقروءة',
   },
   forms: {
     apply: 'تطبيق',
@@ -85,7 +87,7 @@ export default {
     },
   },
   news: {
-    markAllAsSeen: 'تحديد الكل كمقروء',
+    markAllAsRead: 'تحديد الكل كمقروء',
     noRefreshWhenCustom: 'التحديث معطل عند اختيار فترة زمنية مخصصة',
   },
   shared: {

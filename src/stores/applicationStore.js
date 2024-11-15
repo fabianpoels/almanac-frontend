@@ -1,4 +1,3 @@
-import api from '@/api'
 import { defineStore } from 'pinia'
 import { DateTime } from 'luxon'
 import { dt } from '@/utils'
@@ -6,9 +5,6 @@ import { useCookies } from 'vue3-cookies'
 const { cookies } = useCookies()
 
 const cookieString = 'AlmanacNewestSeen'
-
-import { useAuthStore } from './authStore'
-const authStore = useAuthStore()
 
 import { useNewsStore } from './newsStore'
 

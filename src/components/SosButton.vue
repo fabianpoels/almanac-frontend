@@ -1,5 +1,7 @@
 <template>
-  <q-btn color="negative" icon="phone" label="SOS" @click="showDialog = true" class="q-mr-md" />
+  <q-btn color="negative" icon="phone" @click="showDialog = true" class="q-mr-md">
+    <div class="button-text q-ml-sm">SOS</div>
+  </q-btn>
   <q-dialog v-model="showDialog">
     <q-card>
       <q-card-section class="row items-center">
@@ -22,3 +24,10 @@ defineOptions({
   name: 'SosButton',
 })
 </script>
+<style scoped>
+@media only screen and (max-width: 500px) {
+  .button-text {
+    display: none;
+  }
+}
+</style>
