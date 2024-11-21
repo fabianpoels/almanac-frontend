@@ -25,6 +25,11 @@ const routes = [
         component: () => import('pages/admin/NewsItemsPage.vue'),
       },
       {
+        path: 'riskLevels',
+        name: 'adminRiskLevels',
+        component: () => import('pages/admin/RiskLevelsPage.vue'),
+      },
+      {
         path: 'users',
         name: 'adminUsers',
         component: () => import('pages/admin/UsersPage.vue'),

@@ -9,6 +9,7 @@ export default {
       addNewsItem: 'Add news item',
       map: 'Map',
       newsItems: 'News items',
+      riskLevels: 'Risk levels',
       users: 'Users',
     },
     news: {

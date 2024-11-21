@@ -10,6 +10,21 @@
       @mb-created="mapLoaded"
       :attributionControl="false"
     >
+      <!-- <template v-for="m in municipalities" :key="`munip-${m.osmId}`">
+        <MapboxSource :id="`munip-${m.osmId}`" :options="{ type: 'geojson', data: m.geoData }" />
+        <MapboxLayer
+          :id="`munip-${m.osmId}-layer`"
+          :options="{
+            source: `munip-${m.osmId}`,
+            type: 'fill',
+            paint: {
+              'fill-color': '#0080ff', // blue color fill
+              // 'line-width': 2,
+              'fill-opacity': 0.2,
+            },
+          }"
+        />
+      </template> -->
       <MapboxNavigationControl position="bottom-right" visualizePitch />
       <template v-for="(poi, index) in pois" :key="`poi-${index}`">
         <MapboxMarker :lng-lat="poi.coordinates">
@@ -62,6 +77,8 @@ import {
   MapboxMarker,
   MapboxNavigationControl,
   MapboxPopup,
+  MapboxSource,
+  MapboxLayer,
 } from '@studiometa/vue-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox-controls/styles/src/index.css'
@@ -126,7 +143,6 @@ const markers = computed(() => {
 
 const pois = computed(() => {
   const result = []
-  console.log(poisStore.pois)
   poisStore.pois.forEach((poi) => {
     if (!poi.geoData?.features) return
     if (!poi.geoData?.features[0]) return

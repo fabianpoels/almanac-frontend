@@ -15,6 +15,12 @@
           </q-item-section>
           <q-item-section>{{ $t('admin.menu.newsItems') }}</q-item-section>
         </q-item>
+        <q-item clickable v-close-popup @click="router.push({ name: 'adminRiskLevels' })">
+          <q-item-section avatar>
+            <q-avatar icon="warning" />
+          </q-item-section>
+          <q-item-section>{{ $t('admin.menu.riskLevels') }}</q-item-section>
+        </q-item>
         <q-item clickable v-close-popup @click="router.push({ name: 'adminUsers' })">
           <q-item-section avatar>
             <q-avatar icon="people" />
