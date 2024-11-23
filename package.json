@@ -14,7 +14,7 @@
     "build": "quasar build"
   },
   "dependencies": {
-    "@mapbox-controls/styles": "^2.1.0",
+    "@mapbox-controls/styles": "^3.0.0",
     "@mapbox/mapbox-gl-draw": "^1.4.3",
     "@mapbox/mapbox-gl-geocoder": "^5.0.3",
     "@mapbox/mapbox-gl-language": "^1.0.1",
@@ -23,16 +23,16 @@
     "@turf/center": "^7.1.0",
     "@turf/center-of-mass": "^7.1.0",
     "@turf/centroid": "^7.1.0",
-    "axios": "^1.7.5",
+    "axios": "^1.7.7",
     "luxon": "^3.5.0",
     "map-promisified": "^0.4.0",
-    "mapbox-gl": "^3.6.0",
-    "pinia": "^2.2.2",
-    "quasar": "^2.16.9",
-    "vue": "^3.4.18",
+    "mapbox-gl": "^3.8.0",
+    "pinia": "^2.2.6",
+    "quasar": "^2.17.4",
+    "vue": "^3.5.13",
     "vue-gtag": "^2.0.1",
-    "vue-i18n": "^9.0.0",
-    "vue-router": "^4.0.0",
+    "vue-i18n": "^10.0.4",
+    "vue-router": "^4.4.5",
     "vue3-cookies": "^1.0.6"
   },
   "devDependencies": {
