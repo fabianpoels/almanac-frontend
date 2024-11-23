@@ -29,6 +29,18 @@ export default {
       },
       title: 'Title',
     },
+    riskLevels: {
+      addRiskLevel: 'Add risk level',
+      deleteRiskLevel: 'Delete risk level',
+      levels: {
+        minor: 'Minor',
+        moderate: 'Moderate',
+        severe: 'Severe',
+      },
+      municipalities: 'Municipalities',
+      riskLevel: 'Risk level',
+      riskLevels: 'Risk levels',
+    },
     users: {
       error_loading_users: 'Error loading users',
       users: 'Users',
@@ -56,6 +68,7 @@ export default {
   forms: {
     apply: 'Apply',
     cancel: 'Cancel',
+    delete: 'Delete',
     edit: 'Edit',
     editLocation: 'Edit location',
     errorSaving: 'Error saving',

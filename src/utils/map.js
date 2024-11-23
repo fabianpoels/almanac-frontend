@@ -81,6 +81,25 @@ const mapUtils = {
     })
   },
 
+  drawRiskLevels: function ({ map, riskLevels }) {
+    riskLevels.forEach((rl) => {
+      const id = `rl-${rl.id}`
+      if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: rl.geoData })
+      if (!map.getLayer(id)) {
+        map.addLayer({
+          id: id,
+          type: 'fill',
+          source: id,
+          layout: {},
+          paint: {
+            'fill-color': rl.color,
+            'fill-opacity': 0.2,
+          },
+        })
+      }
+    })
+  },
+
   moveMapToNewsItem: function ({ map, newsItem }) {
     const coords = center(newsItem.geoData).geometry.coordinates
     map.easeTo({ center: coords, duration: 1000, zoom: 12 })

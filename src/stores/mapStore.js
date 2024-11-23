@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import { useRiskLevelsStore } from './riskLevelsStore'
+import { map as mapUtils } from '@/utils'
 
 // mapboxgl
 import mapboxgl from 'mapbox-gl'
@@ -12,12 +14,13 @@ const defaultCenter = [35.4903, 33.8964]
 export const useMapStore = defineStore('map', {
   state: () => ({
     mapboxApiKey: import.meta.env.VITE_MAPBOX_API_KEY,
-    mapStyle: 'mapbox://styles/mapbox/standard',
+    mapStyle: 'mapbox://styles/mapbox/light-v11',
     map: null,
     mapLanguage: null,
     editMap: null,
     draw: null,
     loadingMap: false,
+    showRiskLevels: true,
   }),
   getters: {},
   actions: {
@@ -64,6 +67,16 @@ export const useMapStore = defineStore('map', {
       //   unit: 'metric',
       // })
       // map.addControl(scale, 'bottom-left')
+
+      const riskLevelsStore = useRiskLevelsStore()
+      mapUtils.drawRiskLevels({ map, riskLevels: riskLevelsStore.mapRiskLevels })
+
+      map.on('style.load', (val) => {
+        if (this.map.getStyle().sprite === 'mapbox://sprites/mapbox/light-v11') {
+          const riskLevelsStore = useRiskLevelsStore()
+          mapUtils.drawRiskLevels({ map, riskLevels: riskLevelsStore.mapRiskLevels })
+        }
+      })
 
       this.map = map
     },

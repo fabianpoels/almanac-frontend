@@ -10,21 +10,6 @@
       @mb-created="mapLoaded"
       :attributionControl="false"
     >
-      <!-- <template v-for="m in municipalities" :key="`munip-${m.osmId}`">
-        <MapboxSource :id="`munip-${m.osmId}`" :options="{ type: 'geojson', data: m.geoData }" />
-        <MapboxLayer
-          :id="`munip-${m.osmId}-layer`"
-          :options="{
-            source: `munip-${m.osmId}`,
-            type: 'fill',
-            paint: {
-              'fill-color': '#0080ff', // blue color fill
-              // 'line-width': 2,
-              'fill-opacity': 0.2,
-            },
-          }"
-        />
-      </template> -->
       <MapboxNavigationControl position="bottom-right" visualizePitch />
       <template v-for="(poi, index) in pois" :key="`poi-${index}`">
         <MapboxMarker :lng-lat="poi.coordinates">
@@ -66,6 +51,7 @@ import { useMapStore } from '@/stores/mapStore'
 import { useNewsStore } from '@/stores/newsStore'
 import { useApplicationStore } from '@/stores/applicationStore'
 import { usePoisStore } from '@/stores/poisStore'
+import { useRiskLevelsStore } from '@/stores/riskLevelsStore'
 import { alert } from '@/utils/alert'
 
 import { useI18n } from 'vue-i18n'
@@ -91,6 +77,7 @@ const mapStore = useMapStore()
 const newsStore = useNewsStore()
 const applicationStore = useApplicationStore()
 const poisStore = usePoisStore()
+const riskLevelsStore = useRiskLevelsStore()
 
 defineOptions({
   name: 'MapPage',
@@ -104,6 +91,7 @@ async function mapLoaded(map) {
     await newsStore.fetchNewsItems()
     await newsStore.fetchCategories()
     await poisStore.fetchPois()
+    await riskLevelsStore.fetchRiskLevels()
     await applicationStore.loadHasSeen()
     mapStore.initializeMap({ map, t, locale })
   } catch (e) {
