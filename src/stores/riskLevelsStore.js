@@ -28,6 +28,7 @@ export const useRiskLevelsStore = defineStore('riskLevels', {
 
     mapRiskLevels() {
       return this.riskLevels.map((rl) => ({
+        id: rl.id,
         level: rl.level,
         color: this.riskColors[rl.level],
         geoData: {
