@@ -14,6 +14,11 @@
         <h5 class="q-my-sm">{{ $t('admin.riskLevels.riskLevels') }}</h5>
         <q-btn class="q-ml-md" @click="showAdd = true" flat round :disable="loading" icon="add" />
       </template>
+      <template #body-cell-municipalities="props">
+        <q-td :props="props">
+          {{ props.value.length }}
+        </q-td>
+      </template>
       <template #body-cell-level="props">
         <q-td :props="props">
           <q-badge
@@ -24,6 +29,9 @@
       </template>
       <template #body-cell-actions="props">
         <q-td :props="props">
+          <q-btn @click="editLevel(props.row)" flat rounded color="primary">
+            {{ $t('forms.edit') }}
+          </q-btn>
           <q-btn @click="deleteLevel(props.row)" flat rounded color="primary">
             {{ $t('forms.delete') }}
           </q-btn>
@@ -32,6 +40,7 @@
     </q-table>
     <add-risk-level v-model="showAdd" :riskLevel="riskLevelsStore.blankRiskLevel" />
     <delete-risk-level v-model="showDelete" :riskLevel="levelToDelete" />
+    <edit-risk-level v-model="showEdit" :riskLevel="levelToEdit" />
   </q-page>
 </template>
 
@@ -46,11 +55,19 @@ const riskLevelsStore = useRiskLevelsStore()
 
 import AddRiskLevel from '@/components/admin/AddRiskLevel.vue'
 import DeleteRiskLevel from '@/components/admin/DeleteRiskLevel.vue'
+import EditRiskLevel from '@/components/admin/EditRiskLevel.vue'
 
 const loading = ref(false)
 const showAdd = ref(false)
+const showEdit = ref(false)
 const showDelete = ref(false)
+const levelToEdit = ref({})
 const levelToDelete = ref({})
+
+function editLevel(level) {
+  levelToEdit.value = level
+  showEdit.value = true
+}
 
 function deleteLevel(level) {
   levelToDelete.value = level

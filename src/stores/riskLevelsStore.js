@@ -63,6 +63,16 @@ export const useRiskLevelsStore = defineStore('riskLevels', {
       this.riskLevels.unshift(parsedRiskLevel)
     },
 
+    async updateRiskLevel(riskLevel) {
+      const { data } = await api.put(`/admin/riskLevels/${riskLevel.id}`, {
+        level: riskLevel.level,
+        municipalities: riskLevel.municipalities.map((m) => m.value),
+      })
+      const parsedRiskLevel = parseRiskLevel(data)
+      const index = this.riskLevels.findIndex((rl) => rl.id === parsedRiskLevel.id)
+      if (index > -1) this.riskLevels[index] = parsedRiskLevel
+    },
+
     async deleteRiskLevel(riskLevel) {
       const response = await api.delete(`/admin/riskLevels/${riskLevel.id}`)
       if (response.status === 200) {

@@ -32,6 +32,7 @@ export default {
     riskLevels: {
       addRiskLevel: 'Add risk level',
       deleteRiskLevel: 'Delete risk level',
+      editRiskLevel: 'Edit risk level',
       levels: {
         minor: 'Minor',
         moderate: 'Moderate',
