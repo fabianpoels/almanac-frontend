@@ -23,7 +23,7 @@ export const useNewsStore = defineStore('news', {
     categories: {},
     categoryFilter: [],
     showUnread: true,
-    timespan: '24hr',
+    timespan: '48hr',
     customRange: { from: '', to: '' },
   }),
   getters: {
