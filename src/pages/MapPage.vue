@@ -52,6 +52,7 @@ import { useNewsStore } from '@/stores/newsStore'
 import { useApplicationStore } from '@/stores/applicationStore'
 import { usePoisStore } from '@/stores/poisStore'
 import { useRiskLevelsStore } from '@/stores/riskLevelsStore'
+import { useReportsStore } from '@/stores/reportsStore'
 import { alert } from '@/utils/alert'
 
 import { useI18n } from 'vue-i18n'
@@ -78,6 +79,7 @@ const newsStore = useNewsStore()
 const applicationStore = useApplicationStore()
 const poisStore = usePoisStore()
 const riskLevelsStore = useRiskLevelsStore()
+const reportsStore = useReportsStore()
 
 defineOptions({
   name: 'MapPage',
@@ -92,6 +94,7 @@ async function mapLoaded(map) {
     await newsStore.fetchCategories()
     await poisStore.fetchPois()
     await riskLevelsStore.fetchRiskLevels()
+    await reportsStore.fetchLatestReport()
     await applicationStore.loadHasSeen()
     mapStore.initializeMap({ map, t, locale })
   } catch (e) {

@@ -105,6 +105,20 @@ export default {
     markAllAsRead: 'Mark all as read',
     noRefreshWhenCustom: 'Refreshing is disabled when a custom timespan is selected',
   },
+  reports: {
+    no_report: 'No report',
+    reports: 'Reports',
+    sections: {
+      early_warning: 'Early warning indicators',
+      economy: 'Economic situation',
+      intelligence: 'Intelligence highlights',
+      misc: 'Miscellaneous events',
+      overview: 'Overview',
+      politics: 'Political situation',
+      recommendations: 'Recommendations',
+      security: 'Security incidents',
+    },
+  },
   shared: {
     cancel: 'Cancel',
   },

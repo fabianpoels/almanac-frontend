@@ -10,6 +10,11 @@ const dt = {
     return DateTime.fromISO(string) //.setZone('Asia/Beirut')
   },
 
+  parseSimpleDate: function (string) {
+    if (!string) return null
+    return DateTime.fromFormat(string, 'yyyyMMdd')
+  },
+
   serializeDatetime: function (datetime) {
     if (!datetime) return ''
     if (!DateTime.isDateTime(datetime)) return ''

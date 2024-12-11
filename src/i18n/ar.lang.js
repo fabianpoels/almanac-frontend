@@ -9,6 +9,7 @@ export default {
       addNewsItem: 'إضافة خبر جديد',
       map: 'الخريطة',
       newsItems: 'الأخبار',
+      riskLevels: 'مستويات المخاطر',
       users: 'المستخدمون',
     },
     news: {
@@ -27,6 +28,19 @@ export default {
         published: 'منشور',
       },
       title: 'العنوان',
+    },
+    riskLevels: {
+      addRiskLevel: 'إضافة مستوى مخاطر',
+      deleteRiskLevel: 'حذف مستوى مخاطر',
+      editRiskLevel: 'تعديل مستوى مخاطر',
+      levels: {
+        minor: 'بسيط',
+        moderate: 'معتدل',
+        severe: 'شديد',
+      },
+      municipalities: 'البلديات',
+      riskLevel: 'مستوى المخاطر',
+      riskLevels: 'مستويات المخاطر',
     },
     users: {
       error_loading_users: 'خطأ في تحميل المستخدمين',
@@ -55,6 +69,7 @@ export default {
   forms: {
     apply: 'تطبيق',
     cancel: 'إلغاء',
+    delete: 'حذف',
     edit: 'تعديل',
     editLocation: 'تعديل الموقع',
     errorSaving: 'خطأ في الحفظ',
@@ -89,6 +104,20 @@ export default {
   news: {
     markAllAsRead: 'تحديد الكل كمقروء',
     noRefreshWhenCustom: 'التحديث معطل عند اختيار فترة زمنية مخصصة',
+  },
+  reports: {
+    no_report: 'لا توجد تقارير',
+    reports: 'التقارير',
+    sections: {
+      early_warning: 'مؤشرات الإنذار المبكر',
+      economy: 'الوضع الاقتصادي',
+      intelligence: 'النقاط الرئيسية الاستخباراتية',
+      misc: 'أحداث متنوعة',
+      overview: 'نظرة عامة',
+      politics: 'الوضع السياسي',
+      recommendations: 'توصيات',
+      security: 'الحوادث الأمنية',
+    },
   },
   shared: {
     cancel: 'إلغاء',
