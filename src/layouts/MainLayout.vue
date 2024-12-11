@@ -29,7 +29,7 @@
       <map-page />
       <q-page-sticky position="top-left" :offset="[18, 18]" v-if="!applicationStore.leftDrawerOpen">
         <div>
-          <q-btn round size="md" icon="feed" color="primary" @click="toggleLeftDrawer">
+          <q-btn round size="md" icon="list" color="primary" @click="toggleLeftDrawer">
             <q-badge v-if="applicationStore.unseenNewsItemsCount > 0" color="red" floating>
               {{ applicationStore.unseenNewsItemsCount }}
             </q-badge>
@@ -46,7 +46,7 @@
           v-if="!!reportsStore.latestReport"
           round
           size="md"
-          icon="report"
+          icon="feed"
           color="primary"
           @click="showReportsDialog = true"
         >
