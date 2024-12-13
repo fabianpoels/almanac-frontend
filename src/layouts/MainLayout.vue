@@ -42,14 +42,7 @@
         </div>
       </q-page-sticky>
       <q-page-sticky position="top-right" :offset="[18, 18]">
-        <q-btn
-          v-if="!!reportsStore.latestReport"
-          round
-          size="md"
-          icon="feed"
-          color="primary"
-          @click="showReportsDialog = true"
-        >
+        <q-btn round size="md" icon="feed" color="primary" @click="showReportsDialog = true">
           <!-- <div class="button-text q-ml-sm">{{ $t('reports.reports') }}</div> -->
         </q-btn>
       </q-page-sticky>

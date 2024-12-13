@@ -54,6 +54,7 @@ import { usePoisStore } from '@/stores/poisStore'
 import { useRiskLevelsStore } from '@/stores/riskLevelsStore'
 import { useReportsStore } from '@/stores/reportsStore'
 import { alert } from '@/utils/alert'
+import { dt } from '@/utils'
 
 import { useI18n } from 'vue-i18n'
 const { t, locale } = useI18n()
@@ -94,7 +95,7 @@ async function mapLoaded(map) {
     await newsStore.fetchCategories()
     await poisStore.fetchPois()
     await riskLevelsStore.fetchRiskLevels()
-    await reportsStore.fetchLatestReport()
+    await reportsStore.fetchReport(dt.todayAsSimpleDateString())
     await applicationStore.loadHasSeen()
     mapStore.initializeMap({ map, t, locale })
   } catch (e) {

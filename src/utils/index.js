@@ -29,12 +29,23 @@ const dt = {
     return datetime.toRFC2822()
   },
 
+  report: function (datetime, locale) {
+    return datetime.toLocaleString(
+      { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' },
+      { locale }
+    )
+  },
+
   time: function (datetime) {
     return datetime.toFormat('HH:mm')
   },
 
   todayAsQuasarDateString: function () {
     return DateTime.now().toFormat(quasarDateFormat)
+  },
+
+  todayAsSimpleDateString: function () {
+    return DateTime.now().toFormat('yyyyMMdd')
   },
 
   toQuasarDateString: function (datetime) {
@@ -51,6 +62,10 @@ const dt = {
 
   parseQuasarTimeString: function (string) {
     return DateTime.fromFormat(string, quasarTimeFormat)
+  },
+
+  now: function () {
+    return DateTime.now()
   },
 
   quasarDateFormat,

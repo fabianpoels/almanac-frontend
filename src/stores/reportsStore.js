@@ -10,13 +10,22 @@ function parseReport(report) {
 
 export const useReportsStore = defineStore('reports', {
   state: () => ({
-    latestReport: null,
+    report: null,
+    firstReportDate: dt.parseSimpleDate('20241211'),
   }),
   getters: {},
   actions: {
-    async fetchLatestReport() {
-      const { data } = await api.get('/latestReport')
-      this.latestReport = parseReport(data)
+    async fetchReport(dateString) {
+      try {
+        const { data } = await api.get(`/report?date=${dateString}`)
+        this.report = parseReport(data)
+      } catch (e) {
+        if (e.status === 404) {
+          this.report = null
+        } else {
+          throw e
+        }
+      }
     },
   },
 })

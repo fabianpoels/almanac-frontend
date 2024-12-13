@@ -1,29 +1,75 @@
 <template>
   <q-dialog v-model="showDialog">
-    <q-card class="q-pa-xl" v-if="report">
-      <div class="text-h2">{{ report.date.toFormat('yyyy/MM/dd') }}</div>
-      <template v-for="section in sections" :key="section">
-        <div v-if="report.reportContent[section][locale]" class="q-mt-lg">
-          <div class="text-h5">{{ $t(`reports.sections.${section}`) }}</div>
-          <div>{{ report.reportContent[section][locale] }}</div>
-        </div>
-      </template>
-    </q-card>
-    <q-card class="q-pa-xl" v-else>
-      {{ $t('reports.no_report') }}
+    <q-card>
+      <q-toolbar>
+        <q-btn-dropdown
+          stretch
+          flat
+          :label="dt.report(dt.parseQuasarDateString(date), locale)"
+          :disable="loading"
+          v-model="showDateMenu"
+        >
+          <q-date
+            v-model="date"
+            minimal
+            :disable="loading"
+            @update:model-value="(val) => fetchReport(val)"
+            :options="(date) => selectableDate(date)"
+          />
+        </q-btn-dropdown>
+        <q-space />
+        <q-btn flat round dense icon="close" v-close-popup />
+      </q-toolbar>
+      <q-card-section v-if="report" class="scroll report-content">
+        <template v-for="section in sections" :key="section">
+          <div v-if="report.reportContent[section][locale]" class="q-mb-lg">
+            <div class="text-h5">{{ $t(`reports.sections.${section}`) }}</div>
+            <div>{{ report.reportContent[section][locale] }}</div>
+          </div>
+        </template>
+      </q-card-section>
+      <q-card-section v-else class="scroll report-content">
+        {{ $t('reports.no_report') }}
+      </q-card-section>
     </q-card>
   </q-dialog>
 </template>
 <script setup>
-import { defineModel, computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useReportsStore } from '@/stores/reportsStore'
 import { useI18n } from 'vue-i18n'
+import { dt } from '@/utils'
 
 const { locale } = useI18n()
 const reportsStore = useReportsStore()
 const showDialog = defineModel()
+const loading = ref(false)
+const showDateMenu = ref(false)
+const date = ref(dt.todayAsQuasarDateString())
 
-const report = computed(() => reportsStore.latestReport)
+const report = computed(() => reportsStore.report)
+
+async function fetchReport(dateString) {
+  let date = dt.parseQuasarDateString(dateString)
+  if (!date.isValid) {
+    console.error('invalid date format')
+    return
+  }
+  loading.value = true
+  showDateMenu.value = false
+  try {
+    await reportsStore.fetchReport(date.toFormat('yyyyMMdd'))
+  } catch (e) {
+    console.error(e)
+  }
+  loading.value = false
+}
+
+function selectableDate(quasarDateString) {
+  const date = dt.parseQuasarDateString(quasarDateString)
+
+  return date <= dt.now() && date >= reportsStore.firstReportDate
+}
 
 const sections = [
   'overview',
@@ -36,3 +82,9 @@ const sections = [
   'recommendations',
 ]
 </script>
+<style scoped>
+.report-content {
+  height: 80vh;
+  min-width: 560px;
+}
+</style>
