@@ -2,21 +2,17 @@
   <q-dialog v-model="showDialog">
     <q-card>
       <q-toolbar>
-        <q-btn-dropdown
-          stretch
-          flat
-          :label="dt.report(dt.parseQuasarDateString(date), locale)"
-          :disable="loading"
-          v-model="showDateMenu"
-        >
-          <q-date
-            v-model="date"
-            minimal
-            :disable="loading"
-            @update:model-value="(val) => fetchReport(val)"
-            :options="(date) => selectableDate(date)"
-          />
-        </q-btn-dropdown>
+        <q-btn :label="dt.report(dt.parseQuasarDateString(date), locale)" :disable="loading">
+          <q-menu v-model="showDateMenu" fit>
+            <q-date
+              v-model="date"
+              minimal
+              :disable="loading"
+              @update:model-value="(val) => fetchReport(val)"
+              :options="(date) => selectableDate(date)"
+            />
+          </q-menu>
+        </q-btn>
         <q-space />
         <q-btn flat round dense icon="close" v-close-popup />
       </q-toolbar>
@@ -85,6 +81,6 @@ const sections = [
 <style scoped>
 .report-content {
   height: 80vh;
-  min-width: 560px;
+  /* min-width: 560px; */
 }
 </style>
