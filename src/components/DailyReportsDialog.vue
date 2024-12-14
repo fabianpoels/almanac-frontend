@@ -2,7 +2,12 @@
   <q-dialog v-model="showDialog">
     <q-card>
       <q-toolbar>
-        <q-btn :label="dt.report(dt.parseQuasarDateString(date), locale)" :disable="loading">
+        <q-btn
+          flat
+          :label="dt.report(dt.parseQuasarDateString(date), locale)"
+          :disable="loading"
+          :icon-right="showDateMenu ? 'arrow_drop_up' : 'arrow_drop_down'"
+        >
           <q-menu v-model="showDateMenu" fit>
             <q-date
               v-model="date"
@@ -25,7 +30,7 @@
         </template>
       </q-card-section>
       <q-card-section v-else class="scroll report-content">
-        {{ $t('reports.no_report') }}
+        <div class="flex justify-center">{{ $t('reports.no_report') }}</div>
       </q-card-section>
     </q-card>
   </q-dialog>
