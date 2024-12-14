@@ -2,22 +2,26 @@
   <q-dialog v-model="showDialog">
     <q-card>
       <q-toolbar>
-        <q-btn
-          flat
-          :label="dt.report(dt.parseQuasarDateString(date), locale)"
-          :disable="loading"
-          :icon-right="showDateMenu ? 'arrow_drop_up' : 'arrow_drop_down'"
-        >
-          <q-menu v-model="showDateMenu" fit>
-            <q-date
-              v-model="date"
-              minimal
-              :disable="loading"
-              @update:model-value="(val) => fetchReport(val)"
-              :options="(date) => selectableDate(date)"
-            />
-          </q-menu>
-        </q-btn>
+        <q-space />
+        <q-btn-group flat>
+          <q-btn icon="chevron_left" :disable="disablePrevious" @click="previous" />
+          <q-btn
+            :label="dt.report(dt.parseQuasarDateString(date), locale)"
+            :disable="loading"
+            :icon-right="showDateMenu ? 'arrow_drop_up' : 'arrow_drop_down'"
+          >
+            <q-menu v-model="showDateMenu" fit>
+              <q-date
+                v-model="date"
+                minimal
+                :disable="loading"
+                @update:model-value="(val) => fetchReport(val)"
+                :options="(date) => selectableDate(date)"
+              />
+            </q-menu>
+          </q-btn>
+          <q-btn icon="chevron_right" :disable="disableNext" @click="next" />
+        </q-btn-group>
         <q-space />
         <q-btn flat round dense icon="close" v-close-popup />
       </q-toolbar>
@@ -30,7 +34,7 @@
         </template>
       </q-card-section>
       <q-card-section v-else class="scroll report-content">
-        <div class="flex justify-center">{{ $t('reports.no_report') }}</div>
+        <div class="flex justify-center q-ma-xl q-pa-xl">{{ $t('reports.no_report') }}</div>
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -70,6 +74,30 @@ function selectableDate(quasarDateString) {
   const date = dt.parseQuasarDateString(quasarDateString)
 
   return date <= dt.now() && date >= reportsStore.firstReportDate
+}
+
+const disablePrevious = computed(() => {
+  if (loading.value === true) return true
+  let d = dt.parseQuasarDateString(date.value)
+  return d <= reportsStore.firstReportDate
+})
+
+const disableNext = computed(() => {
+  if (loading.value === true) return true
+  let d = dt.parseQuasarDateString(date.value)
+  return d >= dt.now().startOf('day')
+})
+
+function previous() {
+  let d = dt.parseQuasarDateString(date.value)
+  date.value = dt.toQuasarDateString(d.minus({ days: 1 }))
+  fetchReport(date.value)
+}
+
+function next() {
+  let d = dt.parseQuasarDateString(date.value)
+  date.value = dt.toQuasarDateString(d.plus({ days: 1 }))
+  fetchReport(date.value)
 }
 
 const sections = [
