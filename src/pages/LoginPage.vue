@@ -1,38 +1,40 @@
 <template>
-  <blank-layout>
-    <q-page class="row justify-center items-center">
-      <q-card class="q-pa-xl">
-        <div id="formHeader"></div>
-        <q-form id="loginForm">
-          <q-input
-            v-model="email"
-            name="email"
-            type="email"
-            :label="$t('login.email')"
-            :disable="loggingIn"
-          />
-          <q-input
-            class="q-mt-md"
-            v-model="password"
-            name="password"
-            type="password"
-            :label="$t('login.password')"
-            :disable="loggingIn"
-          />
-          <q-btn
-            id="loginButton"
-            class="q-mt-lg"
-            color="primary"
-            :label="$t('login.login')"
-            :loading="loggingIn"
-            :disable="!formValid"
-            @click="login"
-          >
-          </q-btn>
-        </q-form>
-      </q-card>
-    </q-page>
-  </blank-layout>
+  <q-layout view="hHh lpR fFf">
+    <q-page-container>
+      <q-page class="row justify-center items-center">
+        <q-card class="q-pa-xl">
+          <div id="formHeader"></div>
+          <q-form id="loginForm">
+            <q-input
+              v-model="email"
+              name="email"
+              type="email"
+              :label="$t('login.email')"
+              :disable="loggingIn"
+            />
+            <q-input
+              class="q-mt-md"
+              v-model="password"
+              name="password"
+              type="password"
+              :label="$t('login.password')"
+              :disable="loggingIn"
+            />
+            <q-btn
+              id="loginButton"
+              class="q-mt-lg"
+              color="primary"
+              :label="$t('login.login')"
+              :loading="loggingIn"
+              :disable="!formValid"
+              @click="login"
+            >
+            </q-btn>
+          </q-form>
+        </q-card>
+      </q-page>
+    </q-page-container>
+  </q-layout>
 </template>
 
 <script setup>
@@ -44,8 +46,6 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import { useRouter } from 'vue-router'
 const router = useRouter()
-
-import BlankLayout from '@/layouts/BlankLayout.vue'
 
 defineOptions({
   name: 'LoginPage',

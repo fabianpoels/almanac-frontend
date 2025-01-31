@@ -38,7 +38,8 @@ export default route(function (/* { store, ssrContext } */) {
     }
 
     // REDIRECT TO AUTH IF REQUIRED
-    const publicPages = ['root', 'login', 'about']
+    // const publicPages = ['root', 'login', 'about']
+    const publicPages = ['login']
     const authRequired = !publicPages.includes(to.name)
     const authStore = useAuthStore()
 
