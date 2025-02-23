@@ -6,13 +6,21 @@
       :columns="columns"
       row-key="id"
       :loading="loading"
+      :filter="filter"
       flat
       bordered
       :pagination="{ rowsPerPage: 0 }"
     >
-      <template v-slot:top>
+      <template v-slot:top-left>
         <h5 class="q-my-sm">{{ $t('admin.riskLevels.riskLevels') }}</h5>
         <q-btn class="q-ml-md" @click="showAdd = true" flat round :disable="loading" icon="add" />
+      </template>
+      <template v-slot:top-right>
+        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
       </template>
       <template #body-cell-municipalities="props">
         <q-td :props="props">
@@ -63,6 +71,7 @@ const showEdit = ref(false)
 const showDelete = ref(false)
 const levelToEdit = ref({})
 const levelToDelete = ref({})
+const filter = ref('')
 
 function editLevel(level) {
   levelToEdit.value = level
