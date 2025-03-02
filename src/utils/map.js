@@ -81,10 +81,11 @@ const mapUtils = {
     })
   },
 
-  drawRiskLevels: function ({ map, riskLevels }) {
-    riskLevels.forEach((rl) => {
-      const id = `rl-${rl.id}`
-      if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: rl.geoData })
+  drawRiskLevels: function ({ map, riskLevels, colors }) {
+    console.log('drawing')
+    for (const [key, value] of Object.entries(riskLevels)) {
+      const id = `rl-${key}`
+      if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: value })
       if (!map.getLayer(id)) {
         map.addLayer({
           id: id,
@@ -92,12 +93,12 @@ const mapUtils = {
           source: id,
           layout: {},
           paint: {
-            'fill-color': rl.color,
+            'fill-color': colors[key],
             'fill-opacity': 0.2,
           },
         })
       }
-    })
+    }
   },
 
   moveMapToNewsItem: function ({ map, newsItem }) {

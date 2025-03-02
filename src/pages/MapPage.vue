@@ -1,11 +1,10 @@
 <template>
   <q-page>
-    <!-- <div ref="mapContainer" class="map-container"></div> -->
     <MapboxMap
       class="map-container"
       :access-token="mapStore.mapboxApiKey"
       map-style="mapbox://styles/mapbox/light-v11"
-      :center="defaultCenter"
+      :center="mapStore.defaultCenter"
       :zoom="8"
       @mb-created="mapLoaded"
       :attributionControl="false"
@@ -45,7 +44,7 @@
 </template>
 
 <script setup>
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 import { Loading } from 'quasar'
 import { useMapStore } from '@/stores/mapStore'
 import { useNewsStore } from '@/stores/newsStore'
@@ -85,8 +84,6 @@ const reportsStore = useReportsStore()
 defineOptions({
   name: 'MapPage',
 })
-
-const defaultCenter = [35.4903, 33.8964]
 
 async function mapLoaded(map) {
   Loading.show()
@@ -181,11 +178,11 @@ function pinClicked(newsItem) {
   padding: 0;
   flex: 1;
 }
-/* .mapboxgl-ctrl-bottom-left div:last-child {
+.mapboxgl-ctrl-bottom-left div:last-child {
   display: none !important;
 }
 
-.mapboxgl-ctrl-bottom-right div:last-child {
+/* .mapboxgl-ctrl-bottom-right div:last-child {
   display: none !important;
 } */
 </style>

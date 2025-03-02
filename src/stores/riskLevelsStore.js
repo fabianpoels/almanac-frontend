@@ -11,8 +11,13 @@ function parseRiskLevel(riskLevel) {
 export const useRiskLevelsStore = defineStore('riskLevels', {
   state: () => ({
     municipalities: [],
-    riskLevels: [],
+    publicRiskLevels: {},
     riskColors: ['#43a047', '#ffb300', '#e53935'],
+    publicRiskColors: {
+      minor: '#43a047',
+      moderate: '#ffb300',
+      severe: '#e53935',
+    },
     riskNames: ['minor', 'moderate', 'severe'],
   }),
   getters: {
@@ -21,63 +26,68 @@ export const useRiskLevelsStore = defineStore('riskLevels', {
       level: 0,
     }),
 
+    blankMunicipality: () => ({
+      name: {
+        en: '',
+        ar: '',
+      },
+      geoData: {},
+      riskLevel: -1,
+    }),
+
     filteredMunicipalities() {
       const usedIds = this.riskLevels.flatMap((rl) => rl.municipalities).map((m) => m.id)
       return this.municipalities.filter((m) => !usedIds.includes(m.id))
     },
-
-    mapRiskLevels() {
-      return this.riskLevels.map((rl) => ({
-        id: rl.id,
-        level: rl.level,
-        color: this.riskColors[rl.level],
-        geoData: {
-          type: 'FeatureCollection',
-          features: rl.municipalities.flatMap((m) => m.geoData.features),
-        },
-      }))
-    },
   },
   actions: {
+    sortedMunicipalities(locale) {
+      try {
+        return this.municipalities.sort((a, b) => {
+          const name_a = !!a.name ? a.name[locale] || '' : ''
+          const name_b = !!b.name ? b.name[locale] || '' : ''
+          return name_a.localeCompare(name_b)
+        })
+      } catch (e) {
+        console.log(locale)
+        console.log(e)
+        return []
+      }
+    },
+
+    riskLevelColor(index) {
+      if (!index || index < 0) return '#00b0ff'
+      return this.riskColors[index]
+    },
+
     async fetchMunicipalities() {
       const { data } = await api.get('/admin/municipalities')
       this.municipalities = data
     },
 
+    async createMunicipality(municipality) {
+      const { data } = await api.post(`/admin/municipalities`, municipality)
+      const newMunicipality = data
+      this.municipalities.push(newMunicipality)
+    },
+
+    async updateMunicipality(municipality) {
+      const { data } = await api.put(`/admin/municipalities/${municipality.id}`, municipality)
+      const updatedMunicipality = data
+      const index = this.municipalities.findIndex((m) => m.id === updatedMunicipality.id)
+      if (index > -1) this.municipalities[index] = updatedMunicipality
+    },
+
+    async deleteMunicipality(municipality) {
+      const response = await api.delete(`/admin/municipalities/${municipality.id}`)
+      if (response.status === 200) {
+        this.municipalities = this.municipalities.filter((m) => m.id !== municipality.id)
+      }
+    },
+
     async fetchRiskLevels() {
       const { data } = await api.get('/riskLevels')
-      this.riskLevels = data.map(parseRiskLevel)
-    },
-
-    async fetchAdminRiskLevels() {
-      const { data } = await api.get('/admin/riskLevels')
-      this.riskLevels = data.map(parseRiskLevel)
-    },
-
-    async createRiskLevel(newRiskLevel) {
-      const { data } = await api.post(`/admin/riskLevels`, {
-        level: newRiskLevel.level,
-        municipalities: newRiskLevel.municipalities.map((m) => m.value),
-      })
-      const parsedRiskLevel = parseRiskLevel(data)
-      this.riskLevels.unshift(parsedRiskLevel)
-    },
-
-    async updateRiskLevel(riskLevel) {
-      const { data } = await api.put(`/admin/riskLevels/${riskLevel.id}`, {
-        level: riskLevel.level,
-        municipalities: riskLevel.municipalities.map((m) => m.value),
-      })
-      const parsedRiskLevel = parseRiskLevel(data)
-      const index = this.riskLevels.findIndex((rl) => rl.id === parsedRiskLevel.id)
-      if (index > -1) this.riskLevels[index] = parsedRiskLevel
-    },
-
-    async deleteRiskLevel(riskLevel) {
-      const response = await api.delete(`/admin/riskLevels/${riskLevel.id}`)
-      if (response.status === 200) {
-        this.riskLevels = this.riskLevels.filter((rl) => rl.id !== riskLevel.id)
-      }
+      this.publicRiskLevels = data
     },
   },
 })

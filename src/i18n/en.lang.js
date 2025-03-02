@@ -12,6 +12,12 @@ export default {
       riskLevels: 'Risk levels',
       users: 'Users',
     },
+    municipalities: {
+      addMunicipality: 'Add municipality',
+      deleteMunicipality: 'Delete municipality',
+      municipalities: 'Municipalities',
+      name: 'Name',
+    },
     news: {
       addNewsItem: 'Add news item',
       category: 'Category',
@@ -30,15 +36,12 @@ export default {
       title: 'Title',
     },
     riskLevels: {
-      addRiskLevel: 'Add risk level',
-      deleteRiskLevel: 'Delete risk level',
-      editRiskLevel: 'Edit risk level',
       levels: {
         minor: 'Minor',
         moderate: 'Moderate',
+        none: 'None',
         severe: 'Severe',
       },
-      municipalities: 'Municipalities',
       riskLevel: 'Risk level',
       riskLevels: 'Risk levels',
     },
@@ -73,6 +76,7 @@ export default {
     edit: 'Edit',
     editLocation: 'Edit location',
     errorSaving: 'Error saving',
+    new: 'New',
     save: 'Save',
     saved: 'Saved',
   },

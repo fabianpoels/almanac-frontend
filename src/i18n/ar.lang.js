@@ -12,6 +12,12 @@ export default {
       riskLevels: 'مستويات المخاطر',
       users: 'المستخدمون',
     },
+    municipalities: {
+      addMunicipality: 'إضافة بلدية',
+      deleteMunicipality: 'حذف بلدية',
+      municipalities: 'البلديات',
+      name: 'الاسم',
+    },
     news: {
       addNewsItem: 'إضافة خبر جديد',
       category: 'الفئة',
@@ -30,15 +36,12 @@ export default {
       title: 'العنوان',
     },
     riskLevels: {
-      addRiskLevel: 'إضافة مستوى مخاطر',
-      deleteRiskLevel: 'حذف مستوى مخاطر',
-      editRiskLevel: 'تعديل مستوى مخاطر',
       levels: {
         minor: 'بسيط',
         moderate: 'معتدل',
+        none: 'لا يوجد',
         severe: 'شديد',
       },
-      municipalities: 'البلديات',
       riskLevel: 'مستوى المخاطر',
       riskLevels: 'مستويات المخاطر',
     },
@@ -73,6 +76,7 @@ export default {
     edit: 'تعديل',
     editLocation: 'تعديل الموقع',
     errorSaving: 'خطأ في الحفظ',
+    new: 'جديد',
     save: 'حفظ',
     saved: 'تم الحفظ',
   },

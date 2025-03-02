@@ -21,6 +21,7 @@ export const useMapStore = defineStore('map', {
     draw: null,
     loadingMap: false,
     showRiskLevels: true,
+    defaultCenter: [35.4903, 33.8964],
   }),
   getters: {},
   actions: {
@@ -69,14 +70,33 @@ export const useMapStore = defineStore('map', {
       // map.addControl(scale, 'bottom-left')
 
       const riskLevelsStore = useRiskLevelsStore()
-      mapUtils.drawRiskLevels({ map, riskLevels: riskLevelsStore.mapRiskLevels })
+      mapUtils.drawRiskLevels({
+        map,
+        riskLevels: riskLevelsStore.publicRiskLevels,
+        colors: riskLevelsStore.publicRiskColors,
+      })
 
       map.on('style.load', (val) => {
         if (this.map.getStyle().sprite === 'mapbox://sprites/mapbox/light-v11') {
           const riskLevelsStore = useRiskLevelsStore()
-          mapUtils.drawRiskLevels({ map, riskLevels: riskLevelsStore.mapRiskLevels })
+          mapUtils.drawRiskLevels({
+            map,
+            riskLevels: riskLevelsStore.publicRiskLevels,
+            colors: riskLevelsStore.publicRiskColors,
+          })
         }
       })
+
+      this.map = map
+    },
+
+    async initializeRiskLevelsMap({ map, t, locale }) {
+      // language control
+      const language = new MapboxLanguage({
+        defaultLanguage: locale.value,
+      })
+      map.addControl(language)
+      this.mapLanguage = language
 
       this.map = map
     },
@@ -178,7 +198,7 @@ export const useMapStore = defineStore('map', {
       if (!this.draw) {
         const draw = new MapboxDraw({
           controls: {
-            point: true,
+            point: false,
             polygon: true,
             trash: true,
           },

@@ -1,136 +1,111 @@
 <template>
   <q-page>
-    <q-table
-      :title="$t('admin.riskLevels.riskLevels')"
-      :rows="rows"
-      :columns="columns"
-      row-key="id"
-      :loading="loading"
-      :filter="filter"
-      flat
-      bordered
-      :pagination="{ rowsPerPage: 0 }"
+    <MapboxMap
+      class="map-container"
+      :access-token="mapStore.mapboxApiKey"
+      map-style="mapbox://styles/mapbox/light-v11"
+      :center="mapStore.defaultCenter"
+      :zoom="8"
+      @mb-created="mapLoaded"
+      :attributionControl="false"
     >
-      <template v-slot:top-left>
-        <h5 class="q-my-sm">{{ $t('admin.riskLevels.riskLevels') }}</h5>
-        <q-btn class="q-ml-md" @click="showAdd = true" flat round :disable="loading" icon="add" />
+      <MapboxNavigationControl position="bottom-right" visualizePitch />
+      <template v-for="riskLevel in riskLevels" :key="riskLevel.id">
+        <MapboxSource :id="riskLevel.id" :options="{ type: 'geojson', data: riskLevel.geoData }" />
+        <MapboxLayer
+          v-if="!selectedMunicipality?.id"
+          :id="riskLevel.key"
+          :options="{
+            type: 'fill',
+            source: riskLevel.id,
+            paint: {
+              'fill-color': riskLevel.color,
+              'fill-opacity': 0.2,
+            },
+          }"
+        />
       </template>
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
+      <template v-if="selectedMunicipality?.id">
+        <MapboxSource
+          :id="`m-${selectedMunicipality.id}`"
+          :options="{ type: 'geojson', data: selectedMunicipality.geoData }"
+        />
+        <MapboxLayer
+          :id="selectedMunicipality.id"
+          :options="{
+            type: 'fill',
+            source: `m-${selectedMunicipality.id}`,
+            paint: {
+              'fill-color': riskLevelsStore.riskLevelColor(selectedMunicipality.riskLevel),
+              'fill-opacity': 0.2,
+            },
+          }"
+        />
       </template>
-      <template #body-cell-municipalities="props">
-        <q-td :props="props">
-          {{ props.value.length }}
-        </q-td>
-      </template>
-      <template #body-cell-level="props">
-        <q-td :props="props">
-          <q-badge
-            :style="{ 'background-color': riskLevelsStore.riskColors[props.value] }"
-            :label="$t(`admin.riskLevels.levels.${riskLevelsStore.riskNames[props.value]}`)"
-          />
-        </q-td>
-      </template>
-      <template #body-cell-actions="props">
-        <q-td :props="props">
-          <q-btn @click="editLevel(props.row)" flat rounded color="primary">
-            {{ $t('forms.edit') }}
-          </q-btn>
-          <q-btn @click="deleteLevel(props.row)" flat rounded color="primary">
-            {{ $t('forms.delete') }}
-          </q-btn>
-        </q-td>
-      </template>
-    </q-table>
-    <add-risk-level v-model="showAdd" :riskLevel="riskLevelsStore.blankRiskLevel" />
-    <delete-risk-level v-model="showDelete" :riskLevel="levelToDelete" />
-    <edit-risk-level v-model="showEdit" :riskLevel="levelToEdit" />
+    </MapboxMap>
+    <q-page-sticky position="top-left" :offset="[18, 18]">
+      <municipalities-card v-model="selectedMunicipality" />
+    </q-page-sticky>
   </q-page>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { alert } from '@/utils/alert'
+import { Loading } from 'quasar'
 import { useI18n } from 'vue-i18n'
-const { locale } = useI18n()
-import { dt } from 'src/utils'
+const { t, locale } = useI18n()
 import { useRiskLevelsStore } from '@/stores/riskLevelsStore'
 const riskLevelsStore = useRiskLevelsStore()
+import { useMapStore } from '@/stores/mapStore'
+const mapStore = useMapStore()
 
-import AddRiskLevel from '@/components/admin/AddRiskLevel.vue'
-import DeleteRiskLevel from '@/components/admin/DeleteRiskLevel.vue'
-import EditRiskLevel from '@/components/admin/EditRiskLevel.vue'
+import {
+  MapboxMap,
+  MapboxNavigationControl,
+  MapboxSource,
+  MapboxLayer,
+} from '@studiometa/vue-mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import '@mapbox-controls/styles/src/index.css'
 
-const loading = ref(false)
-const showAdd = ref(false)
-const showEdit = ref(false)
-const showDelete = ref(false)
-const levelToEdit = ref({})
-const levelToDelete = ref({})
-const filter = ref('')
+import MunicipalitiesCard from '@/components/admin/MunicipalitiesCard.vue'
 
-function editLevel(level) {
-  levelToEdit.value = level
-  showEdit.value = true
-}
+const selectedMunicipality = ref(null)
 
-function deleteLevel(level) {
-  levelToDelete.value = level
-  showDelete.value = true
-}
+const riskLevels = computed(() => {
+  const rls = riskLevelsStore.publicRiskLevels
+  return Object.keys(rls).map((key) => ({
+    key,
+    id: `rl-${key}`,
+    geoData: rls[key],
+    color: riskLevelsStore.publicRiskColors[key],
+  }))
+})
 
-onMounted(async () => {
-  loading.value = true
+async function mapLoaded(map) {
+  Loading.show()
   try {
     await riskLevelsStore.fetchMunicipalities()
-    await riskLevelsStore.fetchAdminRiskLevels()
+    await riskLevelsStore.fetchRiskLevels()
+    mapStore.initializeRiskLevelsMap({ map, t, locale })
   } catch (e) {
     console.error(e)
-    alert.error(e)
+    alert.error(t('map.errorLoading'))
+  } finally {
+    Loading.hide()
   }
-  loading.value = false
-})
-
-const columns = computed(() => {
-  return [
-    {
-      name: 'id',
-      label: 'id',
-      field: (row) => row.id,
-      sortable: false,
-    },
-    {
-      name: 'createdAt',
-      label: 'createdAt',
-      field: (row) => dt.long(row.createdAt),
-      sortable: false,
-    },
-    {
-      name: 'municipalities',
-      label: 'municipalities',
-      field: (row) => row.municipalities.map((m) => `${m.name[locale.value]},`),
-      sortable: false,
-    },
-    {
-      name: 'level',
-      label: 'level',
-      field: (row) => row.level,
-      sortable: false,
-    },
-    {
-      name: 'actions',
-      label: 'actions',
-      field: (row) => row,
-      sortable: false,
-    },
-  ]
-})
-
-const rows = computed(() => {
-  return riskLevelsStore.riskLevels
-})
+}
 </script>
+<style>
+.map-container {
+  display: flex;
+  min-height: inherit;
+  padding: 0;
+  flex: 1;
+}
+
+.mapboxgl-ctrl-bottom-left div:last-child {
+  display: none !important;
+}
+</style>
