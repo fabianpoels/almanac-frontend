@@ -82,7 +82,7 @@
     </q-tab-panels>
   </q-card>
   <delete-municipality
-    v-if="editMunicipality?.id"
+    v-if="selectedMunicipality?.id"
     v-model="showDelete"
     :municipality="selectedMunicipality"
     @delete="deleted"

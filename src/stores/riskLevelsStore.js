@@ -56,7 +56,7 @@ export const useRiskLevelsStore = defineStore('riskLevels', {
     },
 
     riskLevelColor(index) {
-      if (!index || index < 0) return '#00b0ff'
+      if (Number.isNaN(index) || index < 0) return '#00b0ff'
       return this.riskColors[index]
     },
 

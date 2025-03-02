@@ -82,7 +82,6 @@ const mapUtils = {
   },
 
   drawRiskLevels: function ({ map, riskLevels, colors }) {
-    console.log('drawing')
     for (const [key, value] of Object.entries(riskLevels)) {
       const id = `rl-${key}`
       if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: value })
