@@ -19,7 +19,25 @@
           :option-label="(m) => m.name[locale] || ''"
           map-options
           @update:model-value="(val) => updateSelectedMunicipality(val)"
-        />
+        >
+          <!-- <template #selected-item="scope">
+          <q-badge :color="scope.opt.color" class="q-mr-sm" />
+          {{ scope.opt.label }}
+        </template> -->
+          <template #option="scope">
+            <q-item v-bind="scope.itemProps" class="q-py-md q-px-sm flex justify-content-center">
+              <q-badge
+                v-if="scope.opt.riskLevel >= 0"
+                align="middle"
+                :style="{ 'background-color': riskLevelsStore.riskLevelColor(scope.opt.riskLevel) }"
+                rounded
+                class="q-mr-sm"
+              />
+              <q-badge v-else align="middle" color="white" rounded class="q-mr-sm" />
+              <div>{{ scope.opt.name[locale] }}</div>
+            </q-item>
+          </template>
+        </q-select>
         <div v-if="municipalitySelected">
           <risk-level-select
             class="q-mt-sm"
