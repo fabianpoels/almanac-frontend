@@ -209,7 +209,7 @@ export const useMapStore = defineStore('map', {
       this.map.addControl(this.draw, 'top-right')
     },
 
-    deactiveDrawingMode() {
+    deactivateDrawingMode() {
       if (!this.draw || !this.map) return
       this.draw.deleteAll()
       this.map.removeControl(this.draw)

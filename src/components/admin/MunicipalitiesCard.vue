@@ -20,12 +20,8 @@
           map-options
           @update:model-value="(val) => updateSelectedMunicipality(val)"
         >
-          <!-- <template #selected-item="scope">
-          <q-badge :color="scope.opt.color" class="q-mr-sm" />
-          {{ scope.opt.label }}
-        </template> -->
           <template #option="scope">
-            <q-item v-bind="scope.itemProps" class="q-py-md q-px-sm flex justify-content-center">
+            <q-item v-bind="scope.itemProps" class="q-py-md q-px-sm flex">
               <q-badge
                 v-if="scope.opt.riskLevel >= 0"
                 align="middle"
@@ -34,7 +30,10 @@
                 class="q-mr-sm"
               />
               <q-badge v-else align="middle" color="white" rounded class="q-mr-sm" />
-              <div>{{ scope.opt.name[locale] }}</div>
+              <div class="flex row justify-between" style="width: 100%">
+                <div>{{ scope.opt.name[locale] }}</div>
+                <q-icon v-if="!scope.opt.osmId" name="edit" class="ml-auto" />
+              </div>
             </q-item>
           </template>
         </q-select>
@@ -51,7 +50,7 @@
               class="q-mt-lg"
               :label="$t('forms.cancel')"
               :disable="saving"
-              @click="selectedMunicipality = null"
+              @click="cancelEdit"
             />
             <q-btn
               v-if="!editMunicipality.osmId"
@@ -66,7 +65,7 @@
               color="secondary"
               :label="$t('forms.save')"
               :loading="saving"
-              :disable="!touched"
+              :disable="!isValidEdit"
               @click="save"
             />
           </div>
@@ -152,6 +151,7 @@ async function save() {
   try {
     await riskLevelsStore.updateMunicipality(editMunicipality.value)
     await riskLevelsStore.fetchRiskLevels()
+    mapStore.deactivateDrawingMode()
     selectedMunicipality.value = null
     editMunicipality.value = null
     alert.success(t('forms.saved'))
@@ -163,12 +163,18 @@ async function save() {
   }
 }
 
+function cancelEdit() {
+  selectedMunicipality.value = null
+  editMunicipality.value = null
+  mapStore.deactivateDrawingMode()
+}
+
 async function create() {
   saving.value = true
   try {
     await riskLevelsStore.createMunicipality(newMunicipality.value)
     await riskLevelsStore.fetchRiskLevels()
-    mapStore.deactiveDrawingMode()
+    mapStore.deactivateDrawingMode()
     tab.value = 'edit'
     alert.success(t('forms.saved'))
     saving.value = false
@@ -182,31 +188,47 @@ async function create() {
 function updateSelectedMunicipality(val) {
   if (val && val.id) {
     editMunicipality.value = { ...val }
+    if (!editMunicipality.value.osmId) {
+      mapStore.activateDrawingMode()
+      mapStore.draw.set(editMunicipality.value.geoData)
+      mapStore.map.on(
+        'draw.create',
+        () => (editMunicipality.value.geoData = { ...mapStore.draw.getAll() })
+      )
+      mapStore.map.on(
+        'draw.delete',
+        () => (editMunicipality.value.geoData = { ...mapStore.draw.getAll() })
+      )
+      mapStore.map.on(
+        'draw.update',
+        () => (editMunicipality.value.geoData = { ...mapStore.draw.getAll() })
+      )
+    }
   } else {
     editMunicipality.value = null
+    mapStore.deactivateDrawingMode()
   }
 }
-
-const touched = computed(() => {
-  if (!selectedMunicipality.value) return false
-  if (!editMunicipality.value) return false
-  return selectedMunicipality.value.riskLevel !== editMunicipality.value.riskLevel
-})
 
 function tabChanged(val) {
   if (val === 'new') {
     newMunicipality.value = riskLevelsStore.blankMunicipality
     mapStore.activateDrawingMode()
-    mapStore.map.on('draw.create', updateGeoJson)
-    mapStore.map.on('draw.delete', updateGeoJson)
-    mapStore.map.on('draw.update', updateGeoJson)
+    mapStore.map.on(
+      'draw.create',
+      () => (newMunicipality.value.geoData = { ...mapStore.draw.getAll() })
+    )
+    mapStore.map.on(
+      'draw.delete',
+      () => (newMunicipality.value.geoData = { ...mapStore.draw.getAll() })
+    )
+    mapStore.map.on(
+      'draw.update',
+      () => (newMunicipality.value.geoData = { ...mapStore.draw.getAll() })
+    )
   } else {
-    mapStore.deactiveDrawingMode()
+    mapStore.deactivateDrawingMode()
   }
-}
-
-function updateGeoJson() {
-  newMunicipality.value.geoData = { ...mapStore.draw.getAll() }
 }
 
 const validNewMunicipality = computed(() => {
@@ -223,6 +245,12 @@ function deleted() {
   selectedMunicipality.value = null
   editMunicipality.value = null
 }
+
+const isValidEdit = computed(() => {
+  if (!editMunicipality.value.geoData) return false
+  if (!editMunicipality.value.geoData.features) return false
+  return editMunicipality.value.geoData.features.length === 1
+})
 </script>
 <style scoped>
 .municipalities-card {
