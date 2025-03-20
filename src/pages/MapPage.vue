@@ -64,8 +64,6 @@ import {
   MapboxMarker,
   MapboxNavigationControl,
   MapboxPopup,
-  MapboxSource,
-  MapboxLayer,
 } from '@studiometa/vue-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox-controls/styles/src/index.css'

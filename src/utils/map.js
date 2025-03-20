@@ -41,48 +41,32 @@ const mapUtils = {
         marker.setPopup(popup)
         marker.addTo(map)
       }
-
-      // polygon
-      // if (gd.geometry.type === 'Polygon') {
-      //   if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: gd })
-      //   if (!map.getLayer(`${newsItem.id}-fill`)) {
-      //     map.addLayer({
-      //       id: `${newsItem.id}-fill`,
-      //       type: 'fill',
-      //       source: id,
-      //       layout: {},
-      //       paint: {
-      //         'fill-color': color,
-      //         'fill-opacity': 0.5,
-      //       },
-      //     })
-      //   }
-      //   if (!map.getLayer(`${newsItem.id}-line`)) {
-      //     map.addLayer({
-      //       id: `${newsItem.id}-line`,
-      //       type: 'line',
-      //       source: id,
-      //       layout: {},
-      //       paint: {
-      //         'line-color': color,
-      //         'line-width': 1,
-      //       },
-      //     })
-      //   }
-      //   const marker = new mapboxgl.Marker({
-      //     color: color,
-      //     className: id,
-      //   })
-
-      //   marker.setLngLat(center(gd).geometry.coordinates)
-      //   marker.setPopup(popup)
-      //   marker.addTo(map)
-      // }
     })
   },
 
   drawRiskLevels: function ({ map, riskLevels, colors }) {
-    for (const [key, value] of Object.entries(riskLevels)) {
+    // governorates
+    const colorsArray = Object.values(colors)
+    riskLevels.governorates.forEach(governorate => {
+      const id = `g-${governorate.id}`
+      if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: governorate.geoData })
+      if (!map.getLayer(id)) {
+        map.addLayer({
+          id: id,
+          type: 'fill',
+          source: id,
+          layout: {},
+          paint: {
+            'fill-color': colorsArray[governorate.riskLevel],
+            'fill-opacity': 0.2,
+          },
+        })
+      }
+    })
+
+    // municipalities
+    const municipalities = riskLevels.municipalities
+    for (const [key, value] of Object.entries(municipalities)) {
       const id = `rl-${key}`
       if (!map.getSource(id)) map.addSource(id, { type: 'geojson', data: value })
       if (!map.getLayer(id)) {
