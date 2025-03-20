@@ -11,6 +11,7 @@ function parseRiskLevel(riskLevel) {
 export const useRiskLevelsStore = defineStore('riskLevels', {
   state: () => ({
     municipalities: [],
+    governorates: [],
     publicRiskLevels: {},
     riskColors: ['#43a047', '#ffb300', '#e53935'],
     publicRiskColors: {
@@ -39,22 +40,45 @@ export const useRiskLevelsStore = defineStore('riskLevels', {
       const usedIds = this.riskLevels.flatMap((rl) => rl.municipalities).map((m) => m.id)
       return this.municipalities.filter((m) => !usedIds.includes(m.id))
     },
-  },
-  actions: {
-    sortedMunicipalities(locale) {
-      try {
-        return this.municipalities.sort((a, b) => {
-          const name_a = !!a.name ? a.name[locale] || '' : ''
-          const name_b = !!b.name ? b.name[locale] || '' : ''
-          return name_a.localeCompare(name_b)
-        })
-      } catch (e) {
-        console.log(locale)
-        console.log(e)
-        return []
-      }
+
+    sortedMunicipalities() {
+      return this.municipalities.sort((a, b) => {
+        const name_a = !!a.name ? a.name.en || '' : ''
+        const name_b = !!b.name ? b.name.en || '' : ''
+        return name_a.localeCompare(name_b)
+      })
     },
 
+    sortedGovernorates() {
+      return this.governorates.sort((a, b) => {
+        const name_a = !!a.name ? a.name.en || '' : ''
+        const name_b = !!b.name ? b.name.en || '' : ''
+        return name_a.localeCompare(name_b)
+      })
+    },
+
+    locationOptions() {
+      let remainingMunicipalities = [...this.sortedMunicipalities]
+      const result = []
+      this.sortedGovernorates.forEach(g => {
+        result.push({
+          ...g,
+          isGovernorate: true
+        })
+        let municipalities = [...remainingMunicipalities]
+        remainingMunicipalities = []
+        municipalities.forEach(m => {
+          if (m.governorateOsmId && m.governorateOsmId === g.osmId) {
+            result.push(m)
+          } else {
+            remainingMunicipalities.push(m)
+          }
+        })
+      })
+      return result
+    }
+  },
+  actions: {
     riskLevelColor(index) {
       if (Number.isNaN(index) || index < 0) return '#00b0ff'
       return this.riskColors[index]
@@ -63,6 +87,11 @@ export const useRiskLevelsStore = defineStore('riskLevels', {
     async fetchMunicipalities() {
       const { data } = await api.get('/admin/municipalities')
       this.municipalities = data
+    },
+
+    async fetchGovernorates() {
+      const { data } = await api.get('/admin/governorates')
+      this.governorates = data
     },
 
     async createMunicipality(municipality) {
@@ -76,6 +105,13 @@ export const useRiskLevelsStore = defineStore('riskLevels', {
       const updatedMunicipality = data
       const index = this.municipalities.findIndex((m) => m.id === updatedMunicipality.id)
       if (index > -1) this.municipalities[index] = updatedMunicipality
+    },
+
+    async updateGovernorate(governorate) {
+      const { data } = await api.put(`/admin/governorates/${governorate.id}`, governorate)
+      const updatedGovernorate = data
+      const index = this.governorates.findIndex((m) => m.id === updatedGovernorate.id)
+      if (index > -1) this.governorates[index] = updatedGovernorate
     },
 
     async deleteMunicipality(municipality) {

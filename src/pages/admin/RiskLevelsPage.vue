@@ -10,6 +10,21 @@
       :attributionControl="false"
     >
       <MapboxNavigationControl position="bottom-right" visualizePitch />
+      <template v-for="governorate in governorates" :key="governorate.id">
+        <MapboxSource :id="governorate.id" :options="{ type: 'geojson', data: governorate.geoData }" />
+        <MapboxLayer
+          v-if="!selectedMunicipality?.id"
+          :id="`key-${governorate.id}`"
+          :options="{
+            type: 'fill',
+            source: governorate.id,
+            paint: {
+              'fill-color': governorate.color,
+              'fill-opacity': 0.2,
+            },
+          }"
+        />
+      </template>
       <template v-for="riskLevel in riskLevels" :key="riskLevel.id">
         <MapboxSource :id="riskLevel.id" :options="{ type: 'geojson', data: riskLevel.geoData }" />
         <MapboxLayer
@@ -73,8 +88,16 @@ import MunicipalitiesCard from '@/components/admin/MunicipalitiesCard.vue'
 
 const selectedMunicipality = ref(null)
 
+const governorates = computed(() => {
+  return riskLevelsStore.publicRiskLevels.governorates.map(g => ({
+    id: `g-${g.id}`,
+    geoData: g.geoData,
+    color: riskLevelsStore.riskColors[g.riskLevel]
+  }))
+})
+
 const riskLevels = computed(() => {
-  const rls = riskLevelsStore.publicRiskLevels
+  const rls = riskLevelsStore.publicRiskLevels.municipalities
   return Object.keys(rls).map((key) => ({
     key,
     id: `rl-${key}`,
@@ -87,6 +110,7 @@ async function mapLoaded(map) {
   Loading.show()
   try {
     await riskLevelsStore.fetchMunicipalities()
+    await riskLevelsStore.fetchGovernorates()
     await riskLevelsStore.fetchRiskLevels()
     mapStore.initializeRiskLevelsMap({ map, t, locale })
   } catch (e) {

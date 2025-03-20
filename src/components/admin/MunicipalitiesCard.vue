@@ -2,7 +2,7 @@
   <q-card class="municipalities-card q-pa-sm">
     <q-tabs v-model="tab" dense align="justify" @update:model-value="(val) => tabChanged(val)">
       <q-tab name="edit" :label="$t('forms.edit')" />
-      <q-tab name="new" :label="$t('forms.new')" :disable="municipalitySelected" />
+      <q-tab name="new" :label="$t('forms.new')" :disable="locationSelected" />
     </q-tabs>
     <q-tab-panels v-model="tab">
       <!-- EDIT -->
@@ -13,12 +13,12 @@
           :label="$t('admin.municipalities.municipalities')"
           :options="selectOptions"
           @filter="filterFn"
-          v-model="selectedMunicipality"
-          :use-input="!municipalitySelected"
+          v-model="selectedLocation"
+          :use-input="!locationSelected"
           :option-value="(m) => m.id || ''"
           :option-label="(m) => m.name[locale] || ''"
           map-options
-          @update:model-value="(val) => updateSelectedMunicipality(val)"
+          @update:model-value="(val) => updateSelectedLocation(val)"
         >
           <template #option="scope">
             <q-item v-bind="scope.itemProps" class="q-py-md q-px-sm flex">
@@ -28,6 +28,7 @@
                 :style="{ 'background-color': riskLevelsStore.riskLevelColor(scope.opt.riskLevel) }"
                 rounded
                 class="q-mr-sm"
+                :class="{'q-ml-md': !scope.opt.isGovernorate, 'text-bold': scope.opt.isGovernorate}"
               />
               <q-badge v-else align="middle" color="white" rounded class="q-mr-sm" />
               <div class="flex row justify-between" style="width: 100%">
@@ -37,11 +38,11 @@
             </q-item>
           </template>
         </q-select>
-        <div v-if="municipalitySelected">
+        <div v-if="locationSelected">
           <risk-level-select
             class="q-mt-sm"
             :disable="saving"
-            v-model="editMunicipality.riskLevel"
+            v-model="editLocation.riskLevel"
           />
           <div class="flex flex-row justify-end">
             <q-btn
@@ -53,7 +54,7 @@
               @click="cancelEdit"
             />
             <q-btn
-              v-if="!editMunicipality.osmId"
+              v-if="!editLocation.osmId"
               color="negative"
               class="q-mt-lg"
               :label="$t('forms.delete')"
@@ -99,9 +100,9 @@
     </q-tab-panels>
   </q-card>
   <delete-municipality
-    v-if="selectedMunicipality?.id"
+    v-if="selectedLocation?.id"
     v-model="showDelete"
-    :municipality="selectedMunicipality"
+    :municipality="selectedLocation"
     @delete="deleted"
   />
 </template>
@@ -119,8 +120,8 @@ import DeleteMunicipality from './DeleteMunicipality.vue'
 
 const saving = ref(false)
 const selectOptions = ref([])
-const selectedMunicipality = defineModel()
-const editMunicipality = ref(null)
+const selectedLocation = defineModel()
+const editLocation = ref(null)
 const newMunicipality = ref(null)
 const tab = ref('edit')
 const showDelete = ref(false)
@@ -128,18 +129,18 @@ const showDelete = ref(false)
 const filterFn = (val, update) => {
   update(() => {
     const needle = val.toLowerCase()
-    selectOptions.value = municipalities.value.filter(
+    selectOptions.value = locationOptions.value.filter(
       (m) => m.name[locale.value]?.toLowerCase().indexOf(needle) > -1
     )
   })
 }
 
-const municipalities = computed(() => riskLevelsStore.sortedMunicipalities(locale.value))
+const locationOptions = computed(() => riskLevelsStore.locationOptions)
 
-const municipalitySelected = computed(() => !!selectedMunicipality.value?.id)
+const locationSelected = computed(() => !!selectedLocation.value?.id)
 
 watch(
-  () => riskLevelsStore.sortedMunicipalities(locale.value),
+  () => riskLevelsStore.locationOptions,
   (val) => {
     selectOptions.value = val
   },
@@ -149,11 +150,15 @@ watch(
 async function save() {
   saving.value = true
   try {
-    await riskLevelsStore.updateMunicipality(editMunicipality.value)
+    if (editLocation.value.isGovernorate) {
+      await riskLevelsStore.updateGovernorate(editLocation.value)
+    } else {
+      await riskLevelsStore.updateMunicipality(editLocation.value)
+    }
     await riskLevelsStore.fetchRiskLevels()
     mapStore.deactivateDrawingMode()
-    selectedMunicipality.value = null
-    editMunicipality.value = null
+    selectedLocation.value = null
+    editLocation.value = null
     alert.success(t('forms.saved'))
     saving.value = false
   } catch (e) {
@@ -164,8 +169,8 @@ async function save() {
 }
 
 function cancelEdit() {
-  selectedMunicipality.value = null
-  editMunicipality.value = null
+  selectedLocation.value = null
+  editLocation.value = null
   mapStore.deactivateDrawingMode()
 }
 
@@ -185,27 +190,27 @@ async function create() {
   }
 }
 
-function updateSelectedMunicipality(val) {
+function updateSelectedLocation(val) {
   if (val && val.id) {
-    editMunicipality.value = { ...val }
-    if (!editMunicipality.value.osmId) {
+    editLocation.value = { ...val }
+    if (!editLocation.value.osmId) {
       mapStore.activateDrawingMode()
-      mapStore.draw.set(editMunicipality.value.geoData)
+      mapStore.draw.set(editLocation.value.geoData)
       mapStore.map.on(
         'draw.create',
-        () => (editMunicipality.value.geoData = { ...mapStore.draw.getAll() })
+        () => (editLocation.value.geoData = { ...mapStore.draw.getAll() })
       )
       mapStore.map.on(
         'draw.delete',
-        () => (editMunicipality.value.geoData = { ...mapStore.draw.getAll() })
+        () => (editLocation.value.geoData = { ...mapStore.draw.getAll() })
       )
       mapStore.map.on(
         'draw.update',
-        () => (editMunicipality.value.geoData = { ...mapStore.draw.getAll() })
+        () => (editLocation.value.geoData = { ...mapStore.draw.getAll() })
       )
     }
   } else {
-    editMunicipality.value = null
+    editLocation.value = null
     mapStore.deactivateDrawingMode()
   }
 }
@@ -242,14 +247,14 @@ const validNewMunicipality = computed(() => {
 })
 
 function deleted() {
-  selectedMunicipality.value = null
-  editMunicipality.value = null
+  selectedLocation.value = null
+  editLocation.value = null
 }
 
 const isValidEdit = computed(() => {
-  if (!editMunicipality.value.geoData) return false
-  if (!editMunicipality.value.geoData.features) return false
-  return editMunicipality.value.geoData.features.length === 1
+  if (!editLocation.value.geoData) return false
+  if (!editLocation.value.geoData.features) return false
+  return editLocation.value.geoData.features.length === 1
 })
 </script>
 <style scoped>
